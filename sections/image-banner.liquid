@@ -27,6 +27,23 @@
   #Banner-{{ section.id }}::after {
     opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
   }
+  #Banner-{{ section.id }} .banner__media {
+    height: 80vh !important;
+  }
+  #Banner-{{ section.id }} .banner__media img {
+    width: 100% !important;
+    height: 100vh !important;
+    display: block !important;
+    object-fit: cover !important;
+    max-width: 100% !important;
+  }
+  #Banner-{{ section.id }} {
+    width: 100% !important;
+    overflow: visible !important;
+    margin-top: 10px !important;
+    position: relative;
+    z-index: 100;
+  }
 {%- endstyle -%}
 
 {%- liquid
