@@ -1,0 +1,151 @@
+<div class="shopify-section testimonials-section" id="section-{{ section.id }}">
+  <div class="section-header">
+    {% if section.settings.title != blank %}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    {% endif %}
+    <div class="testimonial-line">
+      <img src="{{ 'testimonial-line.svg' | asset_url }}" alt="Testimonial Line">
+    </div>
+  </div>
+
+  <style>
+    /* Scoped styles for testimonials section */
+    .testimonials-section { padding: 24px 0; display: flex; flex-direction: column; align-items: center; }
+    .section-header { width: 100%; text-align: center; margin-bottom: 60px; }
+    .section-title { margin: 0; font-size: 32px; font-weight: 600; color: #000; }
+    .testimonial-line { margin-top: 20px; display: flex; justify-content: center; }
+    .testimonial-line img { width: auto; height: 25px; display: block; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: 353.68px 1fr;
+      gap: 350px;
+      align-items: stretch;
+      margin: 0 auto;
+    }
+    .testimonials-left { display: flex; flex-direction: column; gap: 40px; }
+    .testimonial-item { background: var(--color-bg, #fff); border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,0.06); overflow: hidden; display:flex; flex-direction: column; }
+    .testimonial-small { padding: 0; align-items: stretch; width: 666px; height: 250px; }
+    .testimonial-large { padding: 0; align-items: stretch; width: 353.68px; height: 520px; }
+    .testimonial-image { width: 100%; height: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: transparent; }
+    .testimonial-small .testimonial-image { height: 100%; }
+    .testimonial-image img { width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
+    .testimonial-content { padding: 18px; }
+    .testimonial-title { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+    .testimonial-text { color: #374151; font-size: 14px; line-height: 1.4; }
+    .testimonial-link { display:inline-block; margin-top:10px; color: #0b69ff; }
+
+    /* Make the right column card span the two rows visually */
+    .testimonials-right .testimonial-large { display:flex; }
+
+    @media (max-width: 767px) {
+      .testimonials-section { padding: 24px 16px; }
+      .section-header { margin-bottom: 40px; }
+      .section-title { font-size: 24px; }
+      .testimonials-grid { grid-template-columns: 1fr; gap: 40px; }
+      .testimonial-small { width: 100%; height: auto; }
+      .testimonial-large { width: 100%; height: auto; }
+    }
+  </style>
+
+  <div class="testimonials-grid">
+    <div class="testimonials-left">
+      {% for block in section.blocks %}
+        {% if forloop.index <= 2 %}
+          <div class="testimonial-item testimonial-small">
+            {% if block.settings.image != blank %}
+              <div class="testimonial-image">
+                <img src="{{ block.settings.image | img_url: '600x' }}" alt="{{ block.settings.title }}">
+              </div>
+            {% else %}
+              <div class="testimonial-image">
+                {% case forloop.index %}
+                  {% when 1 %}
+                    <img src="{{ 'Testimonal1.svg' | asset_url }}" alt="{{ block.settings.title }}">
+                  {% when 2 %}
+                    <img src="{{ 'Testi2.svg' | asset_url }}" alt="{{ block.settings.title }}">
+                  {% else %}
+                    <img src="{{ 'Testi1.svg' | asset_url }}" alt="{{ block.settings.title }}">
+                {% endcase %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="testimonials-right">
+      {% for block in section.blocks %}
+        {% if forloop.index == 3 %}
+          <div class="testimonial-item testimonial-large">
+            <div class="testimonial-image">
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '1200x' }}" alt="{{ block.settings.title }}">
+              {% else %}
+                <img src="{{ 'Testimonal3.svg' | asset_url }}" alt="{{ block.settings.title }}">
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  {% schema %}
+  {
+    "name": "Testimonials",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "What Our Customers Say"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "column",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Name"
+          },
+          {
+            "type": "textarea",
+            "id": "text",
+            "label": "Testimonial",
+            "default": "<p>\"Amazing quality and service! The embroidery work is absolutely beautiful.\"</p>"
+          },
+          {
+            "type": "text",
+            "id": "link_label",
+            "label": "Link label"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "category": "Home",
+        "blocks": [
+          
+          
+        ]
+      }
+    ]
+  }
+  {% endschema %}
+
+</div>

@@ -1,3 +1,4 @@
+
 {
   "sections": {
     "hero_banner": {
@@ -30,99 +31,98 @@
       "type": "categories",
       "blocks": {
         "column1": {
-          "type": "column",
-          "settings": {
-            "title": "Baby & Kids",
-            "link": "/collections/baby-kids",
-            "open_in_new_window": false
+          "testimonials": {
+            "type": "testimonials",
+            "blocks": {
+              "testimonial1": {
+                "type": "column",
+                "settings": {
+                  "title": "Sarah M.",
+                  "text": "<p>\"Amazing quality and service! The embroidery work is absolutely beautiful.\"</p>",
+                  "link_label": "",
+                  "link": ""
+                }
+              },
+              "testimonial2": {
+                "type": "column",
+                "settings": {
+                  "title": "John D.",
+                  "text": "<p>\"Fast delivery and excellent customer support. Highly recommend!\"</p>",
+                  "link_label": "",
+                  "link": ""
+                }
+              },
+              "testimonial3": {
+                "type": "column",
+                "settings": {
+                  "title": "Lisa K.",
+                  "text": "<p>\"Perfect fit and beautiful designs. My kids love their new clothes!\"</p>",
+                  "link_label": "",
+                  "link": ""
+                }
+              }
+            },
+            "block_order": [
+              "testimonial1",
+              "testimonial2",
+              "testimonial3"
+            ],
+            "settings": {
+              "title": "What Our Customers Say"
+            }
+          },
+          "custom_design_form": {
+            "type": "rich-text",
+            "blocks": {
+              "heading": {
+                "type": "heading",
+                "settings": {
+                  "heading": "Get a Custom Design",
+                  "heading_size": "h1"
+                }
+              },
+              "text": {
+                "type": "text",
+                "settings": {
+                  "text": "<p>Tell us about your custom design needs and we'll create something special just for you. Contact us to get started!</p>"
+                }
+              },
+              "button": {
+                "type": "button",
+                "settings": {
+                  "button_label": "Contact Us",
+                  "button_link": "/pages/contact",
+                  "button_style_secondary": false,
+                  "button_label_2": "",
+                  "button_link_2": "",
+                  "button_style_secondary_2": false
+                }
+              }
+            },
+            "block_order": [
+              "heading",
+              "text",
+              "button"
+            ],
+            "settings": {
+              "desktop_content_position": "center",
+              "content_alignment": "center",
+              "color_scheme": "background-1",
+              "full_width": true,
+              "padding_top": 40,
+              "padding_bottom": 52
+            }
           }
         },
-        "column2": {
-          "type": "column",
-          "settings": {
-            "title": "Family Sets",
-            "link": "/collections/family-sets",
-            "open_in_new_window": false
-          }
-        },
-        "column3": {
-          "type": "column",
-          "settings": {
-            "title": "Custom T-Shirts",
-            "link": "/collections/custom-tshirts",
-            "open_in_new_window": false
-          }
-        },
-        "column4": {
-          "type": "column",
-          "settings": {
-            "title": "Gift Ideas",
-            "link": "/collections/gift-ideas",
-            "open_in_new_window": false
-          }
-        },
-        "column5": {
-          "type": "column",
-          "settings": {
-            "title": "Embroidery Designs",
-            "link": "/collections/embroidery-designs",
-            "open_in_new_window": false
-          }
-        }
-      },
-      "block_order": [
-        "column1",
-        "column2",
-        "column3",
-        "column4",
-        "column5"
-      ],
-      "settings": {
-        "title": "Our Categories",
-        "color_scheme": "background-1",
-        "show_view_all": true,
-        "button_label": "Explore All",
-        "button_link": "shopify://collections/all",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "featured_products": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "all",
-        "products_to_show": 4,
-        "title": "Featured Products",
-        "heading_size": "h1",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "columns_desktop": 4,
-        "enable_desktop_slider": false,
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "color_scheme": "background-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "1762863502dbd0867c": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_df8ad21_Mrz8tz": {
-          "type": "ai_gen_block_df8ad21",
-          "settings": {
-            "section_title": "Our Services",
-            "section_subtitle": "",
+        "order": [
+          "hero_banner",
+          "about_section",
+          "categories",
+          "featured_products",
+          "1762863502dbd0867c",
+          "testimonials",
+          "custom_design_form"
+        ],
             "header_alignment": "center",
             "title_size": 36,
             "title_color": "#000000",
@@ -179,12 +179,11 @@
       "settings": {}
     },
     "testimonials": {
-      "type": "multicolumn",
+      "type": "testimonials",
       "blocks": {
         "testimonial1": {
           "type": "column",
           "settings": {
-            "image": "shopify://shop_images/services_image.png",
             "title": "Sarah M.",
             "text": "<p>\"Amazing quality and service! The embroidery work is absolutely beautiful.\"</p>",
             "link_label": "",
@@ -216,20 +215,7 @@
         "testimonial3"
       ],
       "settings": {
-        "title": "What Our Customers Say",
-        "heading_size": "h1",
-        "image_width": "full",
-        "image_ratio": "adapt",
-        "button_label": "Button label",
-        "button_link": "",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "primary",
-        "color_scheme": "background-2",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "title": "What Our Customers Say"
       }
     },
     "custom_design_form": {
@@ -273,39 +259,6 @@
         "padding_top": 40,
         "padding_bottom": 52
       }
-    },
-    "newsletter": {
-      "type": "newsletter",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Stay Updated",
-            "heading_size": "h1"
-          }
-        },
-        "paragraph": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>Subscribe to get updates on new products and offers.</p>"
-          }
-        },
-        "email_form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email_form"
-      ],
-      "settings": {
-        "color_scheme": "background-2",
-        "full_width": true,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
     }
   },
   "order": [
@@ -315,7 +268,6 @@
     "featured_products",
     "1762863502dbd0867c",
     "testimonials",
-    "custom_design_form",
-    "newsletter"
+    "custom_design_form"
   ]
 }

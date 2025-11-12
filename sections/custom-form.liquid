@@ -1,0 +1,79 @@
+<div class="shopify-section custom-form-section" id="section-{{ section.id }}">
+  <div class="custom-form-wrap">
+    <div class="custom-form-card">
+      <div class="form-art">
+        <img class="form-bg" src="{{ 'Rectangle 15.svg' | asset_url }}" alt="bg">
+        <img class="form-image" src="{{ 'form image.svg' | asset_url }}" alt="form image">
+        <img class="form-flower" src="{{ 'form flower.svg' | asset_url }}" alt="flower">
+      </div>
+
+      <form method="post" action="/contact#contact_form" class="custom-form" id="contact_form_{{ section.id }}">
+        <div class="form-title">
+          <img src="{{ 'form title.svg' | asset_url }}" alt="form title">
+        </div>
+
+        <div class="form-fields">
+          <input type="text" name="contact[name]" placeholder="Your name" aria-label="Name" required>
+          <input type="email" name="contact[email]" placeholder="Your email" aria-label="Email" required>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="form-submit">
+            <img src="{{ 'form button.svg' | asset_url }}" alt="submit">
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <style>
+    /* Minimal scoped styles for custom form section */
+    .custom-form-section { padding: 48px 0; display:flex; justify-content:center; }
+    .custom-form-wrap { max-width: 1100px; width:100%; padding: 0 20px; }
+    .custom-form-card { position: relative; display:grid; grid-template-columns: 1fr 460px; gap: 24px; align-items: center; }
+
+    /* art / background area (left) */
+    .form-art { position: relative; width:100%; height: 520px; display:flex; align-items:center; justify-content:center; }
+    .form-art .form-bg { position:absolute; left:50%; top:0; transform:translateX(-50%); width:100%; max-width: 680px; height:100%; object-fit:cover; }
+    .form-art .form-image { position: absolute; left: 24px; bottom: 16px; width: 320px; height: auto; object-fit:contain; }
+    .form-art .form-flower { position: absolute; right: 12px; top: 12px; width: 72px; height: auto; }
+
+    /* form (right) */
+    .custom-form { background: transparent; border-radius: 12px; padding: 28px; display:flex; flex-direction:column; gap:18px; }
+    .form-title img { display:block; width:100%; max-width:320px; height:auto; }
+    .form-fields { display:flex; flex-direction:column; gap:12px; }
+    .form-fields input { width:100%; padding:12px 14px; border:1px solid #e6e6e6; border-radius:8px; font-size:14px; }
+    .form-actions { display:flex; justify-content:flex-start; }
+    .form-submit { background:transparent; border:0; padding:0; cursor:pointer; }
+    .form-submit img { width:160px; height:auto; display:block; }
+
+    @media (max-width: 900px) {
+      .custom-form-card { grid-template-columns: 1fr; }
+      .form-art { height: 360px; }
+      .form-art .form-image { left: 12px; width:200px; }
+      .custom-form { order: 2; }
+    }
+  </style>
+
+  {% schema %}
+  {
+    "name": "Custom Form",
+    "settings": [
+      {
+        "type": "text",
+        "id": "heading",
+        "label": "Heading (not used if image title provided)",
+        "default": "Get a Custom Design"
+      }
+    ],
+    "blocks": [],
+    "presets": [
+      {
+        "name": "Custom Form",
+        "category": "Custom"
+      }
+    ]
+  }
+  {% endschema %}
+</div>
