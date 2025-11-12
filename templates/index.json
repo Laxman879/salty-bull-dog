@@ -219,49 +219,17 @@
         "title": "What Our Customers Say"
       }
     },
-    "custom_design_form": {
-      "type": "rich-text",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Get a Custom Design",
-            "heading_size": "h1"
-          }
-        },
-        "text": {
-          "type": "text",
-          "settings": {
-            "text": "<p>Tell us about your custom design needs and we'll create something special just for you. Contact us to get started!</p>"
-          }
-        },
-        "button": {
-          "type": "button",
-          "settings": {
-            "button_label": "Contact Us",
-            "button_link": "/pages/contact",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "text",
-        "button"
-      ],
+    "contact_form": {
+      "type": "contact-form",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
+        "heading": "Get a Custom Design",
+        "heading_size": "h1",
         "color_scheme": "background-1",
-        "full_width": true,
         "padding_top": 40,
         "padding_bottom": 52
-        }
       }
-    },
+    }
+  },
   "order": [
     "hero_banner",
     "about_section",
@@ -269,6 +237,6 @@
     "featured_products",
     "1762863502dbd0867c",
     "testimonials",
-    "custom_design_form"
+    "contact_form"
   ]
 }
