@@ -1,0 +1,49 @@
+<section id="hero" class="site-hero" data-section-id="{{ section.id }}">
+  <div class="hero-top-decoration"></div>
+
+  <div class="hero-inner wrap">
+    <div class="hero-left">
+      <h1 class="hero-title">{{ section.settings.title }}</h1>
+      {% if section.settings.subtitle != blank %}
+        <p class="hero-subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      <div class="hero-actions">
+        {% if section.settings.primary_button_label != blank %}
+          <a href="{{ section.settings.primary_button_link }}" class="btn btn-primary">{{ section.settings.primary_button_label }}</a>
+        {% endif %}
+        {% if section.settings.secondary_button_label != blank %}
+          <a href="{{ section.settings.secondary_button_link }}" class="btn btn-secondary">{{ section.settings.secondary_button_label }}</a>
+        {% endif %}
+      </div>
+      <img src="{{ 'hero-mockup-left.svg' | asset_url }}" alt="Hero decoration" class="hero-left-mockup" aria-hidden="true" />
+    </div>
+
+    <div class="hero-right">
+      {% if section.settings.image != blank %}
+        <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image_alt }}" class="hero-image" />
+      {% else %}
+        <img src="{{ 'hero-mockup-right.svg' | asset_url }}" alt="Hero mockup" class="hero-image" />
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<link href="{{ 'theme-hero.css' | asset_url }}" rel="stylesheet" />
+<script src="{{ 'hero.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Hero section",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Where Every Stitch Tells a Story" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Custom embroidery, T-shirts & apparel designed with love" },
+    { "type": "image_picker", "id": "image", "label": "Right-side image" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "default": "Product mockup" },
+    { "type": "text", "id": "primary_button_label", "label": "Primary button label", "default": "GET A CUSTOM DESIGN" },
+  { "type": "url", "id": "primary_button_link", "label": "Primary button link", "default": "/" },
+    { "type": "text", "id": "secondary_button_label", "label": "Secondary button label", "default": "LET'S SHOP NOW" },
+  { "type": "url", "id": "secondary_button_link", "label": "Secondary button link", "default": "/" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

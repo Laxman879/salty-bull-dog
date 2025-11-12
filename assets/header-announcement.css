@@ -1,0 +1,67 @@
+/* Header and announcement custom styles - first-pass to match Figma screenshot */
+.utility-bar.custom-announcement {
+  background: #dff6f8; /* light aqua */
+  color: #073b6b;
+  padding: 6px 0;
+}
+.utility-bar.custom-announcement .utility-bar__grid {
+  align-items: center;
+}
+.utility-bar.custom-announcement .announcement-bar__message {
+  font-size: 14px;
+  margin: 0;
+}
+
+.header-wrapper.custom-header {
+  background: #cfeef1;
+  padding: 10px 0;
+  position: relative;
+}
+.header-wrapper.custom-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -18px;
+  height: 18px;
+  background-repeat: repeat-x;
+  background-size: 36px 18px;
+}
+
+/* Banner attachment to header */
+.banner__media {
+  margin-top: -30px !important;
+  position: relative;
+  z-index: 1;
+}
+
+.header.custom-centered .header__heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.header.custom-centered .header__heading-logo-wrapper {
+  border-radius: 50%;
+  padding: 6px;
+  background: #fff;
+  border: 3px solid #7fc9d1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header.custom-centered .list-menu--inline {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+}
+
+/* small screen adjustments */
+@media (max-width: 749px) {
+  .utility-bar.custom-announcement {
+    padding: 8px 0;
+  }
+  .header.custom-centered .list-menu--inline {
+    gap: 12px;
+  }
+}
