@@ -7,17 +7,43 @@
 {% style %}
   .ai-services-section-{{ ai_gen_id }} {
     padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    position: relative;
+    background: #ffffff;
+  }
+
+  .ai-services-section-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1318px;
+    height: 467px;
+    z-index: 0;
+    background-image: url('{{ "Rectangle 9 (1).svg" | asset_url }}');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center top;
   }
 
   .ai-services-container-{{ ai_gen_id }} {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 1;
   }
 
   .ai-services-header-{{ ai_gen_id }} {
     text-align: {{ block.settings.header_alignment }};
     margin-bottom: {{ block.settings.header_spacing }}px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .ai-services-header-content-{{ ai_gen_id }} {
+    position: relative;
+    z-index: 1;
   }
 
   .ai-services-title-{{ ai_gen_id }} {
@@ -36,51 +62,35 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: {{ block.settings.column_gap }}px;
+    position: relative;
+    z-index: 1;
   }
 
   .ai-service-card-{{ ai_gen_id }} {
     position: relative;
-    overflow: hidden;
-    border-radius: {{ block.settings.card_border_radius }}px;
+    width: 100%;
     min-height: {{ block.settings.card_height }}px;
-  }
-
-  .ai-service-card__background-{{ ai_gen_id }} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .ai-service-card__placeholder-{{ ai_gen_id }} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #f4f4f4;
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
+    padding: 2rem;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
-  .ai-service-card__placeholder-{{ ai_gen_id }} svg {
-    width: 100%;
-    height: 100%;
-    max-width: 200px;
-    max-height: 200px;
+  /* SVG Images as Cards */
+  .ai-service-card-{{ ai_gen_id }}.card-1 {
+    background-image: url('{{ "bg1.svg" | asset_url }}');
   }
 
-  .ai-service-card__overlay-{{ ai_gen_id }} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: {{ block.settings.overlay_color }};
-    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+  .ai-service-card-{{ ai_gen_id }}.card-2 {
+    background-image: url('{{ "bg2.svg" | asset_url }}');
+  }
+
+  .ai-service-card-{{ ai_gen_id }}.card-3 {
+    background-image: url('{{ "bg3.svg" | asset_url }}');
   }
 
   .ai-service-card__content-{{ ai_gen_id }} {
@@ -88,11 +98,8 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: {{ block.settings.content_vertical_alignment }};
-    align-items: {{ block.settings.content_horizontal_alignment }};
-    text-align: {{ block.settings.text_alignment }};
-    padding: {{ block.settings.content_padding }}px;
-    min-height: {{ block.settings.card_height }}px;
+    justify-content: flex-start;
+    flex: 1;
     gap: {{ block.settings.text_spacing }}px;
   }
 
@@ -102,6 +109,14 @@
     margin: 0;
     max-width: 100%;
     word-wrap: break-word;
+    font-weight: 600;
+  }
+
+  .ai-service-card__subheading-{{ ai_gen_id }} {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: 500;
   }
 
   .ai-service-card__text-{{ ai_gen_id }} {
@@ -110,24 +125,37 @@
     margin: 0;
     max-width: 100%;
     word-wrap: break-word;
+    line-height: 1.5;
   }
 
-  .ai-service-card__button-{{ ai_gen_id }} {
-    display: inline-block;
-    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
-    background-color: {{ block.settings.button_background_color }};
-    color: {{ block.settings.button_text_color }};
-    text-decoration: none;
-    border-radius: {{ block.settings.button_border_radius }}px;
-    font-size: {{ block.settings.button_text_size }}px;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
+  .ai-service-card__image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+    height: 150px;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
   }
 
-  .ai-service-card__button-{{ ai_gen_id }}:hover {
-    background-color: {{ block.settings.button_hover_background_color }};
-    color: {{ block.settings.button_hover_text_color }};
+  .ai-service-card__image-{{ ai_gen_id }} {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-service-column-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: -15px;
+    left: -15px;
+    width: 90px;
+    height: 90px;
+    opacity: 0.6;
+  }
+
+  .ai-service-column-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
   }
 
   @media screen and (max-width: 989px) {
@@ -182,51 +210,54 @@
           assign image_key = 'service_' | append: i | append: '_image'
           assign heading_key = 'service_' | append: i | append: '_heading'
           assign text_key = 'service_' | append: i | append: '_text'
+          assign subtitle_key = 'service_' | append: i | append: '_subtitle'
           assign button_text_key = 'service_' | append: i | append: '_button_text'
           assign button_link_key = 'service_' | append: i | append: '_button_link'
 
           assign service_image = block.settings[image_key]
           assign service_heading = block.settings[heading_key]
           assign service_text = block.settings[text_key]
+          assign service_subtitle = block.settings[subtitle_key]
           assign service_button_text = block.settings[button_text_key]
           assign service_button_link = block.settings[button_link_key]
+          assign card_class = 'card-' | append: i
         %}
 
-        <div class="ai-service-card-{{ ai_gen_id }}">
-          {% if service_image %}
-            <img
-              src="{{ service_image | image_url: width: 800 }}"
-              alt="{{ service_image.alt | escape }}"
-              loading="lazy"
-              width="{{ service_image.width }}"
-              height="{{ service_image.height }}"
-              class="ai-service-card__background-{{ ai_gen_id }}"
-            >
-          {% else %}
-            <div class="ai-service-card__placeholder-{{ ai_gen_id }}">
-              {{ 'image' | placeholder_svg_tag }}
-            </div>
-          {% endif %}
-
-          <div class="ai-service-card__overlay-{{ ai_gen_id }}"></div>
-
+        <div class="ai-service-card-{{ ai_gen_id }} {{ card_class }}">
           <div class="ai-service-card__content-{{ ai_gen_id }}">
             {% if service_heading != blank %}
               <h3 class="ai-service-card__heading-{{ ai_gen_id }}">{{ service_heading }}</h3>
             {% endif %}
 
+            {% if service_subtitle != blank %}
+              <p class="ai-service-card__subheading-{{ ai_gen_id }}">{{ service_subtitle }}</p>
+            {% endif %}
+
             {% if service_text != blank %}
               <p class="ai-service-card__text-{{ ai_gen_id }}">{{ service_text }}</p>
             {% endif %}
+          </div>
 
-            {% if service_button_text != blank %}
-              <a
-                href="{{ service_button_link }}"
-                class="ai-service-card__button-{{ ai_gen_id }}"
+          <div class="ai-service-card__image-wrapper-{{ ai_gen_id }}">
+            {% if service_image %}
+              <img
+                src="{{ service_image | image_url: width: 300 }}"
+                alt="{{ service_image.alt | escape }}"
+                loading="lazy"
+                class="ai-service-card__image-{{ ai_gen_id }}"
               >
-                {{ service_button_text }}
-              </a>
             {% endif %}
+
+            <!-- Column decorative image at bottom left -->
+            <div class="ai-service-column-{{ ai_gen_id }}">
+              {% if i == 1 %}
+                <img src="{{ 'column1.svg' | asset_url }}" alt="Column decoration" />
+              {% elsif i == 2 %}
+                <img src="{{ 'column2.svg' | asset_url }}" alt="Column decoration" />
+              {% elsif i == 3 %}
+                <img src="{{ 'column3.svg' | asset_url }}" alt="Column decoration" />
+              {% endif %}
+            </div>
           </div>
         </div>
       {% endfor %}
@@ -604,6 +635,12 @@
       "default": "Service One"
     },
     {
+      "type": "text",
+      "id": "service_1_subtitle",
+      "label": "Subtitle",
+      "default": "Warm & Craft-Focused"
+    },
+    {
       "type": "textarea",
       "id": "service_1_text",
       "label": "Text",
@@ -636,6 +673,12 @@
       "default": "Service Two"
     },
     {
+      "type": "text",
+      "id": "service_2_subtitle",
+      "label": "Subtitle",
+      "default": "Boutique & Premium Tone"
+    },
+    {
       "type": "textarea",
       "id": "service_2_text",
       "label": "Text",
@@ -666,6 +709,12 @@
       "id": "service_3_heading",
       "label": "Heading",
       "default": "Service Three"
+    },
+    {
+      "type": "text",
+      "id": "service_3_subtitle",
+      "label": "Subtitle",
+      "default": "Warm & Loving Tone"
     },
     {
       "type": "textarea",
