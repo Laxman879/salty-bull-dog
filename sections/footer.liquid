@@ -27,7 +27,9 @@
   }
 {%- endstyle -%}
 
-<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+<link href="https://fonts.googleapis.com/css2?family=Crete+Round:wght@400&display=swap" rel="stylesheet">
+
+<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" style="background-color: white; font-family: 'Crete Round', serif; font-weight: 400; font-size: 16px; color: #2F4074; overflow-x: hidden; max-width: 100%; box-sizing: border-box;">
   {%- liquid
     assign has_social_icons = true
     if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
@@ -49,115 +51,76 @@
     or section.settings.enable_follow_on_shop
   -%}
     {%- unless only_empty_brand -%}
-      <div class="footer__content-top page-width">
-        {%- if section.blocks.size > 0 -%}
-          {%- liquid
-            if section.blocks.size == 9
-              assign footer_grid_class = 'grid--3-col-tablet'
-            elsif section.blocks.size > 6
-              assign footer_grid_class = 'grid--4-col-desktop'
-            elsif section.blocks.size > 4
-              assign footer_grid_class = 'grid--3-col-tablet'
-            endif
-          -%}
+      <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%;">
+        <div class="footer__content-top" style="width: 100%; padding: 40px 0;">
           <div
-            class="footer__blocks-wrapper grid grid--1-col grid--2-col grid--4-col-tablet {{ footer_grid_class }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            class="footer__blocks-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {% if settings.animations_reveal_on_scroll %}
               data-cascade
             {% endif %}
+            style="display: flex; flex-wrap: nowrap; gap: 0.75rem; align-items: flex-start; width: 100%; overflow: hidden;"
           >
-            {%- for block in section.blocks -%}
-              <div
-                class="footer-block grid__item{% if block.type == 'link_list' %} footer-block--menu{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {{ block.shopify_attributes }}
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-              >
-                {%- if block.settings.heading != blank -%}
-                  <h2 class="footer-block__heading inline-richtext">{{- block.settings.heading -}}</h2>
-                {%- endif -%}
-
-                {%- case block.type -%}
-                  {%- when '@app' -%}
-                    {% render block %}
-                  {%- when 'text' -%}
-                    <div class="footer-block__details-content rte">
-                      {{ block.settings.subtext }}
-                    </div>
-                  {%- when 'link_list' -%}
-                    {%- if block.settings.menu != blank -%}
-                      <ul class="footer-block__details-content list-unstyled">
-                        {%- for link in block.settings.menu.links -%}
-                          <li>
-                            <a
-                              href="{{ link.url }}"
-                              class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}"
-                            >
-                              {{ link.title | escape }}
-                            </a>
-                          </li>
-                        {%- endfor -%}
-                      </ul>
-                    {%- endif -%}
-                  {%- when 'brand_information' -%}
-                    <div class="footer-block__brand-info">
-                      {%- if settings.brand_image != blank -%}
-                        {%- assign brand_image_height = settings.brand_image_width
-                          | divided_by: settings.brand_image.aspect_ratio
-                        -%}
-                        <div
-                          class="footer-block__image-wrapper"
-                          style="max-width: min(100%, {{ settings.brand_image_width }}px);"
-                        >
-                          {{
-                            settings.brand_image
-                            | image_url: width: 1100
-                            | image_tag:
-                              loading: 'lazy',
-                              widths: '50, 100, 150, 200, 300, 400, 550, 800, 1100',
-                              height: brand_image_height,
-                              width: settings.brand_image_width
-                          }}
-                        </div>
-                      {%- endif -%}
-                      {%- if settings.brand_headline != blank -%}
-                        <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
-                      {%- endif -%}
-                      {%- if settings.brand_description != blank -%}
-                        <div class="rte">{{ settings.brand_description }}</div>
-                      {%- endif -%}
-                      {%- if block.settings.show_social and has_social_icons -%}
-                        {%- render 'social-icons', class: 'footer__list-social' -%}
-                      {%- endif -%}
-                    </div>
-                  {%- when 'image' -%}
-                    <div class="footer-block__details-content footer-block-image {{ block.settings.alignment }}">
-                      {%- if block.settings.image != blank -%}
-                        {%- assign image_size_2x = block.settings.image_width | times: 2 | at_most: 5760 -%}
-                        <div
-                          class="footer-block__image-wrapper"
-                          style="max-width: min(100%, {{ block.settings.image_width }}px);"
-                        >
-                          <img
-                            srcset="{{ block.settings.image | image_url: width: block.settings.image_width }}, {{ block.settings.image | image_url: width: image_size_2x }} 2x"
-                            src="{{ block.settings.image | image_url: width: 760 }}"
-                            alt="{{ block.settings.image.alt | escape }}"
-                            loading="lazy"
-                            width="{{ block.settings.image.width }}"
-                            height="{{ block.settings.image.height }}"
-                          >
-                        </div>
-                      {%- else -%}
-                        {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
-                      {%- endif -%}
-                    </div>
-                {%- endcase -%}
+            <!-- Logo Section -->
+            <div class="footer-block" style="flex: 1 1 10px; min-width: 80px; padding: 0 0.5rem;">
+              <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                <img src="{{ 'footer-logo.png' | asset_url }}" alt="SAH Bulldog Boutique" style="width: 5rem; height: auto; max-height: 5rem; object-fit: contain;">
               </div>
-            {%- endfor -%}
+            </div>
+
+            <!-- Home Section -->
+            <div class="footer-block" style="flex: 1 1 10px; min-width: 80px; padding: 0 0.5rem;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 18px; font-weight: 400; color: #2F4074; margin-bottom: 1rem;">Home</h3>
+              <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/custom-orders" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Custom Orders</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/gallery" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Gallery</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/reviews" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Reviews</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/contact" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Contact</a></li>
+              </ul>
+            </div>
+
+            <!-- Shop Section -->
+            <div class="footer-block" style="flex: 1 1 10px; min-width: 80px; padding: 0 0.5rem;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 18px; font-weight: 400; color: #2F4074; margin-bottom: 1rem;">Shop</h3>
+              <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/baby-kids" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Baby & Kids</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/family-sets" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Family Sets</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/custom-tshirts" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Custom T-Shirts</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/gift-ideas" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Gift Ideas</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/embroidery" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Embroidery Designs</a></li>
+              </ul>
+            </div>
+
+            <!-- Customer Care Section -->
+            <div class="footer-block" style="flex: 1 1 10px; min-width: 80px; padding: 0 0.5rem;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 18px; font-weight: 400; color: #2F4074; margin-bottom: 1rem;">Customer Care</h3>
+              <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/shipping" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Shipping & Delivery</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/returns" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Returns & Exchanges</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/size-guide" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Size Guide</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/faqs" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">FAQs</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/track-order" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Track Your Order</a></li>
+              </ul>
+            </div>
+
+            <!-- Get in Touch Section -->
+            <div class="footer-block" style="flex: 1 1 10px; min-width: 80px; padding: 0 0.5rem;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 18px; font-weight: 400; color: #2F4074; margin-bottom: 1rem;">Get in Touch</h3>
+              <div class="footer-block__details-content">
+                <a href="mailto:hello@saltybulldogboutique.com" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">hello@saltybulldog<br>boutique.com</a>
+              </div>
+            </div>
+
+            <!-- Follow Us Section -->
+            <div class="footer-block" style="flex: 1 1 10px; min-width: 80px; padding: 0 0.5rem;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 18px; font-weight: 400; color: #2F4074; margin-bottom: 1rem;">Follow Us</h3>
+              <div class="footer-block__details-content">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; display: block; margin-bottom: 0.75rem; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Instagram</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; display: block; transition: color 0.3s ease;" onmouseover="this.style.color='#4a90e2'" onmouseout="this.style.color='#2F4074'">Facebook</a>
+              </div>
+            </div>
           </div>
-        {%- endif -%}
+        </div>
+      </div>
 
         <div
           class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
@@ -255,8 +218,9 @@
     {% if settings.animations_reveal_on_scroll %}
       data-cascade
     {% endif %}
+    style="background-color: white; color: #2F4074;"
   >
-    <div class="footer__content-bottom-wrapper page-width">
+    <div class="footer__content-bottom-wrapper page-width" style="background-color: white; color: #2F4074;">
       <div class="footer__column footer__localization isolate">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
           <localization-form>
@@ -297,19 +261,19 @@
         {%- endif -%}
       </div>
     </div>
-    <div class="footer__content-bottom-wrapper page-width{% if section.settings.enable_country_selector == false and section.settings.enable_language_selector == false %} footer__content-bottom-wrapper--center{% endif %}">
-      <div class="footer__copyright caption">
-        <small class="copyright__content"
+    <div class="footer__content-bottom-wrapper page-width{% if section.settings.enable_country_selector == false and section.settings.enable_language_selector == false %} footer__content-bottom-wrapper--center{% endif %}" style="background-color: white; color: #2F4074;">
+      <div class="footer__copyright caption" style="background-color: white; color: #2F4074;">
+        <small class="copyright__content" style="color: #2F4074;"
           >&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}
         </small>
-        <small class="copyright__content">{{ powered_by_link }}</small>
+        <small class="copyright__content" style="color: #2F4074;">{{ powered_by_link }}</small>
         {%- if section.settings.show_policy -%}
           <ul class="policies list-unstyled">
             {%- for policy in shop.policies -%}
               {%- if policy != blank -%}
                 <li>
-                  <small class="copyright__content"
-                    ><a href="{{ policy.url }}">{{ policy.title | escape }}</a></small
+                  <small class="copyright__content" style="color: #2F4074;"
+                    ><a href="{{ policy.url }}" style="color: #2F4074;">{{ policy.title | escape }}</a></small
                   >
                 </li>
               {%- endif -%}
