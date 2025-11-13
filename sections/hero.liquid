@@ -1,4 +1,4 @@
-<section id="hero" class="site-hero" data-section-id="{{ section.id }}">
+<section id="hero" class="site-hero" data-section-id="{{ section.id }}" style="margin-top: -20px;">
   <div class="hero-top-decoration"></div>
 
   <div class="hero-inner wrap">
@@ -7,15 +7,20 @@
       {% if section.settings.subtitle != blank %}
         <p class="hero-subtitle">{{ section.settings.subtitle }}</p>
       {% endif %}
+      <img src="{{ 'hero section banner.svg' | asset_url }}" alt="Hero Banner" class="hero-banner" style="width: 368.54px; height: 69.66px; margin: 20px 0; background: red; display: block;" />
       <div class="hero-actions">
         {% if section.settings.primary_button_label != blank %}
           <a href="{{ section.settings.primary_button_link }}" class="btn btn-primary">{{ section.settings.primary_button_label }}</a>
         {% endif %}
-        {% if section.settings.secondary_button_label != blank %}
-          <a href="{{ section.settings.secondary_button_link }}" class="btn btn-secondary">{{ section.settings.secondary_button_label }}</a>
+        {% if section.settings.secondary_button_link != blank %}
+          <a href="{{ section.settings.secondary_button_link }}" class="hero-shop-button">
+            <img src="{{ 'shop now hero.svg' | asset_url }}" alt="Shop Now" style="width: 231.37px; height: 53.52px; background: blue; display: block;" />
+          </a>
         {% endif %}
       </div>
       <img src="{{ 'hero-mockup-left.svg' | asset_url }}" alt="Hero decoration" class="hero-left-mockup" aria-hidden="true" />
+      <img src="{{ 'hero-left image.svg' | asset_url }}" alt="Hero Left" class="hero-left-image" style="position: absolute; bottom: -50%; left: -100px; width: 300px; height: 400px; z-index: 10;" />
+      <img src="{{ 'hero-right image.svg' | asset_url }}" alt="Hero Right" class="hero-right-image" style="position: absolute; bottom: -50%; right: -100px; width: 300px; height: 400px; z-index: 10;" />
     </div>
 
     <div class="hero-right">
