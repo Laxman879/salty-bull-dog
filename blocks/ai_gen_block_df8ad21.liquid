@@ -4,6 +4,8 @@
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
+<link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
 {% style %}
   .ai-services-section-{{ ai_gen_id }} {
     padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
@@ -17,7 +19,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 1318px;
+    width: 1163px;
     height: 467px;
     z-index: 0;
     background-image: url('{{ "Rectangle 9 (1).svg" | asset_url }}');
@@ -50,6 +52,8 @@
     font-size: {{ block.settings.title_size }}px;
     color: {{ block.settings.title_color }};
     margin: 0 0 {{ block.settings.title_spacing }}px;
+    font-family: 'Crete Round', serif;
+    margin-top:20px;
   }
 
   .ai-services-subtitle-{{ ai_gen_id }} {
@@ -99,33 +103,38 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
     flex: 1;
     gap: {{ block.settings.text_spacing }}px;
   }
 
   .ai-service-card__heading-{{ ai_gen_id }} {
-    color: {{ block.settings.card_heading_color }};
+    color: #403213 !important;
     font-size: {{ block.settings.card_heading_size }}px;
     margin: 0;
     max-width: 100%;
     word-wrap: break-word;
     font-weight: 600;
+    font-family: 'Crete Round', serif;
   }
 
   .ai-service-card__subheading-{{ ai_gen_id }} {
-    color: #666;
-    font-size: 0.9rem;
+    color: #43361A !important;
+    font-size: 14.4px;
     margin: 0;
     font-weight: 500;
+    font-family: 'Crete Round', serif;
   }
 
   .ai-service-card__text-{{ ai_gen_id }} {
-    color: {{ block.settings.card_text_color }};
+    color: #43361A !important;
     font-size: {{ block.settings.card_text_size }}px;
     margin: 0;
     max-width: 100%;
     word-wrap: break-word;
     line-height: 1.5;
+    font-family: 'Crete Round', serif;
   }
 
   .ai-service-card__image-wrapper-{{ ai_gen_id }} {
@@ -148,8 +157,8 @@
     position: absolute;
     bottom: -15px;
     left: -15px;
-    width: 90px;
-    height: 90px;
+    width: 192px;
+    height: 179.63px;
     opacity: 0.6;
   }
 
@@ -158,15 +167,48 @@
     height: 100%;
   }
 
+  .ai-services-button-container-{{ ai_gen_id }} {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .ai-services-button-{{ ai_gen_id }} {
+    display: inline-block;
+    width: 214px;
+    height: 53.52px;
+  }
+
+  .ai-services-button-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-services-section-{{ ai_gen_id }}::before {
+      width: 90%;
+      height: 350px;
+    }
+  }
+
   @media screen and (max-width: 989px) {
     .ai-services-grid-{{ ai_gen_id }} {
       grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .ai-services-section-{{ ai_gen_id }}::before {
+      width: 95%;
+      height: 300px;
     }
   }
 
   @media screen and (max-width: 749px) {
     .ai-services-grid-{{ ai_gen_id }} {
       grid-template-columns: 1fr;
+    }
+
+    .ai-services-section-{{ ai_gen_id }}::before {
+      width: 100%;
+      height: 250px;
     }
 
     .ai-services-title-{{ ai_gen_id }} {
@@ -187,6 +229,13 @@
 
     .ai-service-card__text-{{ ai_gen_id }} {
       font-size: {{ block.settings.card_text_size | times: 0.9 }}px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .ai-services-section-{{ ai_gen_id }}::before {
+      width: 100%;
+      height: 200px;
     }
   }
 {% endstyle %}
@@ -261,6 +310,12 @@
           </div>
         </div>
       {% endfor %}
+    </div>
+
+    <div class="ai-services-button-container-{{ ai_gen_id }}">
+      <a href="{{ block.settings.shop_button_link }}" class="ai-services-button-{{ ai_gen_id }}">
+        <img src="{{ 'services button.svg' | asset_url }}" alt="Shop Now" />
+      </a>
     </div>
   </div>
 </div>
@@ -644,7 +699,7 @@
       "type": "textarea",
       "id": "service_1_text",
       "label": "Text",
-      "default": "Description of your first service"
+      "default": "Every stitch is a story of love and care.Handcrafted embroidery that turns simple fabric into lasting memories."
     },
     {
       "type": "text",
@@ -670,7 +725,7 @@
       "type": "text",
       "id": "service_2_heading",
       "label": "Heading",
-      "default": "Service Two"
+      "default": "Apparel"
     },
     {
       "type": "text",
@@ -682,7 +737,7 @@
       "type": "textarea",
       "id": "service_2_text",
       "label": "Text",
-      "default": "Description of your second service"
+      "default": "oft fabrics, timeless designs, and perfect fits. Each piece is made to express you ,effortlessly and beautifully."
     },
     {
       "type": "text",
@@ -708,7 +763,7 @@
       "type": "text",
       "id": "service_3_heading",
       "label": "Heading",
-      "default": "Service Three"
+      "default": "Apparel"
     },
     {
       "type": "text",
@@ -732,6 +787,16 @@
       "type": "url",
       "id": "service_3_button_link",
       "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Shop Button"
+    },
+    {
+      "type": "url",
+      "id": "shop_button_link",
+      "label": "Shop button link",
+      "default": "/collections/all"
     }
   ],
   "presets": [
