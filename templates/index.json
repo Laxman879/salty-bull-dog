@@ -1,4 +1,6 @@
 
+
+
 {
   "sections": {
     "hero_banner": {
@@ -21,8 +23,8 @@
       "type": "about-us",
       "settings": {
         "heading": "About Our Brand",
-        "description_1": "<p>What started as a love for creativity and craftsmanship has grown into a boutique that celebrates individuality.</p>",
-        "description_2": "<p>At Salty Bulldog Boutique, we bring your ideas to life whether it's a baby's first outfit, a family matching tee, or a personalised gift that stands out.</p>",
+        "description_1": "<p>The Salty Bulldog Touch,<br>What started as a love for creativity and craftsmanship has grown into a boutique that celebrates individuality.</p>",
+        "description_2": "<p>At Salty Bulldog Boutique, we bring your ideas to life whether it's a baby's first outfit, a family <br> matching tee, or a personalised gift that stands out.</p>",
         "highlight_text": "Every design is custom-made with premium materials and hand-finished details.",
         "hero_image": ""
       }
