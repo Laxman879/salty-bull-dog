@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 80px;
   }
 
   .form-title-decoration {
@@ -91,28 +92,29 @@
     width: 251px;
     height: 234.83px;
     position: absolute;
-    bottom: -117px;
+    bottom: -50px;
     right: 0;
     z-index: 1;
   }
 
   .form-flower-left {
     width: 670px;
-    height: 456px;
+    height: 420px;
     position: absolute;
-    bottom: -110px;
-    left: 100px;
+    bottom: -20px;
+    left: 120px;
     z-index: 1;
   }
 
   .field__input {
     border: none !important;
+    border-bottom: 2px solid #000 !important; /* bottom-only underline to match image */
     border-radius: 0 !important;
     background: transparent !important;
     color: #000000 !important;
-    padding: 15px 0 !important;
+    padding: 12px 0 8px 0 !important; /* top/right/bottom/left */
     width: 100% !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 22px !important;
     font-size: 16px !important;
   }
 
@@ -127,13 +129,23 @@
     outline: none !important;
   }
 
+  /* show labels above inputs and style like the design */
   .field__label {
-    display: none !important;
+    display: block !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #000000 !important;
+    margin-bottom: 8px !important;
+    letter-spacing: 0.2px !important;
   }
 
   .field {
     margin-bottom: 0 !important;
     border: none !important;
+    background: transparent !important; /* remove boxed background */
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
   }
 
   .contact__button .button {
@@ -150,6 +162,17 @@
     margin-top: 20px !important;
   }
 
+  /* remove grey background behind button and any extra shadow */
+  .contact__button {
+    background: transparent !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+  }
+  .contact__button .button {
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -164,6 +187,9 @@
       gap: 30px;
       min-height: auto;
       height: auto;
+    }
+    .contact-form-left {
+      padding-left: 40px;
     }
     .form-title-decoration {
       width: 280px;
@@ -194,6 +220,7 @@
     .contact-form-left {
       text-align: center;
       align-items: center;
+      padding-left: 0;
     }
     .form-title-decoration {
       width: 250px;
@@ -275,9 +302,7 @@
       <div class="contact-form-left">
         {%- if section.settings.heading != blank -%}
           <img src="{{ 'form title.svg' | asset_url }}" alt="{{ section.settings.heading }}" class="form-title-decoration">
-          <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-            {{ section.settings.heading }}
-          </h2>
+          
         {%- else -%}
           <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
         {%- endif -%}
@@ -318,6 +343,7 @@
         </ul>
       {%- endif -%}
       <div class="field">
+        <label class="field__label" for="ContactForm-name">Full Name*</label>
         <input
           class="field__input"
           autocomplete="name"
@@ -325,10 +351,11 @@
           id="ContactForm-name"
           name="contact[Full Name]"
           value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-          placeholder="Full Name"
+          
         >
       </div>
       <div class="field">
+        <label class="field__label" for="ContactForm-email">Email Address*</label>
         <input
           autocomplete="email"
           type="email"
@@ -339,10 +366,10 @@
           autocapitalize="off"
           value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
           aria-required="true"
-          placeholder="Email Address"
         >
       </div>
       <div class="field">
+        <label class="field__label" for="ContactForm-phone">Phone*</label>
         <input
           type="tel"
           id="ContactForm-phone"
@@ -351,16 +378,17 @@
           name="contact[Phone]"
           pattern="[0-9\-]*"
           value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
-          placeholder="Phone"
+          
         >
       </div>
       <div class="field">
+        <label class="field__label" for="ContactForm-subject">Subject</label>
         <input
           type="text"
           id="ContactForm-subject"
           class="field__input"
           name="contact[Subject]"
-          placeholder="Subject"
+          
         >
       </div>
       <div class="contact__button">
