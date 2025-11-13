@@ -157,21 +157,119 @@
     }
   }
 
+  @media screen and (max-width: 1024px) {
+    .contact-form-container {
+      max-width: 100%;
+      padding: 0 15px;
+      gap: 30px;
+      min-height: auto;
+      height: auto;
+    }
+    .form-title-decoration {
+      width: 280px;
+      height: 53px;
+    }
+    .form-headline {
+      font-size: 2rem;
+    }
+    .form-main-image {
+      width: 500px;
+      height: 340px;
+    }
+  }
+
   @media screen and (max-width: 749px) {
+    .section-{{ section.id }}-padding {
+      padding: 30px 0;
+      margin-left: 0;
+      width: 100%;
+    }
     .contact-form-container {
       flex-direction: column;
+      padding: 0 20px;
+      gap: 20px;
+      min-height: auto;
+      height: auto;
+    }
+    .contact-form-left {
+      text-align: center;
+      align-items: center;
+    }
+    .form-title-decoration {
+      width: 250px;
+      height: 47px;
+    }
+    .form-headline {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+    .form-subtext {
+      font-size: 16px;
+      margin-bottom: 20px;
     }
     .form-main-image {
       width: 100%;
+      max-width: 400px;
       height: auto;
     }
     .contact-form-right {
       align-items: stretch;
     }
+    .contact__button {
+      align-self: center;
+    }
+    .form-flower-left {
+      width: 300px;
+      height: 205px;
+      bottom: -100px;
+      left: 0;
+    }
+    .form-flower {
+      width: 150px;
+      height: 140px;
+      bottom: -70px;
+      right: 0;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .section-{{ section.id }}-padding {
+      padding: 20px 0;
+    }
+    .contact-form-container {
+      padding: 0 15px;
+    }
+    .form-title-decoration {
+      width: 200px;
+      height: 38px;
+    }
+    .form-headline {
+      font-size: 1.5rem;
+    }
+    .form-subtext {
+      font-size: 14px;
+    }
+    .form-main-image {
+      max-width: 300px;
+    }
+    .contact__button .button {
+      width: 150px;
+      min-height: 50px;
+    }
+    .form-flower-left {
+      width: 200px;
+      height: 136px;
+      bottom: -68px;
+    }
+    .form-flower {
+      width: 100px;
+      height: 93px;
+      bottom: -46px;
+    }
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
+<div>
   <div class="section-{{ section.id }}-padding">
     <div class="contact-form-container">
       <div class="contact-form-left">
