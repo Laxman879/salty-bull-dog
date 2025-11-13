@@ -54,10 +54,18 @@
         "padding_top": 8,
         "padding_bottom": 8
       }
+    },
+    "pagefly_section_qYTWGa": {
+      "type": "pagefly-section",
+      "name": "PageFly Section",
+      "settings": {
+        "section_id": "pf-6f9acfaf"
+      }
     }
   },
   "order": [
     "announcement-bar",
-    "header"
+    "header",
+    "pagefly_section_qYTWGa"
   ]
 }

@@ -15,27 +15,56 @@
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  /* Mobile First - Stack columns vertically */
   .footer__blocks-wrapper {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    gap: 1.5rem !important;
-    align-items: flex-start !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
     width: 100% !important;
-    overflow: visible !important;
   }
 
   .footer-column {
-    flex: 1 1 auto !important;
-    min-width: 120px !important;
+    text-align: center !important;
     padding: 0 !important;
   }
 
   .footer-column:first-child {
-    flex: 1 1 auto !important;
-    min-width: 112px !important;
+    order: -1 !important;
+    margin-bottom: 1rem !important;
   }
 
-  @media screen and (min-width: 750px) {
+  .footer-block__heading {
+    text-align: center !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .footer-block__details-content {
+    text-align: center !important;
+  }
+
+  /* Tablet */
+  @media screen and (min-width: 768px) {
+    .footer__blocks-wrapper {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 2rem 3rem !important;
+    }
+
+    .footer-column:first-child {
+      grid-column: 1 / -1 !important;
+      justify-self: center !important;
+    }
+
+    .footer-block__heading {
+      text-align: left !important;
+    }
+
+    .footer-block__details-content {
+      text-align: left !important;
+    }
+  }
+
+  /* Desktop */
+  @media screen and (min-width: 1024px) {
     .footer {
       margin-top: {{ section.settings.margin_top }}px;
     }
@@ -45,9 +74,77 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
 
+    .footer__blocks-wrapper {
+      grid-template-columns: auto repeat(5, 1fr) !important;
+      gap: 0 2rem !important;
+      align-items: start !important;
+    }
+
+    .footer-column:first-child {
+      grid-column: 1 !important;
+      justify-self: start !important;
+      margin-bottom: 0 !important;
+    }
+
     .footer-column {
-      flex: 1 1 auto !important;
-      min-width: 120px !important;
+      text-align: left !important;
+    }
+  }
+
+  /* Large Desktop */
+  @media screen and (min-width: 1200px) {
+    .footer__blocks-wrapper {
+      gap: 0 1.5rem !important;
+    }
+  }
+
+  /* Footer bottom consistent background and alignment */
+  .footer__content-bottom {
+    background-color: white !important;
+  }
+
+  .footer__content-bottom-wrapper {
+    background-color: white !important;
+    text-align: center !important;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .footer__content-bottom-wrapper {
+      text-align: right !important;
+    }
+  }
+
+  @media screen and (min-width: 1440px) {
+    .footer__content-bottom {
+      background-color: white !important;
+    }
+    
+    .footer__content-bottom-wrapper {
+      background-color: white !important;
+    }
+  }
+
+  /* Mobile specific adjustments */
+  @media screen and (max-width: 480px) {
+    .container {
+      padding: 0 15px !important;
+    }
+
+    .footer__content-top {
+      padding: 30px 0 !important;
+    }
+
+    .footer__blocks-wrapper {
+      gap: 1.5rem !important;
+    }
+
+    .footer-block__heading {
+      font-size: 18px !important;
+      margin-bottom: 0.75rem !important;
+    }
+
+    .footer-column a {
+      font-size: 15px !important;
     }
   }
 {%- endstyle -%}
@@ -83,17 +180,17 @@
             {% if settings.animations_reveal_on_scroll %}
               data-cascade
             {% endif %}
-            style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; width: 100%; overflow: visible;"
+style=""
           >
             <!-- Column 1: Logo Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 112px; padding: 0;">
-              <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+            <div class="footer-column">
+              <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
                 <img src="{{ 'main logo.svg' | asset_url }}" alt="Salty Bull Dog Boutique" style="width: 112.03px; height: 100.83px; object-fit: contain;">
               </div>
             </div>
 
             <!-- Column 2: Home Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
+            <div class="footer-column">
               <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Home</h3>
               <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
                 <li style="margin-bottom: 0.75rem;"><a href="/pages/custom-orders" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Custom Orders</a></li>
@@ -104,7 +201,7 @@
             </div>
 
             <!-- Column 3: Shop Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
+            <div class="footer-column">
               <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Shop</h3>
               <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
                 <li style="margin-bottom: 0.75rem;"><a href="/collections/baby-kids" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Baby & Kids</a></li>
@@ -116,7 +213,7 @@
             </div>
 
             <!-- Column 4: Customer Care Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
+            <div class="footer-column">
               <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Customer Care</h3>
               <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
                 <li style="margin-bottom: 0.75rem;"><a href="/pages/shipping" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Shipping & Delivery</a></li>
@@ -128,7 +225,7 @@
             </div>
 
             <!-- Column 5: Get in Touch Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
+            <div class="footer-column">
               <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Get in Touch</h3>
               <div class="footer-block__details-content">
                 <a href="mailto:hello@saltybulldogboutique.com" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">hello@saltybulldog<br>boutique.com</a>
@@ -136,7 +233,7 @@
             </div>
 
             <!-- Column 6: Follow Us Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
+            <div class="footer-column">
               <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Follow Us</h3>
               <div class="footer-block__details-content">
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; display: block; margin-bottom: 0.75rem; transition: color 0.3s ease; line-height: 24px;">Instagram</a>
@@ -243,9 +340,9 @@
     {% if settings.animations_reveal_on_scroll %}
       data-cascade
     {% endif %}
-    style="background-color: white; color: #2F4074; border-top: 2px solid #E0E0E0; padding: 20px 0;"
+    style="background-color: white; color: #2F4074; padding: 20px 0;"
   >
-    <div class="footer__content-bottom-wrapper page-width" style="background-color: white; color: #2F4074; max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: right;">
+    <div class="footer__content-bottom-wrapper page-width" style="background-color: white; color: #2F4074; max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
       <div class="footer__copyright caption" style="color: #2F4074; font-family: 'Crete Round', serif; font-size: 14px; font-weight: 400; line-height: 24px;">
         <small class="copyright__content" style="color: #2F4074;"
           >&copy; {{ 'now' | date: '%Y' }} www.saltybulldogboutique.com. All rights reserved.
