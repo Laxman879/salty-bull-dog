@@ -2,6 +2,48 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'component-slideshow.css' | asset_url | stylesheet_tag }}
 
+<style>
+  .slideshow {
+    width: 100vw !important;
+    height: 100vh !important;
+    margin-left: calc(-50vw + 50%) !important;
+    position: relative !important;
+  }
+  
+  .slideshow__media {
+    width: 100% !important;
+    height: 100vh !important;
+  }
+  
+  .slideshow__media img {
+    width: 100% !important;
+    height: 100vh !important;
+    object-fit: cover !important;
+  }
+  
+  .slideshow__slide {
+    height: 100vh !important;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .slideshow {
+      height: 70vh !important;
+    }
+    
+    .slideshow__media {
+      height: 70vh !important;
+    }
+    
+    .slideshow__media img {
+      height: 70vh !important;
+    }
+    
+    .slideshow__slide {
+      height: 70vh !important;
+    }
+  }
+</style>
+
 {%- if section.settings.slide_height == 'adapt_image' and section.blocks.first.settings.image != blank -%}
   {%- style -%}
     @media screen and (max-width: 749px) {
