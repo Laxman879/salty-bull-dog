@@ -1,8 +1,4 @@
 
-
-
-
-
 {
   "sections": {
     "hero_banner": {
@@ -84,7 +80,6 @@
       ],
       "settings": {
         "title": "Our Categories",
-        "title_color": "#06387F",
         "color_scheme": "background-1",
         "show_view_all": true,
         "button_label": "Explore All",
@@ -131,7 +126,7 @@
             "section_subtitle": "",
             "header_alignment": "center",
             "title_size": 36,
-            "title_color": "#000000",
+            "title_color": "#0A254A",
             "subtitle_size": 16,
             "subtitle_color": "#666666",
             "title_spacing": 10,
@@ -162,17 +157,17 @@
             "button_hover_text_color": "#000000",
             "service_1_image": "shopify://shop_images/services_image.png",
             "service_1_heading": "Embroidery",
-            "service_1_text": "Description of your first service",
+            "service_1_text": "Every stitch is a story of love and care.Handcrafted embroidery that turns simple fabric into lasting memories.",
             "service_1_button_text": "",
             "service_1_button_link": "",
             "service_2_image": "shopify://shop_images/Union.png",
-            "service_2_heading": "Service Two",
-            "service_2_text": "Description of your second service",
+            "service_2_heading": "Apparel",
+            "service_2_text": "Soft fabrics, timeless designs, and perfect fits. Each piece is made to express you — effortlessly and beautifully.",
             "service_2_button_text": "Learn more",
             "service_2_button_link": "",
             "service_3_image": "shopify://shop_images/Union_1.png",
-            "service_3_heading": "Service Three",
-            "service_3_text": "Description of your third service",
+            "service_3_heading": "Baby wear",
+            "service_3_text": "Adorable designs for life’s tiniest moments.Hand-stitched comfort and care in every piece.",
             "service_3_button_text": "Learn more",
             "service_3_button_link": ""
           },
