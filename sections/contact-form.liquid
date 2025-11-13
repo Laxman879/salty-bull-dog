@@ -53,7 +53,7 @@
     font-size: 20px;
     line-height: 1.6;
     margin-bottom: 30px;
-    color: #666;
+    color: #000000;
   }
 
   .form-main-image {
@@ -68,11 +68,11 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .contact__button {
-    align-self: flex-end;
+    align-self: center;
     margin-bottom: 20px;
   }
 
@@ -93,7 +93,8 @@
     height: 234.83px;
     position: absolute;
     bottom: -50px;
-    right: 0;
+    right: 20%;
+    transform: translateX(50%);
     z-index: 1;
   }
 
@@ -146,7 +147,17 @@
     border-radius: 0 !important;
     padding: 0 !important;
     box-shadow: none !important;
+    outline: none !important;
   }
+
+  .field::before,
+.field::after {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
 
   .contact__button .button {
     background-image: url('{{ "form button.svg" | asset_url }}') !important;
@@ -172,6 +183,14 @@
     background-color: transparent !important;
     box-shadow: none !important;
   }
+  .button::before,
+.button::after {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  outline: none !important;
+}
+
 
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
@@ -206,33 +225,48 @@
 
   @media screen and (max-width: 749px) {
     .section-{{ section.id }}-padding {
-      padding: 30px 0;
+      /* reduce top padding to pull the form up on mobile and keep content inside section */
+      padding: 14px 0 10px 0;
       margin-left: 0;
-      width: 100%;
+      width: auto; /* allow normal flow inside the section */
+      overflow: hidden;
+      box-sizing: border-box;
     }
     .contact-form-container {
       flex-direction: column;
-      padding: 0 20px;
-      gap: 20px;
+      padding: 0 14px;
+      gap: 8px;
       min-height: auto;
       height: auto;
+      /* pull the whole form slightly upward to reduce empty gap */
+      margin-top: -12px !important;
     }
     .contact-form-left {
       text-align: center;
       align-items: center;
       padding-left: 0;
     }
+    /* center the right form column on mobile and limit its width */
+    .contact-form-right {
+      align-items: center !important; /* center form inputs + button */
+      width: 100% !important;
+      max-width: 520px !important;
+      margin: 0 auto !important;
+      padding: 0 12px !important;
+      box-sizing: border-box !important;
+    }
     .form-title-decoration {
       width: 250px;
       height: 47px;
     }
     .form-headline {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
+      font-size: 1.6rem;
+      margin-bottom: 6px; /* reduce gap above inputs further */
     }
     .form-subtext {
-      font-size: 16px;
-      margin-bottom: 20px;
+      font-size: 15px;
+      margin-bottom: 6px; /* reduce gap above inputs further */
+      line-height: 1.4;
     }
     .form-main-image {
       width: 100%;
@@ -240,38 +274,53 @@
       height: auto;
     }
     .contact-form-right {
-      align-items: stretch;
+      align-items: center;
+      margin-top: -30px !important; /* pull inputs upward */
     }
     .contact__button {
       align-self: center;
     }
-    .form-flower-left {
-      width: 300px;
-      height: 205px;
-      bottom: -100px;
-      left: 0;
-    }
+    /* hide decorative images on mobile to avoid collisions and free space */
+    .form-flower-left,
     .form-flower {
-      width: 150px;
-      height: 140px;
-      bottom: -70px;
-      right: 0;
+      display: none !important;
+      position: static !important;
+      width: 0 !important;
+      height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      visibility: hidden !important;
+    }
+    /* if viewport is tall enough on mobile, show a small decorative flower below the form */
+    @media screen and (min-height: 740px) {
+      .form-flower {
+        display: block !important;
+        position: relative !important;
+        width: 120px !important;
+        height: auto !important;
+        margin: 8px auto 0 auto !important;
+        visibility: visible !important;
+      }
     }
   }
 
   @media screen and (max-width: 480px) {
     .section-{{ section.id }}-padding {
-      padding: 20px 0;
+      padding: 12px 0;
+      width: auto;
+      margin-left: 0;
     }
     .contact-form-container {
-      padding: 0 15px;
+      padding: 0 12px;
+      gap: 6px;
+      margin-top: 0 !important; /* ensure it doesn't overlap header */
     }
     .form-title-decoration {
       width: 200px;
       height: 38px;
     }
     .form-headline {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
     .form-subtext {
       font-size: 14px;
@@ -283,16 +332,9 @@
       width: 150px;
       min-height: 50px;
     }
-    .form-flower-left {
-      width: 200px;
-      height: 136px;
-      bottom: -68px;
-    }
-    .form-flower {
-      width: 100px;
-      height: 93px;
-      bottom: -46px;
-    }
+    /* keep flowers hidden at smallest sizes as well */
+    .form-flower-left,
+    .form-flower { display: none !important; }
   }
 {%- endstyle -%}
 
