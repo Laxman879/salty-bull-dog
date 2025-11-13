@@ -12,7 +12,7 @@
       "type": "richtext",
       "id": "description_1",
       "label": "Main Description",
-      "default": "<p>What started as a love for creativity and craftsmanship has grown into a boutique that celebrates individuality.</p>"
+      "default": "<p>The Salty Bulldog Touch,What started as a love for creativity and craftsmanship has grown into a boutique that celebrates individuality.</p>"
     },
     {
       "type": "richtext",
@@ -35,6 +35,8 @@
 }
 {% endschema %}
 
+<link href="https://fonts.googleapis.com/css2?family=Delius+Swash+Caps&family=Crete+Round:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+
 <style>
   .about-us-section {
     background-color: #f5f0eb;
@@ -52,7 +54,7 @@
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 30px;
-    font-family: 'Comic Sans MS', cursive;
+    font-family: 'Delius Swash Caps', cursive;
   }
 
   .about-us-text {
@@ -60,6 +62,7 @@
     font-size: 16px;
     line-height: 1.6;
     margin-bottom: 25px;
+    font-family: 'Crete Round', serif;
   }
 
   .about-us-text p {
@@ -79,22 +82,23 @@
 
   .highlight-text {
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #671295;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: bold;
     line-height: 1.5;
     margin: 0;
     text-align: center;
     padding: 20px;
+    font-family: 'Crete Round', serif;
   }
 
   .vector-image {
     position: absolute;
     bottom: -10px;
-    right: -10px;
+    right: -53px;
     width: 60px;
     height: auto;
   }
@@ -124,14 +128,34 @@
     }
 
     .highlight-text {
-      font-size: 16px;
-      padding: 15px;
+      font-size: 12px;
+      padding: 10px;
     }
 
     .vector-image {
       width: 40px;
       bottom: -5px;
       right: -5px;
+    }
+  }
+  @media (max-width: 1024px) {
+    .vector-image {
+      width: 50px;
+      bottom: -8px;
+      right: -44px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .highlight-text {
+      font-size: 10px;
+      padding: 8px;
+    }
+
+    .vector-image {
+      width: 30px;
+      bottom: -3px;
+      right: -24px;
     }
   }
 </style>
@@ -151,6 +175,7 @@
     <div class="union-container">
       <img src="{{ 'Union.svg' | asset_url }}" alt="" class="union-svg">
       <p class="highlight-text">{{ section.settings.highlight_text }}</p>
+      <img src="{{ 'Vector 65.svg' | asset_url }}" alt="" class="vector-image">
     </div>
 
     {% if section.settings.hero_image %}

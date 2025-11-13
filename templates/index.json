@@ -1,6 +1,8 @@
 
 
 
+
+
 {
   "sections": {
     "hero_banner": {
@@ -82,6 +84,7 @@
       ],
       "settings": {
         "title": "Our Categories",
+        "title_color": "#06387F",
         "color_scheme": "background-1",
         "show_view_all": true,
         "button_label": "Explore All",
