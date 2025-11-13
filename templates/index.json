@@ -1,8 +1,12 @@
-
-
-
-
-
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero_banner": {
@@ -84,7 +88,6 @@
       ],
       "settings": {
         "title": "Our Categories",
-        "title_color": "#06387F",
         "color_scheme": "background-1",
         "show_view_all": true,
         "button_label": "Explore All",

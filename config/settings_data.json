@@ -142,9 +142,7 @@
       },
       "header2": {
         "type": "header2",
-        "settings": {
-          "color_scheme": "scheme-1"
-        }
+        "settings": {}
       }
     },
     "content_for_index": [],
