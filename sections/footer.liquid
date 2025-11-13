@@ -17,7 +17,7 @@
 
   .footer__blocks-wrapper {
     display: flex !important;
-    flex-wrap: nowrap !important;
+    flex-wrap: wrap !important;
     gap: 1.5rem !important;
     align-items: flex-start !important;
     width: 100% !important;
@@ -25,14 +25,29 @@
   }
 
   .footer-column {
-    flex: 1 1 auto !important;
-    min-width: 120px !important;
+    flex: 1 1 calc(50% - 0.75rem) !important;
+    min-width: 140px !important;
     padding: 0 !important;
   }
 
   .footer-column:first-child {
-    flex: 1 1 auto !important;
-    min-width: 112px !important;
+    flex: 1 1 100% !important;
+    min-width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 1rem !important;
+  }
+
+  @media screen and (min-width: 480px) {
+    .footer-column {
+      flex: 1 1 calc(33.333% - 1rem) !important;
+      min-width: 120px !important;
+    }
+    
+    .footer-column:first-child {
+      flex: 1 1 calc(33.333% - 1rem) !important;
+      min-width: 120px !important;
+      margin-bottom: 0 !important;
+    }
   }
 
   @media screen and (min-width: 750px) {
@@ -45,213 +60,220 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
 
+    .footer__blocks-wrapper {
+      flex-wrap: nowrap !important;
+    }
+
     .footer-column {
       flex: 1 1 auto !important;
       min-width: 120px !important;
+    }
+
+    .footer-column:first-child {
+      flex: 1 1 auto !important;
+      min-width: 112px !important;
+      margin-bottom: 0 !important;
     }
   }
 {%- endstyle -%}
 
 <link href="https://fonts.googleapis.com/css2?family=Crete+Round:wght@400&display=swap" rel="stylesheet">
 
-<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" style="background-color: white; font-family: 'Crete Round', serif; font-weight: 400; font-size: 16px; color: #2F4074; overflow-x: hidden; max-width: 100%; box-sizing: border-box; line-height: 24px;">
-  {%- liquid
-    assign has_social_icons = true
-    if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
-      assign has_social_icons = false
-    endif
+<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" style="background-color: white; font-family: 'Crete Round', serif; font-weight: 400; font-size: clamp(14px, 2.5vw, 16px); color: #2F4074; overflow-x: hidden; max-width: 100%; box-sizing: border-box; line-height: 1.5;">
+  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%;">
+    {%- liquid
+      assign has_social_icons = true
+      if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
+        assign has_social_icons = false
+      endif
 
-    if settings.brand_image == blank and settings.brand_headline == blank and settings.brand_description == blank
-      assign brand_empty = true
-    endif
+      if settings.brand_image == blank and settings.brand_headline == blank and settings.brand_description == blank
+        assign brand_empty = true
+      endif
 
-    if section.blocks.size == 1 and section.blocks[0].type == 'brand_information' and brand_empty and has_social_icons == false and section.settings.newsletter_enable == false and section.settings.enable_follow_on_shop == false
-      assign only_empty_brand = true
-    endif
-  -%}
-  {%- if section.blocks.size > 0
-    or section.settings.newsletter_enable
-    or section.settings.show_social
-    and has_social_icons == true
-    or section.settings.enable_follow_on_shop
-  -%}
-    {%- unless only_empty_brand -%}
-      <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%;">
+      if section.blocks.size == 1 and section.blocks[0].type == 'brand_information' and brand_empty and has_social_icons == false and section.settings.newsletter_enable == false and section.settings.enable_follow_on_shop == false
+        assign only_empty_brand = true
+      endif
+    -%}
+    {%- if section.blocks.size > 0
+      or section.settings.newsletter_enable
+      or section.settings.show_social
+      and has_social_icons == true
+      or section.settings.enable_follow_on_shop
+    -%}
+      {%- unless only_empty_brand -%}
         <div class="footer__content-top" style="width: 100%; padding: 40px 0;">
           <div
             class="footer__blocks-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
             {% if settings.animations_reveal_on_scroll %}
               data-cascade
             {% endif %}
-            style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; width: 100%; overflow: visible;"
+            style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: flex-start; width: 100%; overflow: visible;"
           >
             <!-- Column 1: Logo Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 112px; padding: 0;">
+            <div class="footer-column" style="padding: 0;">
               <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
-                <img src="{{ 'main logo.svg' | asset_url }}" alt="Salty Bull Dog Boutique" style="width: 112.03px; height: 100.83px; object-fit: contain;">
+                <img src="{{ 'main logo.svg' | asset_url }}" alt="Salty Bull Dog Boutique" style="width: 100%; max-width: 112px; height: auto; object-fit: contain;">
               </div>
             </div>
 
             <!-- Column 2: Home Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
-              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Home</h3>
+            <div class="footer-column" style="padding: 0;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: clamp(15px, 3vw, 18px); font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 1.4;">Home</h3>
               <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/custom-orders" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Custom Orders</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/gallery" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Gallery</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/reviews" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Reviews</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/contact" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Contact</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/custom-orders" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Custom Orders</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/gallery" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Gallery</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/reviews" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Reviews</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/contact" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Contact</a></li>
               </ul>
             </div>
 
             <!-- Column 3: Shop Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
-              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Shop</h3>
+            <div class="footer-column" style="padding: 0;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: clamp(15px, 3vw, 18px); font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 1.4;">Shop</h3>
               <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 0.75rem;"><a href="/collections/baby-kids" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Baby & Kids</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/collections/family-sets" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Family Sets</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/collections/custom-tshirts" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Custom T-Shirts</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/collections/gift-ideas" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Gift Ideas</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/collections/embroidery" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Embroidery Designs</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/baby-kids" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Baby & Kids</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/family-sets" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Family Sets</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/custom-tshirts" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Custom T-Shirts</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/gift-ideas" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Gift Ideas</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/collections/embroidery" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Embroidery Designs</a></li>
               </ul>
             </div>
 
             <!-- Column 4: Customer Care Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
-              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Customer Care</h3>
+            <div class="footer-column" style="padding: 0;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: clamp(15px, 3vw, 18px); font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 1.4;">Customer Care</h3>
               <ul class="footer-block__details-content list-unstyled" style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/shipping" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Shipping & Delivery</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/returns" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Returns & Exchanges</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/size-guide" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Size Guide</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/faqs" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">FAQs</a></li>
-                <li style="margin-bottom: 0.75rem;"><a href="/pages/track-order" class="link link--text" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">Track Your Order</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/shipping" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Shipping & Delivery</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/returns" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Returns & Exchanges</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/size-guide" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Size Guide</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/faqs" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">FAQs</a></li>
+                <li style="margin-bottom: 0.75rem;"><a href="/pages/track-order" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">Track Your Order</a></li>
               </ul>
             </div>
 
             <!-- Column 5: Get in Touch Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
-              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Get in Touch</h3>
+            <div class="footer-column" style="padding: 0;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: clamp(15px, 3vw, 18px); font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 1.4;">Get in Touch</h3>
               <div class="footer-block__details-content">
-                <a href="mailto:hello@saltybulldogboutique.com" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 24px;">hello@saltybulldog<br>boutique.com</a>
+                <a href="mailto:hello@saltybulldogboutique.com" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease; line-height: 1.5;">hello@saltybulldog<br>boutique.com</a>
               </div>
             </div>
 
             <!-- Column 6: Follow Us Section -->
-            <div class="footer-column" style="flex: 0 0 calc(16.666% - 1.5rem); min-width: 120px; padding: 0;">
-              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 24px;">Follow Us</h3>
+            <div class="footer-column" style="padding: 0;">
+              <h3 class="footer-block__heading" style="font-family: 'Crete Round', serif; font-size: clamp(15px, 3vw, 18px); font-weight: 400; color: #2F4074; margin-bottom: 1rem; line-height: 1.4;">Follow Us</h3>
               <div class="footer-block__details-content">
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; display: block; margin-bottom: 0.75rem; transition: color 0.3s ease; line-height: 24px;">Instagram</a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: 16px; font-weight: 400; color: #2F4074; text-decoration: none; display: block; transition: color 0.3s ease; line-height: 24px;">Facebook</a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; display: block; margin-bottom: 0.75rem; transition: color 0.3s ease; line-height: 1.5;">Instagram</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style="font-family: 'Crete Round', serif; font-size: clamp(14px, 2.5vw, 16px); font-weight: 400; color: #2F4074; text-decoration: none; display: block; transition: color 0.3s ease; line-height: 1.5;">Facebook</a>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-        <div
-          class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-          {% endif %}
-        >
-          {%- if section.settings.newsletter_enable -%}
-            <div class="footer-block__newsletter">
-              {%- if section.settings.newsletter_heading != blank -%}
-                <h2 class="footer-block__heading inline-richtext">{{ section.settings.newsletter_heading }}</h2>
-              {%- endif -%}
-              {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
-                <input type="hidden" name="contact[tags]" value="newsletter">
-                <div class="newsletter-form__field-wrapper">
-                  <div class="field">
-                    <input
-                      id="NewsletterForm--{{ section.id }}"
-                      type="email"
-                      name="contact[email]"
-                      class="field__input"
-                      value="{{ form.email }}"
-                      aria-required="true"
-                      autocorrect="off"
-                      autocapitalize="off"
-                      autocomplete="email"
-                      {% if form.errors %}
-                        autofocus
-                        aria-invalid="true"
-                        aria-describedby="ContactFooter-error"
-                      {% elsif form.posted_successfully? %}
-                        aria-describedby="ContactFooter-success"
-                      {% endif %}
-                      placeholder="{{ 'newsletter.label' | t }}"
-                      required
-                    >
-                    <label class="field__label" for="NewsletterForm--{{ section.id }}">
-                      {{ 'newsletter.label' | t }}
-                    </label>
-                    <button
-                      type="submit"
-                      class="newsletter-form__button field__button"
-                      name="commit"
-                      id="Subscribe"
-                      aria-label="{{ 'newsletter.button_label' | t }}"
-                    >
-                      <span class="svg-wrapper">
-                        {{- 'icon-arrow.svg' | inline_asset_content -}}
-                      </span>
-                    </button>
-                  </div>
-                  {%- if form.errors -%}
-                    <small class="newsletter-form__message form__message" id="ContactFooter-error">
-                      <span class="svg-wrapper">
-                        {{- 'icon-error.svg' | inline_asset_content -}}
-                      </span>
-                      {{- form.errors.translated_fields.email | capitalize }}
-                      {{ form.errors.messages.email -}}
-                    </small>
-                  {%- endif -%}
-                </div>
-                {%- if form.posted_successfully? -%}
-                  <h3
-                    class="newsletter-form__message newsletter-form__message--success form__message"
-                    id="ContactFooter-success"
-                    tabindex="-1"
-                    autofocus
-                  >
-                    <span class="svg-wrapper">
-                      {{- 'icon-success.svg' | inline_asset_content -}}
-                    </span>
-                    {{- 'newsletter.success' | t }}
-                  </h3>
+          <div
+            class="footer-block--newsletter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+            {% endif %}
+          >
+            {%- if section.settings.newsletter_enable -%}
+              <div class="footer-block__newsletter">
+                {%- if section.settings.newsletter_heading != blank -%}
+                  <h2 class="footer-block__heading inline-richtext">{{ section.settings.newsletter_heading }}</h2>
                 {%- endif -%}
-              {%- endform -%}
-            </div>
-          {%- endif -%}
+                {%- form 'customer', id: 'ContactFooter', class: 'footer__newsletter newsletter-form' -%}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <div class="newsletter-form__field-wrapper">
+                    <div class="field">
+                      <input
+                        id="NewsletterForm--{{ section.id }}"
+                        type="email"
+                        name="contact[email]"
+                        class="field__input"
+                        value="{{ form.email }}"
+                        aria-required="true"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        autocomplete="email"
+                        {% if form.errors %}
+                          autofocus
+                          aria-invalid="true"
+                          aria-describedby="ContactFooter-error"
+                        {% elsif form.posted_successfully? %}
+                          aria-describedby="ContactFooter-success"
+                        {% endif %}
+                        placeholder="{{ 'newsletter.label' | t }}"
+                        required
+                      >
+                      <label class="field__label" for="NewsletterForm--{{ section.id }}">
+                        {{ 'newsletter.label' | t }}
+                      </label>
+                      <button
+                        type="submit"
+                        class="newsletter-form__button field__button"
+                        name="commit"
+                        id="Subscribe"
+                        aria-label="{{ 'newsletter.button_label' | t }}"
+                      >
+                        <span class="svg-wrapper">
+                          {{- 'icon-arrow.svg' | inline_asset_content -}}
+                        </span>
+                      </button>
+                    </div>
+                    {%- if form.errors -%}
+                      <small class="newsletter-form__message form__message" id="ContactFooter-error">
+                        <span class="svg-wrapper">
+                          {{- 'icon-error.svg' | inline_asset_content -}}
+                        </span>
+                        {{- form.errors.translated_fields.email | capitalize }}
+                        {{ form.errors.messages.email -}}
+                      </small>
+                    {%- endif -%}
+                  </div>
+                  {%- if form.posted_successfully? -%}
+                    <h3
+                      class="newsletter-form__message newsletter-form__message--success form__message"
+                      id="ContactFooter-success"
+                      tabindex="-1"
+                      autofocus
+                    >
+                      <span class="svg-wrapper">
+                        {{- 'icon-success.svg' | inline_asset_content -}}
+                      </span>
+                      {{- 'newsletter.success' | t }}
+                    </h3>
+                  {%- endif -%}
+                {%- endform -%}
+              </div>
+            {%- endif -%}
 
-          {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
-            <div class="footer__follow-on-shop">
-              {{ shop | login_button: action: 'follow' }}
-            </div>
-          {%- endif -%}
+            {%- if shop.features.follow_on_shop? and section.settings.enable_follow_on_shop -%}
+              <div class="footer__follow-on-shop">
+                {{ shop | login_button: action: 'follow' }}
+              </div>
+            {%- endif -%}
 
-          {%- if section.settings.show_social and has_social_icons -%}
-            {%- render 'social-icons', class: 'footer__list-social' -%}
-          {%- endif -%}
+            {%- if section.settings.show_social and has_social_icons -%}
+              {%- render 'social-icons', class: 'footer__list-social' -%}
+            {%- endif -%}
+          </div>
+        {%- endunless -%}
+      {%- endif -%}
+
+      <div
+        class="footer__content-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+        {% if settings.animations_reveal_on_scroll %}
+          data-cascade
+        {% endif %}
+        style="background-color: white; color: #2F4074; border-top: 2px solid #E0E0E0; padding: 20px 0;"
+      >
+        <div class="footer__copyright caption" style="color: #2F4074; font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; line-height: 1.5; text-align: center;">
+          <small class="copyright__content" style="color: #2F4074;"
+            >&copy; {{ 'now' | date: '%Y' }} www.saltybulldogboutique.com. All rights reserved.
+          </small>
         </div>
       </div>
-    {%- endunless -%}
-  {%- endif -%}
-
-  <div
-    class="footer__content-bottom{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-    {% if settings.animations_reveal_on_scroll %}
-      data-cascade
-    {% endif %}
-    style="background-color: white; color: #2F4074; border-top: 2px solid #E0E0E0; padding: 20px 0;"
-  >
-    <div class="footer__content-bottom-wrapper page-width" style="background-color: white; color: #2F4074; max-width: 1200px; margin: 0 auto; padding: 0 20px; text-align: center;">
-      <div class="footer__copyright caption" style="color: #2F4074; font-family: 'Crete Round', serif; font-size: 14px; font-weight: 400; line-height: 24px;">
-        <small class="copyright__content" style="color: #2F4074;"
-          >&copy; {{ 'now' | date: '%Y' }} www.saltybulldogboutique.com. All rights reserved.
-        </small>
-      </div>
-    </div>
   </div>
 </footer>
 
