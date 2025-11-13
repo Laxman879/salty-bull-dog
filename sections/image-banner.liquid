@@ -1,31 +1,59 @@
 {{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
 
-{%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
-  {%- style -%}
-    @media screen and (max-width: 749px) {
-      #Banner-{{ section.id }}::before,
-      #Banner-{{ section.id }} .banner__media::before,
-      #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
-        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
-        content: '';
-        display: block;
-      }
-    }
-
-    @media screen and (min-width: 750px) {
-      #Banner-{{ section.id }}::before,
-      #Banner-{{ section.id }} .banner__media::before {
-        padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;
-        content: '';
-        display: block;
-      }
-    }
-  {%- endstyle -%}
-{%- endif -%}
+{%- style -%}
+  #Banner-{{ section.id }}::before,
+  #Banner-{{ section.id }} .banner__media::before,
+  #Banner-{{ section.id }}:not(.banner--mobile-bottom) .banner__content::before {
+    display: none !important;
+    content: none !important;
+  }
+{%- endstyle -%}
 
 {%- style -%}
-  #Banner-{{ section.id }}::after {
-    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+  #Banner-{{ section.id }}::after,
+  #Banner-{{ section.id }}::before {
+    display: none !important;
+    content: none !important;
+  }
+  #Banner-{{ section.id }} .banner__content {
+    display: none !important;
+  }
+  #Banner-{{ section.id }} .banner__media {
+    height: 80vh !important;
+    background-color: transparent !important;
+  }
+  #Banner-{{ section.id }} .banner__media img {
+    width: 100% !important;
+    height: 100vh !important;
+    display: block !important;
+    object-fit: cover !important;
+    max-width: 100% !important;
+  }
+  #Banner-{{ section.id }} {
+    width: 100% !important;
+    overflow: visible !important;
+    margin-top: 10px !important;
+    position: relative;
+    z-index: 100;
+  }
+  
+  /* Responsive breakpoints */
+  @media (max-width: 767px) {
+    #Banner-{{ section.id }} {
+      margin-top: 5px !important;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1023px) {
+    #Banner-{{ section.id }} {
+      margin-top: 8px !important;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    #Banner-{{ section.id }} {
+      margin-top: 10px !important;
+    }
   }
 {%- endstyle -%}
 
