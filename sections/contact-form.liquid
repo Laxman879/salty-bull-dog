@@ -348,13 +348,16 @@
       width: 100%;
       max-width: 400px;
       height: auto;
+      /* pull the main image upward to fill the gap on mobile */
+      margin-bottom: -80px !important;
     }
     .contact-form-right {
       align-items: center;
-      margin-top: -30px !important; /* pull inputs upward */
+      margin-top: -100px !important; /* pull inputs upward aggressively to close the gap */
     }
     .contact__button {
       align-self: center;
+      margin-top: -8px !important; /* pull submit button closer to inputs */
     }
     /* hide decorative images on mobile to avoid collisions and free space */
     .form-flower-left,
