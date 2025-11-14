@@ -125,7 +125,9 @@
   }
 
   .field__input:focus {
+    /* keep the bottom border visible and emphasize it on focus */
     border: none !important;
+    border-bottom: 3px solid #06387F !important;
     box-shadow: none !important;
     outline: none !important;
   }
@@ -148,6 +150,7 @@
     padding: 0 !important;
     box-shadow: none !important;
     outline: none !important;
+    position: relative; /* needed for floating label */
   }
 
   .field::before,
@@ -157,6 +160,79 @@
   border-radius: 0 !important;
   background: transparent !important;
 }
+
+    /* Floating label behavior: label moves up when the input is focused or has content */
+    .field__label {
+      position: absolute !important;
+      left: 0 !important;
+      top: 12px !important;
+      font-size: 18px !important; /* keep label larger by default */
+      font-weight: 700 !important;
+      color: #000000 !important; /* always black by default */
+      /* only animate position and size to avoid color flicker during animations */
+      transition: top 0.15s ease, font-size 0.15s ease, transform 0.15s ease;
+      pointer-events: none !important;
+      background: transparent !important;
+      padding: 0 4px !important;
+      z-index: 2 !important;
+    }
+
+    .field__input {
+      /* add top padding so input text doesn't overlap the label */
+      padding: 18px 0 8px 0 !important;
+      border: none !important;
+      /* thicker default underline */
+      border-bottom: 3px solid #000 !important;
+      background: transparent !important;
+      color: #000000 !important;
+      width: 100% !important;
+      margin-bottom: 22px !important;
+      font-size: 16px !important;
+    }
+
+    /* When the field is focused or contains text, move the label upward and shrink it */
+    .field:focus-within .field__label,
+    .field.field--filled .field__label {
+      top: -8px !important;
+      font-size: 12px !important;
+      /* keep label color black even while focused to avoid flicker */
+      color: #000000 !important;
+    }
+
+    /* Emphasize bottom border while typing */
+    .field:focus-within .field__input,
+    .field.field--filled .field__input {
+      border-bottom: 4px solid #06387F !important; /* thicker on focus/filled */
+    }
+
+    /* Center form fields and button, and pull form content downward */
+    .contact-form-right form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 40px; /* pull down the form content */
+      box-sizing: border-box;
+    }
+
+    /* Limit field width so they appear centered within the right column */
+    .contact-form-right .field {
+      width: 100%;
+      max-width: 520px; /* adjust as needed */
+      box-sizing: border-box;
+    }
+
+    /* Center the submit button and ensure it sits under the inputs */
+    .contact__button {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .contact__button .button {
+      width: 240px !important;
+      min-height: 60px !important;
+    }
 
 
   .contact__button .button {
@@ -439,6 +515,25 @@
         </button>
       </div>
     {%- endform -%}
+    <script>
+      // Add a small helper to mark fields as filled when they have content
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.field__input').forEach(function (input) {
+          function update() {
+            var field = input.closest('.field');
+            if (!field) return;
+            if (input.value && input.value.trim() !== '') {
+              field.classList.add('field--filled');
+            } else {
+              field.classList.remove('field--filled');
+            }
+          }
+          input.addEventListener('input', update);
+          // initialize state
+          update();
+        });
+      });
+    </script>
       </div>
       <img src="{{ 'form image.svg' | asset_url }}" alt="" class="form-flower-left">
       <img src="{{ 'form flower.svg' | asset_url }}" alt="" class="form-flower">
