@@ -52,6 +52,12 @@
     /* Ensure the right column card displays as a single tall card */
     .testimonials-right .testimonial-large { display:flex; }
 
+    @media (max-width: 1024px) {
+      .testimonials-grid { grid-template-columns: 1fr; gap: 20px; }
+      .testimonial-small { width: 100%; height: auto; }
+      .testimonial-large { width: 100%; height: auto; }
+    }
+    
     @media (max-width: 767px) {
       .testimonials-section { padding: 24px 16px; }
       .section-header { margin-bottom: 40px; }

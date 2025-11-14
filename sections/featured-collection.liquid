@@ -36,6 +36,35 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .card--standard.card--text a::after, .card--card .card__heading a::after {
+    bottom: calc(var(--border-width) * -1);
+    left: calc(var(--border-width) * -1);
+    right: calc(var(--border-width) * -1);
+    top: calc(var(--border-width) * -1);
+  }
+  .card__heading a:after {
+    outline-offset: 0.3rem;
+  }
+  .card__heading a::after {
+    bottom: 0;
+    content: '';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+  .card, .card__heading, .card-information, .card__content, .card__heading a, .card-information > * {
+    font-family: 'Crete Round', serif !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    font-size: 16px !important;
+    color: #06387F !important;
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -118,7 +147,7 @@
                   style="--animation-order: {{ forloop.index }};"
                 {% endif %}
               >
-                {% render 'card-product',
+                {% render 'card-product-new',
                   card_product: product,
                   media_aspect_ratio: section.settings.image_ratio,
                   image_shape: section.settings.image_shape,
@@ -128,7 +157,8 @@
                   show_rating: section.settings.show_rating,
                   skip_styles: skip_card_product_styles,
                   section_id: section.id,
-                  quick_add: section.settings.quick_add
+                  quick_add: section.settings.quick_add,
+                  card_index: forloop.index0
                 %}
               </li>
               {%- assign skip_card_product_styles = true -%}
@@ -153,12 +183,13 @@
                 endcase
               %}
               {%- assign placeholder_image = 'product-apparel-' | append: ridx -%}
-              {% render 'card-product',
+              {% render 'card-product-new',
                 show_vendor: section.settings.show_vendor,
                 media_aspect_ratio: section.settings.image_ratio,
                 image_shape: section.settings.image_shape,
                 lazy_load: false,
-                placeholder_image: placeholder_image
+                placeholder_image: placeholder_image,
+                card_index: forloop.index0
               %}
             </li>
           {%- endfor -%}
