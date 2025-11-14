@@ -1,0 +1,416 @@
+<link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}">
+<link rel="stylesheet" href="{{ 'component-cart-notification.css' | asset_url }}">
+
+<div class="header2-bar" style="background: #ffffff; border-bottom: 1px solid #e5e5e5; padding: 10px 0; position: relative; z-index: 1001;">
+  <div class="page-width">
+    <div class="header2-content">
+      <!-- Search - Left Side -->
+      <div class="header2-left">
+        <button class="header2-search-toggle header2__icon" onclick="toggleSearch()">
+          <span class="svg-wrapper">{{ 'icon-search.svg' | inline_asset_content }}</span>
+        </button>
+        <form action="{{ routes.search_url }}" method="get" class="header2-search-form" id="searchForm" style="display: none;">
+          <input type="search" name="q" placeholder="Search products..." class="header2-search-input" value="{{ search.terms | escape }}">
+          <button type="submit" class="header2-search-button">
+            <span class="svg-wrapper">{{ 'icon-search.svg' | inline_asset_content }}</span>
+          </button>
+        </form>
+      </div>
+      
+      <!-- User and Cart Icons - Right Side -->
+      <div class="header2-right">
+        <!-- User Account Icon -->
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" 
+             class="header2__icon" 
+             aria-label="Account">
+            <span class="svg-wrapper">
+              {{ 'icon-account.svg' | inline_asset_content }}
+            </span>
+          </a>
+        {%- endif -%}
+        
+        <!-- Cart Icon -->
+        <a href="{{ routes.cart_url }}" 
+           class="header2__icon header2__cart" 
+           id="cart-icon-header2"
+           aria-label="Cart">
+          {% if cart == empty %}
+            <span class="svg-wrapper cart-svg">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+          {% else %}
+            <span class="svg-wrapper cart-svg">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+          {% endif %}
+          <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+          {%- if cart != empty -%}
+            <div class="cart-count-bubble" id="header2-cart-count">
+              {%- if cart.item_count < 100 -%}
+                <span aria-hidden="true">{{ cart.item_count }}</span>
+              {%- endif -%}
+              <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+            </div>
+          {%- endif -%}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.header2-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header2-left {
+  display: flex;
+  align-items: center;
+}
+
+.header2-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.header2__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: #333;
+  text-decoration: none;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.header2__icon:hover {
+  opacity: 0.7;
+}
+
+.header2__icon .svg-wrapper {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.header2-search-form {
+  display: flex;
+  align-items: center;
+  background: #f8f9fa;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 0;
+  width: 300px;
+}
+
+.header2-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 15px;
+  font-size: 14px;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.header2-search-input:focus {
+  box-shadow: none !important;
+}
+
+.header2-search-button {
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header2-search-button .svg-wrapper {
+  width: 20px;
+  height: 20px;
+}
+
+.header2-search-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.cart-svg {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+/* Tablet - 768px */
+@media (max-width: 768px) {
+  .header2-bar {
+    padding: 8px 0;
+  }
+  .header2-content {
+    padding: 0 20px;
+  }
+  .header2-right {
+    gap: 12px;
+  }
+  .header2__icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .header2__icon .svg-wrapper {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .header2-search-toggle {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .header2-search-form {
+    width: calc(100vw - 140px) !important;
+  }
+  .cart-svg {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+/* Mobile Large - 425px */
+@media (max-width: 425px) {
+  .header2-bar {
+    padding: 6px 0;
+  }
+  .header2-content {
+    padding: 0 15px;
+  }
+  .header2-right {
+    gap: 10px;
+  }
+  .header2__icon {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .header2__icon .svg-wrapper {
+    width: 20px !important;
+    height: 20px !important;
+  }
+  .header2-search-toggle {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .header2-search-form {
+    width: calc(100vw - 120px) !important;
+  }
+  .cart-svg {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .header2__cart .cart-count-bubble {
+    width: 14px !important;
+    height: 14px !important;
+    font-size: 9px !important;
+    top: 3px !important;
+    right: 3px !important;
+  }
+}
+
+/* Mobile Medium - 375px */
+@media (max-width: 375px) {
+  .header2-content {
+    padding: 0 12px;
+  }
+  .header2-right {
+    gap: 8px;
+  }
+  .header2__icon {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .header2__icon .svg-wrapper {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  .header2-search-toggle {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  .header2-search-form {
+    width: calc(100vw - 110px) !important;
+  }
+  .cart-svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+/* Mobile Small - 320px */
+@media (max-width: 320px) {
+  .header2-content {
+    padding: 0 10px;
+  }
+  .header2-right {
+    gap: 6px;
+  }
+  .header2__icon {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .header2__icon .svg-wrapper {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  .header2-search-toggle {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .header2-search-form {
+    width: calc(100vw - 100px) !important;
+  }
+  .header2-search-input {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  .cart-svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  .header2__cart .cart-count-bubble {
+    width: 12px !important;
+    height: 12px !important;
+    font-size: 8px !important;
+    top: 2px !important;
+    right: 2px !important;
+  }
+}
+
+.header2__cart .cart-count-bubble {
+  position: absolute !important;
+  top: 6px !important;
+  right: 6px !important;
+  background-color: #dc2626 !important;
+  color: white !important;
+  border-radius: 50% !important;
+  width: 16px !important;
+  height: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  z-index: 10 !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+}
+
+@media (max-width: 749px) {
+  .header2-bar {
+    padding: 8px 0;
+  }
+  .header2-right {
+    gap: 10px;
+  }
+  .header2__icon,
+  .header2-left .header__icon--search {
+    width: 40px;
+    height: 40px;
+  }
+  .header2__icon .svg-wrapper {
+    width: 20px;
+    height: 20px;
+  }
+  .header2-search-form {
+    width: 250px;
+  }
+}
+</style>
+
+<script src="{{ 'cart-notification.js' | asset_url }}" defer></script>
+
+<script>
+function toggleSearch() {
+  const searchForm = document.getElementById('searchForm');
+  const searchToggle = document.querySelector('.header2-search-toggle');
+  
+  if (searchForm.style.display === 'none') {
+    searchForm.style.display = 'flex';
+    searchToggle.style.display = 'none';
+    searchForm.querySelector('.header2-search-input').focus();
+  } else {
+    searchForm.style.display = 'none';
+    searchToggle.style.display = 'flex';
+  }
+}
+
+// Hide search when clicking outside
+document.addEventListener('click', function(e) {
+  const searchForm = document.getElementById('searchForm');
+  const searchToggle = document.querySelector('.header2-search-toggle');
+  const header2Left = document.querySelector('.header2-left');
+  
+  if (!header2Left.contains(e.target) && searchForm.style.display === 'flex') {
+    searchForm.style.display = 'none';
+    searchToggle.style.display = 'flex';
+  }
+});
+
+// Update cart count
+function updateCartCount() {
+  fetch('/cart.js')
+    .then(response => response.json())
+    .then(cart => {
+      console.log('Cart items:', cart.item_count);
+      const cartLink = document.getElementById('cart-icon-header2');
+      let bubble = cartLink.querySelector('.cart-count-bubble');
+      
+      if (cart.item_count > 0) {
+        if (!bubble) {
+          bubble = document.createElement('div');
+          bubble.className = 'cart-count-bubble';
+          bubble.style.cssText = 'position: absolute; top: 6px; right: 6px; background-color: #dc2626; color: white; border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; line-height: 1;';
+          cartLink.appendChild(bubble);
+        }
+        bubble.innerHTML = cart.item_count;
+        bubble.style.display = 'flex';
+      } else {
+        if (bubble) {
+          bubble.style.display = 'none';
+        }
+      }
+    })
+    .catch(error => console.log('Cart fetch error:', error));
+}
+
+// Auto-update cart
+setInterval(updateCartCount, 2000);
+document.addEventListener('DOMContentLoaded', updateCartCount);
+
+// Manual test function
+window.testCart = function() {
+  updateCartCount();
+};
+</script>
+
+{% schema %}
+{
+  "name": "Header 2",
+  "class": "header2-section",
+  "settings": []
+}
+{% endschema %}

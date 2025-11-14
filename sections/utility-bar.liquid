@@ -1,0 +1,58 @@
+<!-- Utility Bar with Icons -->
+<div class="utility-bar" style="background: #ffffff; border-bottom: 1px solid #e5e5e5; padding: 8px 0;">
+  <div class="page-width">
+    <div class="utility-bar__grid" style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="utility-bar__left">
+        <!-- Optional: Add contact info or announcements here -->
+      </div>
+      <div class="utility-bar__right" style="display: flex; align-items: center; gap: 1.5rem;">
+        <!-- Search Icon -->
+        {%- render 'header-search', input_id: 'Search-In-Modal-Utility' -%}
+        
+        <!-- User Account Icon -->
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="utility-bar__icon" aria-label="Account" style="display: flex; align-items: center; color: #333; text-decoration: none;">
+            <span class="svg-wrapper" style="width: 24px; height: 24px;">{{ 'icon-account.svg' | inline_asset_content }}</span>
+          </a>
+        {%- endif -%}
+        
+        <!-- Cart Icon -->
+        <a href="{{ routes.cart_url }}" class="utility-bar__icon" aria-label="Cart" style="display: flex; align-items: center; color: #333; text-decoration: none; position: relative;">
+          {%- render 'cart-icon-bubble' -%}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.utility-bar__icon:hover {
+  opacity: 0.7;
+}
+.utility-bar__icon .cart-count-bubble {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #dc2626;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Utility Bar",
+  "class": "utility-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": []
+}
+{% endschema %}
