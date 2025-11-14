@@ -1,20 +1,44 @@
 /* === Custom Featured Product Card Borders === */
 .featured-products-ui .product-grid .grid__item:nth-child(1) .card-wrapper {
   border: 2px solid #4106C2;
+  color: #4106C2; /* use the same color for deal label text via inheritance */
   box-shadow: none;
 }
 .featured-products-ui .product-grid .grid__item:nth-child(2) .card-wrapper {
   border: 2px solid #C206A9;
+  color: #C206A9;
   box-shadow: none;
 }
 .featured-products-ui .product-grid .grid__item:nth-child(3) .card-wrapper {
   border: 2px solid #15B393;
+  color: #15B393;
   box-shadow: none;
 }
 .featured-products-ui .product-grid .grid__item:nth-child(4) .card-wrapper {
   border: 2px solid #0654C2;
+  color: #0654C2;
   box-shadow: none;
 }
+
+/* Load Crete Round for product card text (ensure this font is available site-wide for cards) */
+@import url('https://fonts.googleapis.com/css2?family=Crete+Round:wght@400&display=swap');
+
+/* Product card typography, color override and remove borders per user request */
+.card,
+.card__heading,
+.card-information,
+.card__content,
+.card__heading a,
+.card-information > * {
+  font-family: 'Crete Round', serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+  font-size: 16px !important; /* reduced from 18px */
+  color: #06387F !important; /* user requested color */
+}
+
+/* Keep featured product card borders as defined above (do not remove them) */
+/* NOTE: global border removals were intentionally removed so image/card borders remain visible */
 
 .featured-products-ui .explore-more-btn {
   display: inline-block;
@@ -45,6 +69,42 @@
 .card {
   text-decoration: none;
   text-align: var(--text-alignment);
+}
+
+/* Ensure there are small gaps between product cards in grids */
+.product-grid {
+  gap: 16px; /* horizontal and vertical spacing between cards */
+}
+
+/* Make sure grid items don't have external margins that collapse gaps */
+.product-grid .grid__item {
+  margin: 0;
+}
+
+/* Deal label shown above card text under the image; color inherits from .card-wrapper (border color) */
+.card__deal-label {
+  font-family: 'Crete Round', serif;
+  font-weight: 400;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: inherit; /* will pick up the color set on .card-wrapper nth-child rules */
+  text-transform: none;
+}
+
+/* Ensure featured-products shows 4 columns on desktop regardless of other constraints
+   This override uses CSS Grid for the featured-products product list and keeps the 16px gap. */
+@media screen and (min-width: 990px) {
+  .featured-products-ui .product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Make each grid item stretch to fill its column and avoid the legacy width calc interfering */
+  .featured-products-ui .product-grid .grid__item {
+    width: auto !important;
+    max-width: none !important;
+  }
 }
 
 .card:not(.ratio) {
@@ -629,4 +689,28 @@
   .grid__item:nth-child(8n) .product-card-wrapper:hover .shape--blob {
     clip-path: polygon(var(--shape--blob-5));
   }
+}
+
+/* Deal label colors matching card borders */
+.card__deal-label {
+  font-family: 'Crete Round', serif;
+  font-weight: 400;
+  font-size: 16px;
+  margin-bottom: 0.5rem;
+}
+
+.grid__item:nth-child(4n+1) .card__deal-label {
+  color: #0654C2; /* 1st card - Blue */
+}
+
+.grid__item:nth-child(4n+2) .card__deal-label {
+  color: #C206A9; /* 2nd card - Pink */
+}
+
+.grid__item:nth-child(4n+3) .card__deal-label {
+  color: #15B393; /* 3rd card - Teal */
+}
+
+.grid__item:nth-child(4n) .card__deal-label {
+  color: #4106C2; /* 4th card - Purple */
 }
