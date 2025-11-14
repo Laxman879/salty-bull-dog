@@ -194,7 +194,12 @@
     <header-drawer data-breakpoint="tablet">
       <details id="Details-menu-drawer-container" class="menu-drawer-container">
         <summary class="header__icon header__icon--menu header__icon--summary link focus-inset" aria-label="Menu" role="button">
-          <span class="svg-wrapper">{{ 'icon-hamburger.svg' | inline_asset_content }}</span>
+          <span class="svg-wrapper hamburger-icon">{{ 'icon-hamburger.svg' | inline_asset_content }}</span>
+          <span class="svg-wrapper close-icon" style="display: none;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M18 6L6 18M6 6L18 18" stroke="#06387F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
         </summary>
         <div id="menu-drawer" class="gradient menu-drawer motion-reduce color-{{ section.settings.menu_color_scheme | default: 'scheme-1' }}">
           <div class="menu-drawer__inner-container">
@@ -203,10 +208,10 @@
                 <ul class="menu-drawer__menu has-submenu list-menu" role="list">
                   <li><a id="HeaderDrawer-home" href="{{ routes.root_url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if request.page_type == 'index' %} menu-drawer__menu-item--active{% endif %}">Home</a></li>
                   <li><a id="HeaderDrawer-shop" href="{{ routes.all_products_collection_url }}" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if page.handle == 'all' or request.page_type == 'collection' %} menu-drawer__menu-item--active{% endif %}">Shop</a></li>
-                  <li><a id="HeaderDrawer-customer-orders" href="/pages/customer-orders" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.customer-orders' or request.path contains 'customer-orders' %} menu-drawer__menu-item--active{% endif %}">Customer Orders</a></li>
+                  <li><a id="HeaderDrawer-customer-orders" href="/pages/customer-orders" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.customer-orders' or request.path contains '/pages/customer-orders' or request.path contains 'customer-orders' %} menu-drawer__menu-item--active{% endif %}">Customer Orders</a></li>
                   <li><a id="HeaderDrawer-gallery" href="/pages/gallery" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/gallery' %} menu-drawer__menu-item--active{% endif %}">Gallery</a></li>
                   <li><a id="HeaderDrawer-faq" href="/pages/faq" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/faq' %} menu-drawer__menu-item--active{% endif %}">FAQ</a></li>
-                  <li><a id="HeaderDrawer-contact" href="/pages/contact" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/contact' %} menu-drawer__menu-item--active{% endif %}">Contact</a></li>
+                  <li><a id="HeaderDrawer-contact" href="/pages/contact" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.contact' or request.path contains '/pages/contact' or request.path contains 'contact' %} menu-drawer__menu-item--active{% endif %}">Contact</a></li>
                   <li><a id="HeaderDrawer-about-us" href="/pages/about-us" class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/about-us' or request.path contains 'about-us' %} menu-drawer__menu-item--active{% endif %}">About Us</a></li>
                 </ul>
               </nav>
@@ -244,7 +249,7 @@
           <a href="{{ routes.all_products_collection_url }}" class="header__menu-item list-menu__item link link--text focus-inset{% if page.handle == 'all' or request.page_type == 'collection' %} active{% endif %}">Shop</a>
         </li>
         <li>
-          <a href="/pages/customer-orders" class="header__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.customer-orders' or request.path contains 'customer-orders' %} active{% endif %}">Customer Orders</a>
+          <a href="/pages/customer-orders" class="header__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.customer-orders' or request.path contains '/pages/customer-orders' or request.path contains 'customer-orders' %} active{% endif %}">Customer Orders</a>
         </li>
       </ul>
     </div>
@@ -257,7 +262,7 @@
           <a href="/pages/faq" class="header__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/faq' %} active{% endif %}">FAQ</a>
         </li>
         <li>
-          <a href="/pages/contact" class="header__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/contact' %} active{% endif %}">Contact</a>
+          <a href="/pages/contact" class="header__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.contact' or request.path contains '/pages/contact' or request.path contains 'contact' %} active{% endif %}">Contact</a>
         </li>
         <li>
           <a href="/pages/about-us" class="header__menu-item list-menu__item link link--text focus-inset{% if request.path contains '/pages/about-us' or request.path contains 'about-us' %} active{% endif %}">About Us</a>
@@ -267,7 +272,14 @@
 
     <style>
       @media (max-width: 989px) {
-        .desktop-only { display: none !important; }
+        .desktop-only,
+        .header__nav-left,
+        .header__nav-right,
+        .header__inline-menu {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+        }
       }
 
       /* Base header styling - consistent across all pages */
@@ -410,10 +422,7 @@
 
       /* Extra emphasis for current page in drawer */
       .menu-drawer__navigation .menu-drawer__menu-item--active::before {
-        content: '✓ ';
-        margin-right: 0.5rem;
-        font-weight: bold;
-        color: #073b6b;
+        content: '';
       }
 
       /* Ensure header is stable on all page types - FORCE CONSISTENCY */
@@ -495,12 +504,34 @@
         flex-shrink: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
+        text-transform: uppercase !important;
+        font-family: 'Crete Round', serif !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        color: #06387F !important;
+        font-size: 15px !important;
+        line-height: 100% !important;
+        letter-spacing: 5% !important;
       }
 
       /* Mobile drawer styling */
       .menu-drawer {
         width: 100%;
         max-width: 100%;
+      }
+
+      /* Header icon switching */
+      .menu-drawer-container[open] .hamburger-icon {
+        display: none;
+      }
+
+      .menu-drawer-container[open] .close-icon {
+        display: block !important;
+      }
+
+      .close-icon svg {
+        width: 24px;
+        height: 24px;
       }
 
       .menu-drawer__menu {
@@ -516,6 +547,14 @@
         width: 100%;
         display: block;
         padding: 0.5rem 0;
+        font-family: 'Crete Round', serif !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        color: #06387F !important;
+        font-size: 15px !important;
+        line-height: 100% !important;
+        letter-spacing: 5% !important;
+        text-transform: uppercase !important;
       }
 
       /* Prevent layout shift - GLOBAL STABILITY */
