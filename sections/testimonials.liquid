@@ -15,26 +15,41 @@
     .section-title { margin: 0; font-size: 32px; font-weight: 600; color: #000; }
     .testimonial-line { margin-top: 20px; display: flex; justify-content: center; }
     .testimonial-line img { width: auto; height: 25px; display: block; }
+
+    /* Layout: left column contains two stacked cards (666x250 each), right column is the taller card */
     .testimonials-grid {
       display: grid;
-      grid-template-columns: 353.68px 1fr;
-      gap: 350px;
+      /* left column (two stacked small cards) then right large card */
+      grid-template-columns: 666px 353.68px;
+      /* small gaps between columns and rows so cards have breathing room */
+      gap: 16px;
       align-items: stretch;
       margin: 0 auto;
     }
-    .testimonials-left { display: flex; flex-direction: column; gap: 40px; }
-    .testimonial-item { background: var(--color-bg, #fff); border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,0.06); overflow: hidden; display:flex; flex-direction: column; }
+
+    /* small space between stacked items on the left */
+    .testimonials-left { display: flex; flex-direction: column; gap: 16px; }
+
+    .testimonial-item { background: var(--color-bg, #fff); border-radius: 12px; box-shadow: 0 6px 18px rgba(16,24,40,0.06); overflow: hidden; display:flex; flex-direction: column; margin: 0; }
+
+    /* Two small cards on the left (exact dimensions requested) */
     .testimonial-small { padding: 0; align-items: stretch; width: 666px; height: 250px; }
-    .testimonial-large { padding: 0; align-items: stretch; width: 353.68px; height: 520px; }
-    .testimonial-image { width: 100%; height: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: transparent; }
+
+  /* Right large card */
+  .testimonial-large { padding: 0; align-items: stretch; width: 353.68px; height: 517px; }
+
+    .testimonial-image { width: 100%; height: 100%; overflow: hidden; display: block; background-color: transparent; }
     .testimonial-small .testimonial-image { height: 100%; }
-    .testimonial-image img { width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
+
+    /* Make images cover the card area so there are no whitespace gaps */
+    .testimonial-image img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0; }
+
     .testimonial-content { padding: 18px; }
     .testimonial-title { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
     .testimonial-text { color: #374151; font-size: 14px; line-height: 1.4; }
     .testimonial-link { display:inline-block; margin-top:10px; color: #0b69ff; }
 
-    /* Make the right column card span the two rows visually */
+    /* Ensure the right column card displays as a single tall card */
     .testimonials-right .testimonial-large { display:flex; }
 
     @media (max-width: 767px) {
@@ -44,6 +59,7 @@
       .testimonials-grid { grid-template-columns: 1fr; gap: 40px; }
       .testimonial-small { width: 100%; height: auto; }
       .testimonial-large { width: 100%; height: auto; }
+      .testimonial-image img { object-fit: contain; }
     }
   </style>
 
