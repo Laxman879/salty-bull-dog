@@ -79,7 +79,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Crete+Round:wght@400&display=swap" rel="stylesheet">
 
-<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" style="background-color: white; font-family: 'Crete Round', serif; font-weight: 400; font-size: clamp(14px, 2.5vw, 16px); color: #2F4074; overflow-x: hidden; max-width: 100%; box-sizing: border-box; line-height: 1.5;">
+<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" style="background-color: white; background-image: url('{{ 'footer-bg.svg' | asset_url }}'); background-size: cover; background-position: center; background-repeat: no-repeat; font-family: 'Crete Round', serif; font-weight: 400; font-size: clamp(14px, 2.5vw, 16px); color: #2F4074; overflow-x: hidden; max-width: 100%; box-sizing: border-box; line-height: 1.5;">
   <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%;">
     {%- liquid
       assign has_social_icons = true
