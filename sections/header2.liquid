@@ -9,6 +9,7 @@
         <button class="header2-search-toggle header2__icon" onclick="toggleSearch()">
           <span class="svg-wrapper">{{ 'icon-search.svg' | inline_asset_content }}</span>
         </button>
+        <span class="search-label">what are you looking for</span>
         <form action="{{ routes.search_url }}" method="get" class="header2-search-form" id="searchForm" style="display: none;">
           <input type="search" name="q" placeholder="Search products..." class="header2-search-input" value="{{ search.terms | escape }}">
           <button type="submit" class="header2-search-button">
@@ -66,6 +67,17 @@
 .header2-left {
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+
+.search-label {
+  font-family: 'Crete Round', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+  line-height: 100%;
+  letter-spacing: 5%;
+  color: #06387F;
 }
 
 .header2-right {
