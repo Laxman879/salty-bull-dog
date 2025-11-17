@@ -45,7 +45,7 @@
     assign frame_index = card_index | modulo: 4 | plus: 1
     assign frame_svg = 'Frame ' | append: frame_index | append: '.svg' | asset_url
   -%}
-  <div class="card-wrapper product-card-wrapper underline-links-hover" style="background-image: url('{{ frame_svg }}'); background-size: 110% 110%; background-repeat: no-repeat; background-position: center -30px; width: 400px; height: 500px; padding: 60px; box-sizing: border-box; border: none; outline: none; box-shadow: none;">
+  <div class="card-wrapper product-card-wrapper underline-links-hover" style="background-image: url('{{ frame_svg }}'); background-size: 110% 110%; background-repeat: no-repeat; background-position: center -30px; width: 380px; height: 500px; padding: 70px; box-sizing: border-box; border: none; outline: none; box-shadow: none; margin: 0 auto; display: block;">
     <div
       class="
         card card--{{ settings.card_style }}
@@ -208,7 +208,7 @@
     assign frame_index = card_index | modulo: 4 | plus: 1
     assign frame_svg = 'Frame ' | append: frame_index | append: '.svg' | asset_url
   -%}
-  <div class="card-wrapper product-card-wrapper underline-links-hover" style="background-image: url('{{ frame_svg }}'); background-size: 110% 110%; background-repeat: no-repeat; background-position: center -30px; width: 100%; max-width: 280px; height: auto; padding: 60px 0px; box-sizing: border-box; border: none; outline: none; box-shadow: none;">
+  <div class="card-wrapper product-card-wrapper underline-links-hover" style="background-image: url('{{ frame_svg }}'); background-size: 110% 110%; background-repeat: no-repeat; background-position: center -30px; width: 100%; max-width: 240px; height: auto; padding: 40px 0px; box-sizing: border-box; border: none; outline: none; box-shadow: none; margin: 0 auto; display: block;">
     <div
       class="
         card card--{{ settings.card_style }}
