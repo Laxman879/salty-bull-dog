@@ -65,6 +65,44 @@
     font-size: 16px !important;
     color: #06387F !important;
   }
+  
+  .grid.product-grid {
+    gap: 0.1rem !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+  }
+  
+  .grid__item {
+    padding: 0.05rem !important;
+    width: calc(25% - 0.075rem) !important;
+    flex: 0 0 calc(25% - 0.075rem) !important;
+    margin-right: 0 !important;
+  }
+  
+  .grid--4-col-desktop {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.1rem !important;
+  }
+  
+  @media (max-width: 768px) {
+    .grid__item {
+      width: calc(50% - 0.05rem) !important;
+      flex: 0 0 calc(50% - 0.05rem) !important;
+    }
+    .grid.product-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .grid__item {
+      width: 100% !important;
+      flex: 0 0 100% !important;
+    }
+    .grid.product-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
 {%- endstyle -%}
 
 {%- liquid
@@ -122,7 +160,7 @@
       {%- endif -%}
     </div>
 
-    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="margin-left: -50px; margin-right: 0; width: fit-content;">
       <ul
         id="Slider-{{ section.id }}"
         data-id="{{ section.id }}"
