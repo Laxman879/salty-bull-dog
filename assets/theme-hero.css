@@ -1,0 +1,152 @@
+/* Hero Section Styles */
+.site-hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  margin-top: -20%;
+  padding-top: 20%;
+  transition: all 0.3s ease;
+}
+
+/* Responsive background adjustments */
+@media screen and (max-width: 768px) {
+  .site-hero {
+    background-attachment: scroll !important;
+    min-height: 80vh;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .site-hero {
+    min-height: 70vh;
+    background-size: cover !important;
+    background-position: center center !important;
+  }
+}
+
+/* Ensure full width on all screen sizes */
+.site-hero {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  width: 100vw;
+  max-width: none;
+}
+
+.hero-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: center;
+  }
+}
+
+.hero-left {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-right {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.hero-banner {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-actions {
+    justify-content: center;
+  }
+}
+
+.hero-shop-button img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  object-fit: contain;
+}
+
+.hero-left-image,
+.hero-right-image {
+  position: absolute;
+  z-index: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-left-image,
+  .hero-right-image {
+    display: none;
+  }
+}
+
+/* Ensure full width coverage */
+.site-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  z-index: -1;
+}
+
+/* Scrolled state - hero goes behind navbar */
+body.scrolled .site-hero {
+  z-index: 1;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Ensure content after hero has proper z-index */
+.site-hero + * {
+  position: relative;
+  z-index: 2;
+}
