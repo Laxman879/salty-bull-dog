@@ -91,12 +91,80 @@ function percentageSeen(element) {
   return Math.round(percentage);
 }
 
+// Button animation functions
+function initializeButtonAnimations() {
+  const buttons = document.querySelectorAll(
+    'button, .button, .btn, .shopify-challenge__button, .customer button, .shopify-payment-button__button, input[type="submit"], input[type="button"], a[role="button"], .hero-shop-button, .product-form__submit, [class*="button"], [class*="btn"]'
+  );
+
+  buttons.forEach(button => {
+    // Skip if already initialized
+    if (button.hasAttribute('data-button-animated')) return;
+    button.setAttribute('data-button-animated', 'true');
+
+    // Add ripple effect on click
+    button.addEventListener('click', function(e) {
+      if (this.disabled || this.getAttribute('aria-disabled') === 'true') return;
+      
+      // Add ripple class
+      this.classList.add('button-ripple');
+      
+      // Remove ripple class after animation
+      setTimeout(() => {
+        this.classList.remove('button-ripple');
+      }, 300);
+    });
+
+    // Add touch feedback for mobile
+    button.addEventListener('touchstart', function() {
+      if (this.disabled || this.getAttribute('aria-disabled') === 'true') return;
+      this.style.transform = 'scale(0.95)';
+    });
+
+    button.addEventListener('touchend', function() {
+      if (this.disabled || this.getAttribute('aria-disabled') === 'true') return;
+      this.style.transform = '';
+    });
+
+    // Keyboard accessibility
+    button.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (this.disabled || this.getAttribute('aria-disabled') === 'true') return;
+        this.classList.add('button-ripple');
+        setTimeout(() => {
+          this.classList.remove('button-ripple');
+        }, 300);
+      }
+    });
+  });
+}
+
+// Throttle function for performance
+
+
 window.addEventListener('DOMContentLoaded', () => {
   initializeScrollAnimationTrigger();
   initializeScrollZoomAnimationTrigger();
+  initializeButtonAnimations();
+});
+
+// Re-initialize button animations when new content is loaded
+const observer = new MutationObserver(throttle(() => {
+  initializeButtonAnimations();
+}, 100));
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
 });
 
 if (Shopify.designMode) {
-  document.addEventListener('shopify:section:load', (event) => initializeScrollAnimationTrigger(event.target, true));
-  document.addEventListener('shopify:section:reorder', () => initializeScrollAnimationTrigger(document, true));
+  document.addEventListener('shopify:section:load', (event) => {
+    initializeScrollAnimationTrigger(event.target, true);
+    setTimeout(() => initializeButtonAnimations(), 100);
+  });
+  document.addEventListener('shopify:section:reorder', () => {
+    initializeScrollAnimationTrigger(document, true);
+    setTimeout(() => initializeButtonAnimations(), 100);
+  });
 }
