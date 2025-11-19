@@ -80,7 +80,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Crete+Round:wght@400&display=swap" rel="stylesheet">
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding" style="background-color: white; background-image: url('{{ 'footer-bg.svg' | asset_url }}'); background-size: cover; background-position: center; background-repeat: no-repeat; font-family: 'Crete Round', serif; font-weight: 400; font-size: clamp(14px, 2.5vw, 16px); color: #2F4074; overflow-x: hidden; max-width: 100%; box-sizing: border-box; line-height: 1.5;">
-  <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%;">
+  <div class="container-fluid" style="padding: 0 15px; width: 100%;">
     {%- liquid
       assign has_social_icons = true
       if settings.social_facebook_link == blank and settings.social_instagram_link == blank and settings.social_youtube_link == blank and settings.social_tiktok_link == blank and settings.social_twitter_link == blank and settings.social_pinterest_link == blank and settings.social_snapchat_link == blank and settings.social_tumblr_link == blank and settings.social_vimeo_link == blank
@@ -268,9 +268,10 @@
         {% endif %}
         style="background-color: white; color: #2F4074; border-top: 2px solid #E0E0E0; padding: 20px 0;"
       >
-        <div class="footer__copyright caption" style="color: #2F4074; font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; line-height: 1.5; text-align: center;">
-          <small class="copyright__content" style="color: #2F4074;"
-            >&copy; {{ 'now' | date: '%Y' }} www.saltybulldogboutique.com. All rights reserved.
+        <div class="footer__copyright caption" style="color: #2F4074; font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; line-height: 1.5; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <a href="/pages/terms-conditions" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;">Terms &amp; Conditions</a>
+          <small class="copyright__content" style="font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;"
+            >&copy; {{ 'now' | date: '%Y' }} Salty Bull Dog Boutique. All rights reserved.
           </small>
         </div>
       </div>

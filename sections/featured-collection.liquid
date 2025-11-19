@@ -1,3 +1,4 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 
@@ -62,44 +63,56 @@
     font-family: 'Crete Round', serif !important;
     font-weight: 400 !important;
     font-style: normal !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
     color: #06387F !important;
   }
   
+  .card__content {
+    text-align: center !important;
+  }
+  
+
+  
   .grid.product-grid {
-    gap: 0.1rem !important;
-    margin-right: 0 !important;
-    padding-right: 0 !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
   }
   
   .grid__item {
-    padding: 0.5rem !important;
-    width: calc(33.33% - 1rem) !important;
-    flex: 0 0 calc(33.33% - 1rem) !important;
+    flex: 1 !important;
+    min-width: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
   }
   
-  .grid.product-grid {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: flex-start !important;
-    gap: 1rem !important;
-    width: 100% !important;
-    overflow: hidden !important;
+  @media (max-width: 1200px) {
+    .grid.product-grid {
+      gap: 0.75rem !important;
+    }
   }
   
   @media (max-width: 768px) {
+    .grid.product-grid {
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      gap: 1rem !important;
+    }
     .grid__item {
-      width: calc(50% - 0.5rem) !important;
       flex: 0 0 calc(50% - 0.5rem) !important;
+      max-width: 300px !important;
     }
   }
   
   @media (max-width: 480px) {
     .grid__item {
-      width: 100% !important;
       flex: 0 0 100% !important;
+      max-width: 300px !important;
     }
   }
 {%- endstyle -%}
@@ -131,10 +144,9 @@
 -%}
 
 <div
-  class="color-{{ section.settings.color_scheme }} isolate gradient featured-products-ui"
+  class="color-{{ section.settings.color_scheme }} isolate gradient featured-products-ui container-fluid"
   style="background: #ffffff;"
 >
-  <div class="container">
     <div
       class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
       id="collection-{{ section.id }}"
@@ -160,11 +172,11 @@
       {%- endif -%}
     </div>
 
-    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="width: 100%; overflow: hidden;">
+    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="width: 100%; overflow: hidden;">
       <ul
         id="Slider-{{ section.id }}"
         data-id="{{ section.id }}"
-        class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
+        class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--4-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
         role="list"
         aria-label="{{ 'general.slider.name' | t }}"
         style="display: flex; flex-wrap: wrap; width: 100%; overflow: hidden;"
