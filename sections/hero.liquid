@@ -1,7 +1,8 @@
 <section id="hero" class="site-hero" data-section-id="{{ section.id }}" style="margin-top: -20px; background-image: url('{{ 'Union hero.svg' | asset_url }}'); background-size: cover; background-position: center center; background-repeat: no-repeat; width: 100%; min-height: 100vh;">
   <div class="hero-top-decoration"></div>
 
-  <div class="hero-inner wrap">
+  <div class="container">
+    <div class="hero-inner wrap">
     <div class="hero-left">
       <h1 class="hero-title">{{ section.settings.title }}</h1>
       {% if section.settings.subtitle != blank %}

@@ -73,32 +73,26 @@
   }
   
   .grid__item {
-    padding: 0.05rem !important;
-    width: calc(25% - 0.075rem) !important;
-    flex: 0 0 calc(25% - 0.075rem) !important;
-    margin-right: 0 !important;
+    padding: 0.5rem !important;
+    width: calc(33.33% - 1rem) !important;
+    flex: 0 0 calc(33.33% - 1rem) !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
   }
   
-  .grid--4-col-desktop {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 0.1rem !important;
+  .grid.product-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    overflow: hidden !important;
   }
   
   @media (max-width: 768px) {
     .grid__item {
-      width: calc(50% - 0.05rem) !important;
-      flex: 0 0 calc(50% - 0.05rem) !important;
-    }
-    .grid.product-grid {
-      grid-template-columns: repeat(2, 1fr) !important;
-      justify-content: center !important;
-      margin: 0 auto !important;
-    }
-    .slider-mobile-gutter {
-      display: flex !important;
-      justify-content: center !important;
-      margin: 0 auto !important;
-      width: 100% !important;
+      width: calc(50% - 0.5rem) !important;
+      flex: 0 0 calc(50% - 0.5rem) !important;
     }
   }
   
@@ -106,9 +100,6 @@
     .grid__item {
       width: 100% !important;
       flex: 0 0 100% !important;
-    }
-    .grid.product-grid {
-      grid-template-columns: 1fr !important;
     }
   }
 {%- endstyle -%}
@@ -143,11 +134,12 @@
   class="color-{{ section.settings.color_scheme }} isolate gradient featured-products-ui"
   style="background: #ffffff;"
 >
-  <div
-    class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
-    id="collection-{{ section.id }}"
-    data-id="{{ section.id }}"
-  >
+  <div class="container">
+    <div
+      class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
+      id="collection-{{ section.id }}"
+      data-id="{{ section.id }}"
+    >
     <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}" style="text-align:center;">
       {%- if section.settings.title != blank -%}
         <h2 class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="font-family: 'Delius Swash Caps', cursive; color: #22336c; font-size:38px; margin-bottom:2rem;">
@@ -168,13 +160,14 @@
       {%- endif -%}
     </div>
 
-    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="margin-left: -50px; margin-right: 0; width: fit-content;">
+    <slider-component class="slider-mobile-gutter{% if section.settings.full_width %} slider-component-full-width{% endif %}{% if show_mobile_slider == false %} page-width{% endif %}{% if show_desktop_slider == false and section.settings.full_width == false %} page-width-desktop{% endif %}{% if show_desktop_slider %} slider-component-desktop{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="width: 100%; overflow: hidden;">
       <ul
         id="Slider-{{ section.id }}"
         data-id="{{ section.id }}"
         class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--{{ section.settings.columns_desktop }}-col-desktop{% if section.settings.collection == blank %} grid--2-col-tablet-down{% else %} grid--{{ section.settings.columns_mobile }}-col-tablet-down{% endif %}{% if show_mobile_slider or show_desktop_slider %} slider{% if show_desktop_slider %} slider--desktop{% endif %}{% if show_mobile_slider %} slider--tablet grid--peek{% endif %}{% endif %}"
         role="list"
         aria-label="{{ 'general.slider.name' | t }}"
+        style="display: flex; flex-wrap: wrap; width: 100%; overflow: hidden;"
       >
         {% assign skip_card_product_styles = false %}
 
@@ -295,6 +288,7 @@
     {% if section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
+    </div>
   </div>
 </div>
 
