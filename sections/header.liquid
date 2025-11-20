@@ -183,7 +183,27 @@
     endif
   -%}
   <link href="{{ 'header-announcement.css' | asset_url }}" rel="stylesheet" />
-  <div class="container-fluid">
+  <style>
+    .container-fluid {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    .header-wrapper {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 10000 !important;
+    }
+    .menu-drawer {
+      z-index: 10001 !important;
+    }
+  </style>
+  <div class="container-fluid" style="margin: 0px; padding: 0px; width: 100%; box-sizing: border-box;">
     <header class="header custom-centered header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }}{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     {%- liquid
       if section.settings.logo_position == 'top-center' or section.settings.menu == blank
@@ -246,8 +266,15 @@
         <li>
           <a href="{{ routes.root_url }}" class="header__menu-item list-menu__item link link--text focus-inset{% if request.page_type == 'index' %} active{% endif %}">Home</a>
         </li>
-        <li>
-          <a href="{{ routes.all_products_collection_url }}" class="header__menu-item list-menu__item link link--text focus-inset{% if page.handle == 'all' or request.page_type == 'collection' %} active{% endif %}">Shop</a>
+        <li class="dropdown">
+          <a href="#" onclick="toggleDropdown(event)" class="header__menu-item list-menu__item link link--text focus-inset{% if page.handle == 'all' or request.page_type == 'collection' %} active{% endif %}">Shop <span class="dropdown-arrow"><svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/collections/baby-kids" class="dropdown-item">Baby & Kids</a></li>
+            <li><a href="/collections/family-sets" class="dropdown-item">Family Sets</a></li>
+            <li><a href="/collections/custom-tshirts" class="dropdown-item">Custom T-Shirts</a></li>
+            <li><a href="/collections/gift-ideas" class="dropdown-item">Gift Ideas</a></li>
+            <li><a href="/collections/embroidery" class="dropdown-item">Embroidery Designs</a></li>
+          </ul>
         </li>
         <li>
           <a href="/pages/customer-orders" class="header__menu-item list-menu__item link link--text focus-inset{% if template contains 'page.customer-orders' or request.path contains '/pages/customer-orders' or request.path contains 'customer-orders' %} active{% endif %}">Customer Orders</a>
@@ -449,6 +476,7 @@
         position: relative !important;
         width: 100% !important;
         box-sizing: border-box !important;
+        overflow: visible !important;
       }
 
       /* Prevent any layout shifts */
@@ -533,6 +561,24 @@
       .menu-drawer {
         width: 100%;
         max-width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        background: white;
+        z-index: 10001;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .menu-drawer-container[open] .menu-drawer {
+        transform: translateX(0);
+      }
+      
+      .menu-drawer__inner-container {
+        padding: 80px 20px 20px;
+        height: 100%;
+        overflow-y: auto;
       }
 
       /* Header icon switching */
@@ -636,6 +682,67 @@
         }
       }
       
+      /* Dropdown Menu Styles */
+      .dropdown {
+        position: relative;
+      }
+      
+      .dropdown-arrow {
+        font-size: 10px;
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+        font-weight: bold;
+      }
+      
+      .dropdown-arrow svg {
+        stroke-width: 2;
+        font-weight: bold;
+      }
+      
+      .dropdown:hover .dropdown-arrow {
+        transform: rotate(180deg);
+      }
+      
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        min-width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 9999 !important;
+        list-style: none;
+        padding: 10px 0;
+        margin: 0;
+      }
+      
+      .dropdown.active .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .dropdown-item {
+        display: block;
+        padding: 10px 20px;
+        color: #06387F;
+        text-decoration: none;
+        font-family: 'Crete Round', serif;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .dropdown-item:hover {
+        background-color: #f8f9fa;
+        color: #073b6b;
+      }
+
       /* Tablet specific */
       @media screen and (min-width: 750px) and (max-width: 989px) {
         .header {
@@ -769,6 +876,76 @@
   }
 
   customElements.define('sticky-header', StickyHeader);
+  
+  // Simple hamburger menu toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.header__icon--summary');
+    const details = document.getElementById('Details-menu-drawer-container');
+    
+    if (hamburger && details) {
+      hamburger.addEventListener('click', function(e) {
+        e.preventDefault();
+        details.toggleAttribute('open');
+      });
+    }
+  });
+  
+  // Backup method - direct click on hamburger icon
+  setTimeout(function() {
+    const hamburgerIcon = document.querySelector('.hamburger-icon');
+    const details = document.getElementById('Details-menu-drawer-container');
+    
+    if (hamburgerIcon && details) {
+      hamburgerIcon.addEventListener('click', function(e) {
+        e.stopPropagation();
+        details.toggleAttribute('open');
+      });
+    }
+  }, 100);
+  
+  // Dropdown toggle function
+  function toggleDropdown(event) {
+    event.preventDefault();
+    const dropdown = event.target.closest('.dropdown');
+    dropdown.classList.toggle('active');
+  }
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.dropdown')) {
+      document.querySelectorAll('.dropdown.active').forEach(dropdown => {
+        dropdown.classList.remove('active');
+      });
+    }
+  });
+  
+  // Ensure hamburger menu works
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.header__icon--summary');
+    const menuDrawer = document.getElementById('Details-menu-drawer-container');
+    const hamburgerIcon = document.querySelector('.hamburger-icon');
+    const closeIcon = document.querySelector('.close-icon');
+    
+    function toggleMenu() {
+      if (menuDrawer.hasAttribute('open')) {
+        menuDrawer.removeAttribute('open');
+        hamburgerIcon.style.display = 'block';
+        closeIcon.style.display = 'none';
+      } else {
+        menuDrawer.setAttribute('open', '');
+        hamburgerIcon.style.display = 'none';
+        closeIcon.style.display = 'block';
+      }
+    }
+    
+    if (menuToggle && menuDrawer) {
+      menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
+      });
+    }
+  });
 {% endjavascript %}
 
 <script type="application/ld+json">
