@@ -139,8 +139,45 @@
                     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                     {{ form | payment_terms }}
                   {%- endform -%}
-                </div>
-              {%- when 'inventory' -%}
+                  </div>
+
+                  <!-- BEGIN: Quick UI blocks (color/size and quantity) -->
+                  <div class="product__quick-ui">
+                    <div class="product__quick-ui-inner">
+                      <div class="product__quick-actions">
+                        <div class="product__quick-buttons">
+                          <button type="button" class="product__button product__button--sizeguide" aria-label="Size guide">
+                            {{- 'sizeguide.svg' | inline_asset_content -}}
+                          </button>
+                          <button type="button" class="product__button product__button--addtowatch" aria-label="Add to watch">
+                            {{- 'addtowatch.svg' | inline_asset_content -}}
+                          </button>
+                          <button type="button" class="product__button product__button--addtocart-small" aria-label="Quick add to cart">
+                            {{- 'addtocart.svg' | inline_asset_content -}}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="product__quick-quantity">
+                        <label for="QuickQuantity-{{ section.id }}" class="visually-hidden">{{ 'products.product.quantity.label' | t }}</label>
+                        <input
+                          id="QuickQuantity-{{ section.id }}"
+                          class="quantity__input quantity__input--quick"
+                          type="number"
+                          name="quantity"
+                          min="1"
+                          value="1"
+                          aria-label="{{ 'products.product.quantity.label' | t }}"
+                        />
+                        <button type="button" class="button product__button--quick-add" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+                          {{ 'products.product.add_to_cart' | t }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END: Quick UI blocks -->
+
+                {%- when 'inventory' -%}
                 <p
                   class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
                   {{ block.shopify_attributes }}
@@ -214,9 +251,15 @@
                   <details id="Details-{{ block.id }}-{{ section.id }}">
                     <summary>
                       <div class="summary__title">
-                        {% render 'icon-accordion', icon: block.settings.icon %}
+                        {%- assign heading_text = block.settings.heading | default: block.settings.page.title | escape -%}
                         <h2 class="h4 accordion__title inline-richtext">
-                          {{ block.settings.heading | default: block.settings.page.title | escape }}
+                          {%- if heading_text contains 'Questions' -%}
+                            {{ heading_text }} (4)
+                          {%- elsif heading_text contains 'Reviews' -%}
+                            {{ heading_text }} ({{ product.metafields.reviews.rating_count | default: 20 }})
+                          {%- else -%}
+                            {{ heading_text }}
+                          {%- endif -%}
                         </h2>
                       </div>
                       {{- 'icon-caret.svg' | inline_asset_content -}}
@@ -224,6 +267,38 @@
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
                       {{ block.settings.content }}
                       {{ block.settings.page.content }}
+
+                      {%- if heading_text contains 'Reviews' -%}
+                        <ul class="review-list" aria-live="polite">
+                          <li class="review-item">
+                            <div class="review-row">
+                              <div class="review-badge">5.0</div>
+                              <div>
+                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
+                                <div class="review-body">Very nice, well-made, and the size is correct. I recommend it.</div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="review-item">
+                            <div class="review-row">
+                              <div class="review-badge">4.0</div>
+                              <div>
+                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
+                                <div class="review-body">It's a great looking shirt that will make you feel more confident.</div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="review-item">
+                            <div class="review-row">
+                              <div class="review-badge">3.8</div>
+                              <div>
+                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
+                                <div class="review-body">Great style and good price, looks just like I expected. Shipping was a breeze.</div>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      {%- endif -%}
                     </div>
                   </details>
                 </div>
