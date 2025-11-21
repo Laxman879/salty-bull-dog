@@ -1,8 +1,11 @@
 .accordion summary {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   line-height: 1;
   padding: 1.5rem 0;
+  cursor: pointer;
 }
 
 .accordion .summary__title {
@@ -11,19 +14,20 @@
 }
 
 .accordion .summary__title + .icon-caret {
-  height: calc(var(--font-heading-scale) * 0.6rem);
+  height: 1.2rem;
+  width: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
 .accordion + .accordion {
   margin-top: 0;
-  border-top: none;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.1);
 }
 
 .accordion {
-  margin-top: 2.5rem;
+  margin-top: 0;
   margin-bottom: 0;
-  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.1);
 }
 
 .accordion__title {
@@ -32,6 +36,8 @@
   min-height: 1.6rem;
   margin: 0;
   word-break: break-word;
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
 }
 
 .accordion .svg-wrapper {
@@ -50,9 +56,90 @@
   margin-bottom: 1.5rem;
   word-break: break-word;
   overflow-x: auto;
-  padding: 0 0.6rem;
+  padding: 0 0 1.5rem 0;
+  color: rgba(var(--color-foreground), 0.8);
+  line-height: 1.6;
 }
 
 .accordion__content img {
   max-width: 100%;
+}
+
+.accordion__content ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.accordion__content li {
+  margin-bottom: 0.5rem;
+}
+
+#MainProduct-template--23454914773349__main .product {
+  flex-direction: row-reverse;
+}
+
+/* Review list styles inside accordion content */
+.accordion__content .review-list,
+.accordion__content .spr-reviews,
+.accordion__content .judgeme-reviews,
+.accordion__content .yotpo-reviews {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion__content .review-item,
+.accordion__content .spr-review,
+.accordion__content .judgeme-review,
+.accordion__content .yotpo-review {
+  display: block;
+  padding: 1.1rem 0;
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+.accordion__content .review-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.accordion__content .review-badge,
+.accordion__content .review-rating {
+  background: #0b66b3;
+  color: #fff;
+  font-weight: 700;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.4rem;
+  min-width: 3.2rem;
+  text-align: center;
+  line-height: 1;
+  font-size: 1.2rem;
+}
+
+.accordion__content .review-meta {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+}
+
+.accordion__content .review-meta .review-date {
+  font-weight: 400;
+  color: rgba(var(--color-foreground), 0.6);
+  font-size: 0.95rem;
+}
+
+.accordion__content .review-body,
+.accordion__content .review-text,
+.accordion__content .spr-review-content,
+.accordion__content .judgeme-comment {
+  margin-top: 0.6rem;
+  color: rgba(var(--color-foreground), 0.85);
+  line-height: 1.6;
+}
+
+/* Compact separators and spacing to match example UI */
+.accordion__content .review-item + .review-item {
+  margin-top: 0.2rem;
 }

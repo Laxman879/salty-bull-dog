@@ -1,12 +1,4 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
+
 {
   "sections": {
     "main": {
@@ -30,8 +22,7 @@
         "collapsible-row-1": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Product features",
-            "icon": "star",
+            "heading": "Product Details",
             "content": "",
             "page": "product-features"
           }
@@ -39,8 +30,7 @@
         "collapsible-row-0": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Materials and care",
-            "icon": "leaf",
+            "heading": "Shipping Details",
             "content": "",
             "page": "materials-and-care"
           }
@@ -48,8 +38,15 @@
         "collapsible-row-2": {
           "type": "collapsible_tab",
           "settings": {
-            "heading": "Merchandising tips",
-            "icon": "check_mark",
+            "heading": "Questions and Answers",
+            "content": "",
+            "page": "merchandising-tips"
+          }
+        },
+        "collapsible-row-3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Customer Reviews",
             "content": "",
             "page": "merchandising-tips"
           }
@@ -68,6 +65,7 @@
         "collapsible-row-1",
         "collapsible-row-0",
         "collapsible-row-2",
+        "collapsible-row-3",
         "share"
       ],
       "settings": {
@@ -100,7 +98,7 @@
     "related-products": {
       "type": "related-products",
       "settings": {
-        "heading": "Other industry favorites",
+        "heading": "More Like this",
         "heading_size": "h2",
         "products_to_show": 5,
         "columns_desktop": 5,
@@ -114,11 +112,22 @@
         "padding_top": 36,
         "padding_bottom": 44
       }
+    },
+    "contact_form": {
+      "type": "contact-form",
+      "settings": {
+        "heading": "Get a Custom Design",
+        "heading_size": "h1",
+        "color_scheme": "background-1",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
     }
   },
   "order": [
     "main",
     "quick-order-list",
-    "related-products"
+    "related-products",
+    "contact_form"
   ]
 }
