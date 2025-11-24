@@ -37,6 +37,70 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+    
+    .size-option {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .size-option:hover {
+      opacity: 0.8;
+    }
+    
+    .size-option.selected {
+      background-color: #06387F;
+      color: white;
+    }
+    
+    .size-option.selected svg {
+      fill: white;
+    }
+    
+    .color-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .color-option:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .color-option.selected {
+      background-color: #e6f2ff;
+      border: 2px solid #06387F;
+    }
+    
+    .color-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .color-name {
+      font-size: 14px;
+      color: #333;
+    }
+    
+    .color-options {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+    }
+    
+    .rating-star {
+      color: #FFD700 !important;
+    }
+    
+    .rating-star::before {
+      color: #FFD700 !important;
+    }
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -188,37 +252,47 @@
                     <div class="product__color-selection">
                       <span class="variant-label">Color:</span>
                       <div class="color-options">
-                        <div class="color-swatch" style="background-color: #FF0000;"></div>
-                        <div class="color-swatch" style="background-color: #0000FF;"></div>
-                        <div class="color-swatch" style="background-color: #008000;"></div>
+                        <div class="color-option" onclick="selectColor('Red')">
+                          <div class="color-circle" style="background-color: #FF0000;"></div>
+                          <span class="color-name">Red</span>
+                        </div>
+                        <div class="color-option" onclick="selectColor('Blue')">
+                          <div class="color-circle" style="background-color: #0000FF;"></div>
+                          <span class="color-name">Blue</span>
+                        </div>
+                        <div class="color-option" onclick="selectColor('Green')">
+                          <div class="color-circle" style="background-color: #008000;"></div>
+                          <span class="color-name">Green</span>
+                        </div>
                       </div>
+                      <input type="hidden" id="selected-color" value="">
                     </div>
 
                     <!-- Size Selection -->
                     <div class="product__size-selection">
                       <span class="variant-label">Size:</span>
                       <div class="size-options">
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('XS')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">XS</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('S')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">S</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('M')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">M</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('L')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">L</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('XL')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">XL</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('XXL')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">XXL</span>
                         </div>
@@ -226,6 +300,7 @@
                           {{- 'sizeguide.svg' | inline_asset_content -}}
                         </div>
                       </div>
+                      <input type="hidden" id="selected-size" value="">
                     </div>
                   </div>
                   <!-- END: Color and Size Selection -->
@@ -287,7 +362,46 @@
                       }
                     });
 
+                    function selectColor(color) {
+                      // Remove selected class from all color options
+                      document.querySelectorAll('.color-option').forEach(option => {
+                        option.classList.remove('selected');
+                      });
+                      
+                      // Add selected class to clicked option
+                      event.target.closest('.color-option').classList.add('selected');
+                      
+                      // Store selected color
+                      document.getElementById('selected-color').value = color;
+                    }
+
+                    function selectSize(size) {
+                      // Remove selected class from all size options
+                      document.querySelectorAll('.size-option').forEach(option => {
+                        option.classList.remove('selected');
+                      });
+                      
+                      // Add selected class to clicked option
+                      event.target.closest('.size-option').classList.add('selected');
+                      
+                      // Store selected size
+                      document.getElementById('selected-size').value = size;
+                    }
+
                     function addToCart() {
+                      const selectedColor = document.getElementById('selected-color').value;
+                      const selectedSize = document.getElementById('selected-size').value;
+                      
+                      if (!selectedColor) {
+                        showNotification('Please select a color', 'error');
+                        return;
+                      }
+                      
+                      if (!selectedSize) {
+                        showNotification('Please select a size', 'error');
+                        return;
+                      }
+                      
                       const quantity = document.getElementById('quick-quantity').value || 1;
                       const variantId = {{ product.selected_or_first_available_variant.id }};
                       
