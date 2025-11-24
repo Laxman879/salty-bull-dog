@@ -1871,3 +1871,27 @@ a.product__text {
 .size-chart tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+/* Global cursor pointer for interactive elements */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+.button,
+.btn,
+[role="button"],
+.clickable,
+.product-form__submit,
+.shopify-payment-button__button,
+.product__button,
+.quantity-option,
+.color-option,
+.size-option,
+.size-guide,
+.thumbnail,
+.product__modal-opener,
+.product-popup-modal__button,
+.accordion summary,
+details summary {
+  cursor: pointer !important;
+}
