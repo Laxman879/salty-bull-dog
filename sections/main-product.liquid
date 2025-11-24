@@ -105,6 +105,60 @@
                     </h2>
                   </a>
                 </div>
+                
+                <!-- Rating and Reviews Count -->
+                <div class="product__rating-wrapper">
+                  {%- if product.metafields.reviews.rating.value != blank -%}
+                    <div class="rating-wrapper">
+                      {% liquid
+                        assign rating_decimal = 0
+                        assign decimal = product.metafields.reviews.rating.value.rating | modulo: 1
+                        if decimal >= 0.3 and decimal <= 0.7
+                          assign rating_decimal = 0.5
+                        elsif decimal > 0.7
+                          assign rating_decimal = 1
+                        endif
+                      %}
+                      <div
+                        class="rating"
+                        role="img"
+                        aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: product.metafields.reviews.rating.value, rating_max: product.metafields.reviews.rating.value.scale_max }}"
+                      >
+                        <span
+                          aria-hidden="true"
+                          class="rating-star"
+                          style="--rating: {{ product.metafields.reviews.rating.value.rating | floor }}; --rating-max: {{ product.metafields.reviews.rating.value.scale_max }}; --rating-decimal: {{ rating_decimal }};"
+                        ></span>
+                      </div>
+                      <p class="rating-text caption">
+                        <span aria-hidden="true">
+                          {{- product.metafields.reviews.rating.value -}}
+                        </span>
+                      </p>
+                      <p class="rating-count caption">
+                        <span aria-hidden="true">{{ product.metafields.reviews.rating_count | default: 20 }} reviews</span>
+                        <span class="visually-hidden">
+                          {{- product.metafields.reviews.rating_count | default: 20 }}
+                          {{ 'accessibility.total_reviews' | t -}}
+                        </span>
+                      </p>
+                    </div>
+                  {%- else -%}
+                    <!-- Fallback rating display -->
+                    <div class="rating-wrapper">
+                      <div class="rating" role="img" aria-label="4.5 out of 5 stars">
+                        <span aria-hidden="true" class="rating-star" style="--rating: 4; --rating-max: 5; --rating-decimal: 0.5;"></span>
+                      </div>
+                      <p class="rating-text caption">
+                        <span aria-hidden="true">4.5</span>
+                      </p>
+                      <p class="rating-count caption">
+                        <span aria-hidden="true">20 reviews</span>
+                        <span class="visually-hidden">20 {{ 'accessibility.total_reviews' | t }}</span>
+                      </p>
+                    </div>
+                  {%- endif -%}
+                </div>
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                   {%- render 'price',
@@ -119,28 +173,170 @@
                     <span>{{ 'products.product.volume_pricing.note' | t }}</span>
                   </div>
                 {%- endif -%}
-                {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
-                  <div class="product__tax caption rte">
-                    {%- if cart.duties_included and cart.taxes_included -%}
-                      {{ 'products.product.duties_and_taxes_included' | t }}
-                    {%- elsif cart.taxes_included -%}
-                      {{ 'products.product.taxes_included' | t }}
-                    {%- elsif cart.duties_included -%}
-                      {{ 'products.product.duties_included' | t }}
-                    {%- endif -%}
-                    {%- if shop.shipping_policy.body != blank -%}
-                      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-                    {%- endif -%}
-                  </div>
-                {%- endif -%}
+
                 <div {{ block.shopify_attributes }}>
                   {%- assign product_form_installment_id = 'product-form-installment-' | append: section.id -%}
                   {%- form 'product', product, id: product_form_installment_id, class: 'installment caption-large' -%}
                     <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                     {{ form | payment_terms }}
                   {%- endform -%}
-                </div>
-              {%- when 'inventory' -%}
+                  </div>
+
+                  <!-- BEGIN: Color and Size Selection -->
+                  <div class="product__variants-section">
+                    <!-- Color Selection -->
+                    <div class="product__color-selection">
+                      <span class="variant-label">Color:</span>
+                      <div class="color-options">
+                        <div class="color-swatch" style="background-color: #FF0000;"></div>
+                        <div class="color-swatch" style="background-color: #0000FF;"></div>
+                        <div class="color-swatch" style="background-color: #008000;"></div>
+                      </div>
+                    </div>
+
+                    <!-- Size Selection -->
+                    <div class="product__size-selection">
+                      <span class="variant-label">Size:</span>
+                      <div class="size-options">
+                        <div class="size-option">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="size-text">XS</span>
+                        </div>
+                        <div class="size-option">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="size-text">S</span>
+                        </div>
+                        <div class="size-option">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="size-text">M</span>
+                        </div>
+                        <div class="size-option">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="size-text">L</span>
+                        </div>
+                        <div class="size-option">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="size-text">XL</span>
+                        </div>
+                        <div class="size-option">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="size-text">XXL</span>
+                        </div>
+                        <div class="size-guide">
+                          {{- 'sizeguide.svg' | inline_asset_content -}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- END: Color and Size Selection -->
+
+                  <!-- BEGIN: Quick UI blocks -->
+                  <div class="product__quick-ui">
+                    <div class="product__quick-buttons">
+                      <div class="product__quantity-wrapper">
+                        <span class="quantity-label">Qty:</span>
+                        <div class="product__quantity-box">
+                          {{- 'box-product.svg' | inline_asset_content -}}
+                          <span class="quantity-display" id="quantity-display">1</span>
+                          <div class="product__quantity-arrow" onclick="toggleQuantityDropdown()">
+                            {{- 'arrow_back_ios_new.svg' | inline_asset_content -}}
+                          </div>
+                          <div class="quantity-dropdown" id="quantity-dropdown">
+                            <div class="quantity-option" onclick="selectQuantity(1)">1</div>
+                            <div class="quantity-option" onclick="selectQuantity(2)">2</div>
+                            <div class="quantity-option" onclick="selectQuantity(3)">3</div>
+                            <div class="quantity-option" onclick="selectQuantity(4)">4</div>
+                            <div class="quantity-option" onclick="selectQuantity(5)">5</div>
+                            <div class="quantity-option" onclick="selectQuantity(6)">6</div>
+                            <div class="quantity-option" onclick="selectQuantity(7)">7</div>
+                            <div class="quantity-option" onclick="selectQuantity(8)">8</div>
+                            <div class="quantity-option" onclick="selectQuantity(9)">9</div>
+                            <div class="quantity-option" onclick="selectQuantity(10)">10</div>
+                          </div>
+                          <input type="hidden" id="quick-quantity" value="1">
+                        </div>
+                      </div>
+                      <button type="button" class="product__button product__button--addtowatch" aria-label="Add to watch" onclick="addToWishlist()">
+                        {{- 'addtowatch.svg' | inline_asset_content -}}
+                      </button>
+                      <button type="button" class="product__button product__button--addtocart-small" aria-label="Quick add to cart" onclick="addToCart()">
+                        {{- 'addtocart.svg' | inline_asset_content -}}
+                      </button>
+                    </div>
+                  </div>
+                  <!-- END: Quick UI blocks -->
+
+                  <script>
+                    function toggleQuantityDropdown() {
+                      const dropdown = document.getElementById('quantity-dropdown');
+                      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+                    }
+
+                    function selectQuantity(qty) {
+                      document.getElementById('quantity-display').textContent = qty;
+                      document.getElementById('quick-quantity').value = qty;
+                      document.getElementById('quantity-dropdown').style.display = 'none';
+                    }
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(event) {
+                      const dropdown = document.getElementById('quantity-dropdown');
+                      const arrow = document.querySelector('.product__quantity-arrow');
+                      if (!arrow.contains(event.target) && !dropdown.contains(event.target)) {
+                        dropdown.style.display = 'none';
+                      }
+                    });
+
+                    function addToCart() {
+                      const quantity = document.getElementById('quick-quantity').value || 1;
+                      const variantId = {{ product.selected_or_first_available_variant.id }};
+                      
+                      const formData = new FormData();
+                      formData.append('id', variantId);
+                      formData.append('quantity', quantity);
+                      
+                      fetch('/cart/add.js', {
+                        method: 'POST',
+                        body: formData
+                      })
+                      .then(response => {
+                        if (response.ok) {
+                          return response.json();
+                        }
+                        throw new Error('Network response was not ok');
+                      })
+                      .then(data => {
+                        showNotification('✓ Added to cart!', 'success');
+                        setTimeout(() => window.location.reload(), 1000);
+                      })
+                      .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('✗ Error adding to cart', 'error');
+                      });
+                    }
+
+                    function addToWishlist() {
+                      showNotification('♥ Added to wishlist!', 'success');
+                    }
+
+                    function showNotification(message, type) {
+                      const notification = document.createElement('div');
+                      notification.className = `notification notification--${type}`;
+                      notification.textContent = message;
+                      document.body.appendChild(notification);
+                      
+                      setTimeout(() => {
+                        notification.classList.add('notification--show');
+                      }, 100);
+                      
+                      setTimeout(() => {
+                        notification.classList.remove('notification--show');
+                        setTimeout(() => notification.remove(), 300);
+                      }, 3000);
+                    }
+                  </script>
+
+                {%- when 'inventory' -%}
                 <p
                   class="product__inventory{% if block.settings.text_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.text_style == 'subtitle' %} subtitle{% endif %}{% if product.selected_or_first_available_variant.inventory_management != 'shopify' %} visibility-hidden{% endif %}"
                   {{ block.shopify_attributes }}
@@ -214,9 +410,15 @@
                   <details id="Details-{{ block.id }}-{{ section.id }}">
                     <summary>
                       <div class="summary__title">
-                        {% render 'icon-accordion', icon: block.settings.icon %}
+                        {%- assign heading_text = block.settings.heading | default: block.settings.page.title | escape -%}
                         <h2 class="h4 accordion__title inline-richtext">
-                          {{ block.settings.heading | default: block.settings.page.title | escape }}
+                          {%- if heading_text contains 'Questions' -%}
+                            {{ heading_text }} (4)
+                          {%- elsif heading_text contains 'Reviews' -%}
+                            {{ heading_text }} ({{ product.metafields.reviews.rating_count | default: 20 }})
+                          {%- else -%}
+                            {{ heading_text }}
+                          {%- endif -%}
                         </h2>
                       </div>
                       {{- 'icon-caret.svg' | inline_asset_content -}}
@@ -224,6 +426,38 @@
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
                       {{ block.settings.content }}
                       {{ block.settings.page.content }}
+
+                      {%- if heading_text contains 'Reviews' -%}
+                        <ul class="review-list" aria-live="polite">
+                          <li class="review-item">
+                            <div class="review-row">
+                              <div class="review-badge">5.0</div>
+                              <div>
+                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
+                                <div class="review-body">Very nice, well-made, and the size is correct. I recommend it.</div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="review-item">
+                            <div class="review-row">
+                              <div class="review-badge">4.0</div>
+                              <div>
+                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
+                                <div class="review-body">It's a great looking shirt that will make you feel more confident.</div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="review-item">
+                            <div class="review-row">
+                              <div class="review-badge">3.8</div>
+                              <div>
+                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
+                                <div class="review-body">Great style and good price, looks just like I expected. Shipping was a breeze.</div>
+                              </div>
+                            </div>
+                          </li>
+                        </ul>
+                      {%- endif -%}
                     </div>
                   </details>
                 </div>

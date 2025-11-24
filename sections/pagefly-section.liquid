@@ -1,9 +1,13 @@
 
 {% if section.settings.section_id.size > 0 %}
-  <!-- PageFlyGlobalSection -->
-  {% render 'pagefly-main-js' %}
-  {% render 'pagefly-main-css' %}
-  {% include section.settings.section_id %}
+  {% if section.settings.section_id == 'pf-6f9acfaf' and template != 'index' %}
+    <!-- Hero banner only shows on home page -->
+  {% else %}
+    <!-- PageFlyGlobalSection -->
+    {% render 'pagefly-main-js' %}
+    {% render 'pagefly-main-css' %}
+    {% include section.settings.section_id %}
+  {% endif %}
 {% else %}
   
     {% if request.design_mode %}
