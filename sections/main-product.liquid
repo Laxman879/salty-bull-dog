@@ -37,6 +37,70 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+    
+    .size-option {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .size-option:hover {
+      opacity: 0.8;
+    }
+    
+    .size-option.selected {
+      background-color: #06387F;
+      color: white;
+    }
+    
+    .size-option.selected svg {
+      fill: white;
+    }
+    
+    .color-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+    
+    .color-option:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .color-option.selected {
+      background-color: #e6f2ff;
+      border: 2px solid #06387F;
+    }
+    
+    .color-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .color-name {
+      font-size: 14px;
+      color: #333;
+    }
+    
+    .color-options {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+    }
+    
+    .rating-star {
+      color: #FFD700 !important;
+    }
+    
+    .rating-star::before {
+      color: #FFD700 !important;
+    }
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -188,44 +252,55 @@
                     <div class="product__color-selection">
                       <span class="variant-label">Color:</span>
                       <div class="color-options">
-                        <div class="color-swatch" style="background-color: #FF0000;"></div>
-                        <div class="color-swatch" style="background-color: #0000FF;"></div>
-                        <div class="color-swatch" style="background-color: #008000;"></div>
+                        <div class="color-option" onclick="selectColor('Red')">
+                          <div class="color-circle" style="background-color: #FF0000;"></div>
+                          <span class="color-name">Red</span>
+                        </div>
+                        <div class="color-option" onclick="selectColor('Blue')">
+                          <div class="color-circle" style="background-color: #0000FF;"></div>
+                          <span class="color-name">Blue</span>
+                        </div>
+                        <div class="color-option" onclick="selectColor('Green')">
+                          <div class="color-circle" style="background-color: #008000;"></div>
+                          <span class="color-name">Green</span>
+                        </div>
                       </div>
+                      <input type="hidden" id="selected-color" value="">
                     </div>
 
                     <!-- Size Selection -->
                     <div class="product__size-selection">
                       <span class="variant-label">Size:</span>
                       <div class="size-options">
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('XS')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">XS</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('S')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">S</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('M')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">M</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('L')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">L</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('XL')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">XL</span>
                         </div>
-                        <div class="size-option">
+                        <div class="size-option" onclick="selectSize('XXL')">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="size-text">XXL</span>
                         </div>
-                        <div class="size-guide">
+                        <div class="size-guide" onclick="openSizeGuide()">
                           {{- 'sizeguide.svg' | inline_asset_content -}}
                         </div>
                       </div>
+                      <input type="hidden" id="selected-size" value="">
                     </div>
                   </div>
                   <!-- END: Color and Size Selection -->
@@ -287,7 +362,46 @@
                       }
                     });
 
+                    function selectColor(color) {
+                      // Remove selected class from all color options
+                      document.querySelectorAll('.color-option').forEach(option => {
+                        option.classList.remove('selected');
+                      });
+                      
+                      // Add selected class to clicked option
+                      event.target.closest('.color-option').classList.add('selected');
+                      
+                      // Store selected color
+                      document.getElementById('selected-color').value = color;
+                    }
+
+                    function selectSize(size) {
+                      // Remove selected class from all size options
+                      document.querySelectorAll('.size-option').forEach(option => {
+                        option.classList.remove('selected');
+                      });
+                      
+                      // Add selected class to clicked option
+                      event.target.closest('.size-option').classList.add('selected');
+                      
+                      // Store selected size
+                      document.getElementById('selected-size').value = size;
+                    }
+
                     function addToCart() {
+                      const selectedColor = document.getElementById('selected-color').value;
+                      const selectedSize = document.getElementById('selected-size').value;
+                      
+                      if (!selectedColor) {
+                        showNotification('Please select a color', 'error');
+                        return;
+                      }
+                      
+                      if (!selectedSize) {
+                        showNotification('Please select a size', 'error');
+                        return;
+                      }
+                      
                       const quantity = document.getElementById('quick-quantity').value || 1;
                       const variantId = {{ product.selected_or_first_available_variant.id }};
                       
@@ -333,6 +447,14 @@
                         notification.classList.remove('notification--show');
                         setTimeout(() => notification.remove(), 300);
                       }, 3000);
+                    }
+
+                    function openSizeGuide() {
+                      document.getElementById('size-guide-modal').style.display = 'block';
+                    }
+
+                    function closeSizeGuide() {
+                      document.getElementById('size-guide-modal').style.display = 'none';
                     }
                   </script>
 
@@ -428,35 +550,51 @@
                       {{ block.settings.page.content }}
 
                       {%- if heading_text contains 'Reviews' -%}
-                        <ul class="review-list" aria-live="polite">
-                          <li class="review-item">
-                            <div class="review-row">
-                              <div class="review-badge">5.0</div>
-                              <div>
-                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
-                                <div class="review-body">Very nice, well-made, and the size is correct. I recommend it.</div>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="review-item">
-                            <div class="review-row">
-                              <div class="review-badge">4.0</div>
-                              <div>
-                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
-                                <div class="review-body">It's a great looking shirt that will make you feel more confident.</div>
-                              </div>
-                            </div>
-                          </li>
-                          <li class="review-item">
-                            <div class="review-row">
-                              <div class="review-badge">3.8</div>
-                              <div>
-                                <div class="review-meta"><span>Verified Purchaser</span><span class="review-date"> / Nov 6, 2025</span></div>
-                                <div class="review-body">Great style and good price, looks just like I expected. Shipping was a breeze.</div>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
+                        {%- if product.metafields.reviews.reviews != blank -%}
+                          <ul class="review-list" aria-live="polite">
+                            {%- for review in product.metafields.reviews.reviews -%}
+                              <li class="review-item">
+                                <div class="review-row">
+                                  <div class="review-badge">{{ review.rating }}</div>
+                                  <div>
+                                    <div class="review-meta"><span>{{ review.author }}</span><span class="review-date"> / {{ review.created_at | date: "%b %d, %Y" }}</span></div>
+                                    <div class="review-body">{{ review.content }}</div>
+                                  </div>
+                                </div>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- endif -%}
+                      {%- elsif heading_text contains 'Questions' -%}
+                        {%- if product.metafields.qa.questions != blank -%}
+                          <ul class="qa-list" aria-live="polite">
+                            {%- for qa in product.metafields.qa.questions -%}
+                              <li class="qa-item">
+                                <div class="question"><strong>Q:</strong> {{ qa.question }}</div>
+                                <div class="answer"><strong>A:</strong> {{ qa.answer }}</div>
+                              </li>
+                            {%- endfor -%}
+                          </ul>
+                        {%- else -%}
+                          <ul class="qa-list" aria-live="polite">
+                            <li class="qa-item">
+                              <div class="question"><strong>Q:</strong> What material is this made from?</div>
+                              <div class="answer"><strong>A:</strong> This product is made from 100% organic cotton for maximum comfort and breathability.</div>
+                            </li>
+                            <li class="qa-item">
+                              <div class="question"><strong>Q:</strong> How should I care for this item?</div>
+                              <div class="answer"><strong>A:</strong> Machine wash cold with like colors. Tumble dry low or hang to dry for best results.</div>
+                            </li>
+                            <li class="qa-item">
+                              <div class="question"><strong>Q:</strong> What is your return policy?</div>
+                              <div class="answer"><strong>A:</strong> We offer a 30-day return policy for unworn items in original condition with tags attached.</div>
+                            </li>
+                            <li class="qa-item">
+                              <div class="question"><strong>Q:</strong> Do you offer international shipping?</div>
+                              <div class="answer"><strong>A:</strong> Yes, we ship worldwide. International shipping rates and delivery times vary by location.</div>
+                            </li>
+                          </ul>
+                        {%- endif -%}
                       {%- endif -%}
                     </div>
                   </details>
@@ -969,6 +1107,54 @@
     <script type="application/ld+json">
       {{ product | structured_data }}
     </script>
+    <!-- Size Guide Modal -->
+    <div id="size-guide-modal" class="size-guide-modal">
+      <div class="size-guide-content">
+        <span class="size-guide-close" onclick="closeSizeGuide()">&times;</span>
+        <h2>Size Guide</h2>
+        <table class="size-chart">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Chest (inches)</th>
+              <th>Length (inches)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>XS</td>
+              <td>31-34</td>
+              <td>27</td>
+            </tr>
+            <tr>
+              <td>S</td>
+              <td>34-37</td>
+              <td>28</td>
+            </tr>
+            <tr>
+              <td>M</td>
+              <td>38-41</td>
+              <td>29</td>
+            </tr>
+            <tr>
+              <td>L</td>
+              <td>42-45</td>
+              <td>30</td>
+            </tr>
+            <tr>
+              <td>XL</td>
+              <td>46-49</td>
+              <td>31</td>
+            </tr>
+            <tr>
+              <td>XXL</td>
+              <td>50-53</td>
+              <td>32</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </product-info>
 
