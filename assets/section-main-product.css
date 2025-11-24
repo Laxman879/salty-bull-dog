@@ -1593,7 +1593,10 @@ a.product__text {
 }
 
 .quantity-label {
-  font-weight: 600;
+  font-family: 'Crete Round', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
   margin: 0;
 }
 
@@ -1613,15 +1616,18 @@ a.product__text {
 .quantity-display {
   position: absolute;
   left: 15px;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-family: 'Crete Round', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
   pointer-events: none;
 }
 
 .product__quantity-arrow {
   position: absolute;
   right: 10px;
-  pointer-events: none;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .product__quantity-arrow svg {
@@ -1630,13 +1636,47 @@ a.product__text {
 }
 
 #quick-quantity {
+  display: none;
+}
+
+.quantity-dropdown {
   position: absolute;
-  left: 10px;
-  width: 40px;
-  border: none;
-  background: transparent;
-  font-weight: 600;
-  font-size: 0.9rem;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.quantity-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: 'Crete Round', serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 18px;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.quantity-option:hover {
+  background-color: rgba(var(--color-foreground), 0.1);
+}
+
+.quantity-option:first-child {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.quantity-option:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 /* Rating Wrapper Styles */
@@ -1715,26 +1755,34 @@ a.product__text {
 }
 
 .size-option svg {
-  width: 40px;
-  height: 30px;
+  width: 54.02px;
+  height: 53.98px;
 }
 
 .size-text {
   position: absolute;
-  font-size: 0.8rem;
+  width: 22px;
+  height: 23px;
+  font-size: 12px;
   font-weight: 600;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
 }
 
 .size-guide {
   cursor: pointer;
   display: flex;
   align-items: center;
+  margin-left: auto;
 }
 
 .size-guide svg {
-  width: 40px;
-  height: 30px;
+  width: 91px;
+  height: 23px;
 }
 
 /* Notification Styles */
