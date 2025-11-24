@@ -20,12 +20,29 @@
   }
   
   .related-products-bg {
-    background-image: url('{{ "products-bg.svg" | asset_url }}');
-     background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center bottom;
-    background-attachment: fixed;
+    background-color: white;
     min-height: 508px;
+  }
+  
+  .related-products .grid__item {
+    /* removed decorative frame image so product cards render normally */
+    background: none !important;
+    background-image: none !important;
+    background-size: none !important;
+    background-repeat: none !important;
+    background-position: none !important;
+    padding: 12px;
+  }
+
+  /* Remove card-level frame background (card snippet sets an inline frame)
+     and tighten padding so cards don't show any decorative frame here. */
+  .related-products .card-wrapper {
+    background-image: none !important;
+    background: none !important;
+    background-repeat: none !important;
+    background-size: auto !important;
+    background-position: center !important;
+    padding: 12px !important;
   }
   
  

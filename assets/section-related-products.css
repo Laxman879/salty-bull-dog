@@ -5,3 +5,22 @@
 .related-products__heading {
   margin: 0 0 3rem;
 }
+
+/* Increase spacing between cards but keep four columns (controlled by section setting)
+   Use gap for grid-based layouts and margins as a fallback. */
+.related-products .product-grid {
+  gap: 3.5rem; /* horizontal and vertical space between cards */
+}
+
+.related-products .product-grid .grid__item {
+  margin-bottom: 3.5rem; /* fallback spacing for non-grid renderers */
+}
+
+@media screen and (max-width: 749px) {
+  .related-products .product-grid {
+    gap: 1.5rem;
+  }
+  .related-products .product-grid .grid__item {
+    margin-bottom: 1.5rem;
+  }
+}
