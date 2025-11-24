@@ -235,13 +235,25 @@
                     <div class="product__quick-buttons">
                       <div class="product__quantity-wrapper">
                         <span class="quantity-label">Qty:</span>
-                        <div class="product__quantity-box" onclick="toggleQuantity()">
+                        <div class="product__quantity-box">
                           {{- 'box-product.svg' | inline_asset_content -}}
                           <span class="quantity-display" id="quantity-display">1</span>
-                          <div class="product__quantity-arrow">
+                          <div class="product__quantity-arrow" onclick="toggleQuantityDropdown()">
                             {{- 'arrow_back_ios_new.svg' | inline_asset_content -}}
                           </div>
-                          <input type="number" id="quick-quantity" value="1" min="1" style="display: none;">
+                          <div class="quantity-dropdown" id="quantity-dropdown">
+                            <div class="quantity-option" onclick="selectQuantity(1)">1</div>
+                            <div class="quantity-option" onclick="selectQuantity(2)">2</div>
+                            <div class="quantity-option" onclick="selectQuantity(3)">3</div>
+                            <div class="quantity-option" onclick="selectQuantity(4)">4</div>
+                            <div class="quantity-option" onclick="selectQuantity(5)">5</div>
+                            <div class="quantity-option" onclick="selectQuantity(6)">6</div>
+                            <div class="quantity-option" onclick="selectQuantity(7)">7</div>
+                            <div class="quantity-option" onclick="selectQuantity(8)">8</div>
+                            <div class="quantity-option" onclick="selectQuantity(9)">9</div>
+                            <div class="quantity-option" onclick="selectQuantity(10)">10</div>
+                          </div>
+                          <input type="hidden" id="quick-quantity" value="1">
                         </div>
                       </div>
                       <button type="button" class="product__button product__button--addtowatch" aria-label="Add to watch" onclick="addToWishlist()">
@@ -255,23 +267,25 @@
                   <!-- END: Quick UI blocks -->
 
                   <script>
-                    function toggleQuantity() {
-                      const input = document.getElementById('quick-quantity');
-                      const display = document.getElementById('quantity-display');
-                      
-                      if (input.style.display === 'none') {
-                        input.style.display = 'block';
-                        input.focus();
-                        input.addEventListener('change', function() {
-                          display.textContent = this.value;
-                        });
-                        input.addEventListener('blur', function() {
-                          input.style.display = 'none';
-                        });
-                      } else {
-                        input.style.display = 'none';
-                      }
+                    function toggleQuantityDropdown() {
+                      const dropdown = document.getElementById('quantity-dropdown');
+                      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
                     }
+
+                    function selectQuantity(qty) {
+                      document.getElementById('quantity-display').textContent = qty;
+                      document.getElementById('quick-quantity').value = qty;
+                      document.getElementById('quantity-dropdown').style.display = 'none';
+                    }
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', function(event) {
+                      const dropdown = document.getElementById('quantity-dropdown');
+                      const arrow = document.querySelector('.product__quantity-arrow');
+                      if (!arrow.contains(event.target) && !dropdown.contains(event.target)) {
+                        dropdown.style.display = 'none';
+                      }
+                    });
 
                     function addToCart() {
                       const quantity = document.getElementById('quick-quantity').value || 1;
