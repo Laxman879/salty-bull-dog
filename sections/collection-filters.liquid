@@ -267,15 +267,13 @@
         </div>
 
         <div id="productsGrid" class="row g-3">
-          {%- comment -%}
+          {% comment %}
             Render the products in the current collection. We output data attributes for client-side filtering:
               - data-colors (comma-separated)
               - data-sizes (comma-separated)
               - data-price (number)
               - data-gender
-          {%- endcomment -%}
-
-          {% assign placeholder_img = '/mnt/data/eb9fb397-b1df-4594-a474-62162b58437c.png' %}
+          {% endcomment %}
 
           {% paginate collection.products by 20 %}
             {% for product in collection.products %}
@@ -285,49 +283,49 @@
                 - tags for color/gender if available (you can adapt your product tagging scheme)
               {% endcomment %}
 
-              {%- assign product_colors = '' -%}
-              {%- assign product_sizes = '' -%}
-              {%- assign product_gender = 'unisex' -%}
+              {% assign product_colors = '' %}
+              {% assign product_sizes = '' %}
+              {% assign product_gender = 'unisex' %}
 
-              {%- comment -%}
+              {% comment %}
                 Example tagging scheme:
                   - Tag colors as "color_red", "color_black"
                   - Tag gender as "gender_male", "gender_female"
                 Adapt below to your store's tags/options.
-              {%- endcomment -%}
+              {% endcomment %}
 
-              {%- for tag in product.tags -%}
-                {%- if tag contains 'color_' -%}
-                  {%- assign product_colors = product_colors | append: tag | append: ',' -%}
-                {%- endif -%}
-                {%- if tag contains 'gender_' -%}
-                  {%- assign product_gender = tag | remove: 'gender_' -%}
-                {%- endif -%}
-              {%- endfor -%}
+              {% for tag in product.tags %}
+                {% if tag contains 'color_' %}
+                  {% assign product_colors = product_colors | append: tag | append: ',' %}
+                {% endif %}
+                {% if tag contains 'gender_' %}
+                  {% assign product_gender = tag | remove: 'gender_' %}
+                {% endif %}
+              {% endfor %}
 
-              {%- comment -%}
+              {% comment %}
                 Populate sizes from product.options if option name includes 'Size' OR use tags 'size_S', etc.
-              {%- endcomment -%}
+              {% endcomment %}
               {% for variant in product.variants %}
                 {% if variant.option1 and variant.option1 != product.title and variant.option1 != 'Default Title' %}
                   {% comment %} take unique sizes from variant.option1 if options list looks like sizes {% endcomment %}
                 {% endif %}
               {% endfor %}
 
-              {%- comment -%}
+              {% comment %}
                 Produce a simple sizes string by reading product.options (best effort). Modify to match your data.
-              {%- endcomment -%}
-              {%- for option in product.options_with_values -%}
-                {%- if option.name contains 'Size' or option.name contains 'size' -%}
-                  {%- for val in option.values -%}
-                    {%- assign product_sizes = product_sizes | append: val | append: ',' -%}
-                  {%- endfor -%}
-                {%- endif -%}
-              {%- endfor -%}
+              {% endcomment %}
+              {% for option in product.options_with_values %}
+                {% if option.name contains 'Size' or option.name contains 'size' %}
+                  {% for val in option.values %}
+                    {% assign product_sizes = product_sizes | append: val | append: ',' %}
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
 
-              {%- comment -%}
+              {% comment %}
                 Price: use min_variant_price for filtering.
-              {%- endcomment -%}
+              {% endcomment %}
               {% assign product_price = product.price | divided_by: 100.0 %}
 
               <div class="col-6 col-md-4 col-lg-5th">
@@ -344,7 +342,7 @@
                       {% if product.featured_image %}
                         <img data-src="{{ product.featured_image | img_url: '800x' }}" alt="{{ product.title }}" class="product-image lazy-load">
                       {% else %}
-                        <img data-src="{{ placeholder_img }}" alt="{{ product.title }}" class="product-image lazy-load">
+                        <img data-src="{{ 'placeholder.png' | asset_url }}" alt="{{ product.title }}" class="product-image lazy-load">
                       {% endif %}
                     </a>
                   </div>
