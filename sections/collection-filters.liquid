@@ -1,0 +1,660 @@
+{% comment %}
+  collection-filters.liquid
+  - Responsive UI with left sidebar filters (desktop) and offcanvas filters (mobile)
+  - Client-side filtering of the products rendered on the page (JS uses data attributes output by Liquid)
+  - Desktop: 5 products per row. Responsive to tablet/mobile
+  - IMPORTANT: For very large collections use Shopify's server-side filtering or apps.
+{% endcomment %}
+
+<section id="collection-filters-section">
+  <!-- Bootstrap CDN (you may remove if your theme already includes similar styles) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* Visual styles matching screenshot */
+    #collection-filters-section { background: #fff; }
+    .filter-label{ font-weight:400; margin-bottom:.4rem; display:block; font-size:1.6rem; font-family: 'Crete Round', serif; }
+    .product-card{ border:1px solid #333;border-radius:6px;padding:10px;background:#fff;height:100% }
+    .product-image{ width:100%; border:1px solid #d9d9d9; border-radius:4px; object-fit:cover; aspect-ratio:1/1; }
+    .image-wrapper{ width:100%; aspect-ratio:1/1; overflow:hidden; }
+    .color-dot{ display:inline-block; width:14px; height:14px; border-radius:50%; margin-right:6px; border:1px solid #ccc; vertical-align:-1px }
+    .sidebar{ min-width:180px; max-width:200px; }
+    /* Header Navigation Styles */
+    .collection-hero { 
+      padding: 30px 20px; 
+    }
+    .nav-list a {
+      color: white !important;
+      text-decoration: none !important;
+      text-transform: capitalize;
+      font-size: 16px;
+      font-weight: 400;
+      transition: color 0.3s ease;
+      padding: 8px 12px;
+    }
+    .nav-list a:hover,
+    .nav-list a.active {
+      color: #AEDEE2 !important;
+    }
+    @media (max-width: 768px) {
+      .collection-hero { padding: 20px 15px; }
+      .nav-list ul { gap: 0.8rem !important; }
+      .nav-list a { font-size: 14px; padding: 6px 8px; }
+      .collection-hero .row { flex-direction: column; gap: 1.5rem; }
+      .col-lg-4 { text-align: center !important; }
+    }
+    @media (max-width: 480px) {
+      .collection-hero { padding: 15px 10px; }
+      .nav-list ul { gap: 0.5rem !important; }
+      .nav-list a { font-size: 12px; padding: 4px 6px; }
+    }
+    /* Fix checkbox visibility */
+    .form-check-input { 
+      width: 16px !important; 
+      height: 16px !important; 
+      margin-top: 0.125em !important;
+      border: 1px solid #dee2e6 !important;
+      background-color: #fff !important;
+    }
+    .form-check-input:checked {
+      background-color: #0d6efd !important;
+      border-color: #0d6efd !important;
+    }
+    .form-check {
+      margin-bottom: 0.5rem;
+      padding-left: 1.25rem;
+      font-size: 1.4rem;
+    }
+    .form-check-input {
+      margin-left: -1.25rem !important;
+    }
+    .form-check-label {
+      font-size: 1.3rem !important;
+      font-family: 'Crete Round', serif;
+    }
+    /* Heart icon styles */
+    .heart-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #ccc;
+    }
+    .heart-icon:hover {
+      color: #ff6b6b;
+      transform: scale(1.2);
+    }
+    .heart-icon.liked {
+      color: #ff6b6b;
+      animation: heartBeat 0.6s ease;
+    }
+    @keyframes heartBeat {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+    /* Chevron transition */
+    .bi-chevron-down {
+      transition: transform 0.3s ease;
+      font-size: 1.2rem;
+    }
+    /* Lazy loading animation */
+    .product-image {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .product-image.loaded {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .image-placeholder {
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+    /* Pagination styles */
+    .pagination-wrapper {
+      margin-top: 3rem;
+      text-align: center;
+    }
+    .pagination {
+      display: inline-flex;
+      gap: 0.5rem;
+    }
+    .pagination a, .pagination span {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      text-decoration: none;
+      color: #333;
+      border-radius: 4px;
+    }
+    .pagination .current {
+      background: #333;
+      color: white;
+    }
+    /* responsive grid: 5 items per row on large screens */
+    .col-lg-5th { flex: 0 0 20%; max-width: 20%; }
+    @media (max-width:1199px){ .col-lg-5th{ flex: 0 0 33.3333%; max-width: 33.3333%; } }
+    @media (max-width:767px){ .col-lg-5th{ flex: 0 0 50%; max-width: 50%; } }
+    @media (max-width:480px){ .product-image{ border-width:1px; } }
+  </style>
+
+<!-- Header Section with Background -->
+<div class="collection-hero" style="background-image: url('{{ 'Banner-image.svg' | asset_url }}'); background-size: cover; margin-top: -12px; width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; overflow: hidden; z-index: 10;">
+  <div class="container-fluid">
+      <div class="row h-100 align-items-center">
+        <div class="col-lg-8 col-12">
+          <nav class="nav-list">
+            <ul class="d-flex flex-wrap list-unstyled mb-0" style="gap: 2rem;">
+              <li><a href="/collections/shop-all" class="{% if collection.handle == 'shop-all' %}active{% endif %}">Shop All</a></li>
+              <li><a href="/collections/baby-kids" class="{% if collection.handle == 'baby-kids' %}active{% endif %}">Baby & Kids</a></li>
+              <li><a href="/collections/family-sets" class="{% if collection.handle == 'family-sets' %}active{% endif %}">Family Sets</a></li>
+              <li><a href="/collections/custom-tshirts" class="{% if collection.handle == 'custom-tshirts' %}active{% endif %}">Custom T-Shirts</a></li>
+              <li><a href="/collections/bands" class="{% if collection.handle == 'bands' %}active{% endif %}">Bands</a></li>
+              <li><a href="/collections/embroidery" class="{% if collection.handle == 'embroidery' %}active{% endif %}">Embroidery</a></li>
+              <li><a href="/collections/gift-ideas" class="{% if collection.handle == 'gift-ideas' %}active{% endif %}">Gift Ideas</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="col-lg-4 col-12 text-end">
+          <div class="d-flex align-items-center justify-content-end gap-3 flex-wrap">
+            <label class="text-white fw-bold" style="font-size: 1.1rem;">Sorted by:</label>
+            <select class="form-select" style="width: auto; min-width: 200px;" id="sortSelect">
+              <option value="recommended">Recommended</option>
+              <option value="newest">Newly Added</option>
+              <option value="discount">Discount</option>
+              <option value="price-low-high">Price Low to High</option>
+              <option value="price-high-low">Price High to Low</option>
+            </select>
+            <button class="btn btn-outline-light d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtersOffcanvas" aria-controls="filtersOffcanvas">Filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid px-4 px-md-5" style="padding-top: 2rem;">
+
+    <div class="row">
+      <!-- Sidebar for desktop -->
+      <aside class="col-xl-2 col-lg-3 d-none d-lg-block sidebar">
+        <div class="p-3" style="border:none;background:#fff;">
+          <div class="d-flex justify-content-between align-items-center mb-2 " style="border-bottom:2px solid #333">
+            <h6 class="mb-0" style="font-size:1.9rem;font-family:'Crete Round',serif;">Filters</h6>
+            <button id="clearAllBtn" class="btn btn-sm btn-link" style="font-size:1.4rem;font-weight:bold;text-decoration:none;font-family:'Crete Round',serif;">Clear All</button>
+          </div>
+
+          <!-- Size -->
+          <div class="mb-3 pb-3" style="border-bottom:2px solid #333;">
+            <div class="d-flex justify-content-between align-items-center filter-label" onclick="toggleFilter('sizeOptions')" style="cursor:pointer;">
+              <span>Size</span>
+              <i class="bi bi-chevron-down" id="sizeChevron"></i>
+            </div>
+            <div id="sizeOptions" class="filter-options">
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="S" id="sizeS"><label class="form-check-label" for="sizeS">S</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="M" id="sizeM"><label class="form-check-label" for="sizeM">M</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="L" id="sizeL"><label class="form-check-label" for="sizeL">L</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="XL" id="sizeXL"><label class="form-check-label" for="sizeXL">XL</label></div>
+            </div>
+          </div>
+
+          <!-- Colour -->
+          <div class="mb-3 pb-3" style="border-bottom:2px solid #333;">
+            <div class="d-flex justify-content-between align-items-center filter-label" onclick="toggleFilter('colorOptions')" style="cursor:pointer;">
+              <span>Colour</span>
+              <i class="bi bi-chevron-down" id="colorChevron"></i>
+            </div>
+            <div id="colorOptions" class="filter-options">
+              <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="red" id="colRed"><label class="form-check-label" for="colRed"><span class="color-dot" style="background:red"></span>Red</label></div>
+              <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="orange" id="colOrange"><label class="form-check-label" for="colOrange"><span class="color-dot" style="background:orange"></span>Orange</label></div>
+              <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="blue" id="colBlue"><label class="form-check-label" for="colBlue"><span class="color-dot" style="background:blue"></span>Blue</label></div>
+              <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="white" id="colWhite"><label class="form-check-label" for="colWhite"><span class="color-dot" style="background:white;border:1px solid #ccc"></span>White</label></div>
+              <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="black" id="colBlack"><label class="form-check-label" for="colBlack"><span class="color-dot" style="background:black"></span>Black</label></div>
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="mb-3 pb-3" style="border-bottom:2px solid #333;">
+            <div class="d-flex justify-content-between align-items-center filter-label" onclick="toggleFilter('priceOptions')" style="cursor:pointer;">
+              <span>Price</span>
+              <i class="bi bi-chevron-down" id="priceChevron"></i>
+            </div>
+            <div id="priceOptions" class="filter-options">
+              <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="0-25" id="p1"><label class="form-check-label" for="p1">$0 - $25</label></div>
+              <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="25-50" id="p2"><label class="form-check-label" for="p2">$25 - $50</label></div>
+              <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="50-100" id="p3"><label class="form-check-label" for="p3">$50 - $100</label></div>
+              <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="100-150" id="p4"><label class="form-check-label" for="p4">$100 - $150</label></div>
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div class="mb-3 pb-3" style="border-bottom:2px solid #333;">
+            <div class="d-flex justify-content-between align-items-center filter-label" onclick="toggleFilter('genderOptions')" style="cursor:pointer;">
+              <span>Gender</span>
+              <i class="bi bi-chevron-down" id="genderChevron"></i>
+            </div>
+            <div id="genderOptions" class="filter-options">
+              <div class="form-check"><input class="form-check-input filter-input gender" type="checkbox" value="male" id="gMale"><label class="form-check-label" for="gMale">Male</label></div>
+              <div class="form-check"><input class="form-check-input filter-input gender" type="checkbox" value="female" id="gFemale"><label class="form-check-label" for="gFemale">Female</label></div>
+              <div class="form-check"><input class="form-check-input filter-input gender" type="checkbox" value="unisex" id="gUnisex"><label class="form-check-label" for="gUnisex">Unisex</label></div>
+            </div>
+          </div>
+
+          <!-- Embroidery Style -->
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center filter-label" onclick="toggleFilter('embroideryOptions')" style="cursor:pointer;">
+              <span>Embroidery Style</span>
+              <i class="bi bi-chevron-down" id="embroideryChevron"></i>
+            </div>
+            <div id="embroideryOptions" class="filter-options">
+              <div class="form-check"><input class="form-check-input filter-input embroidery" type="checkbox" value="classic" id="embClassic"><label class="form-check-label" for="embClassic">Classic</label></div>
+              <div class="form-check"><input class="form-check-input filter-input embroidery" type="checkbox" value="modern" id="embModern"><label class="form-check-label" for="embModern">Modern</label></div>
+              <div class="form-check"><input class="form-check-input filter-input embroidery" type="checkbox" value="vintage" id="embVintage"><label class="form-check-label" for="embVintage">Vintage</label></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Product grid -->
+      <main class="col-xl-10 col-lg-9">
+        <div class="row mb-3">
+          <div class="col-12">
+            <div id="activeFilters" class="fs-4 text-muted">Showing <span id="visibleCount"></span> of <span id="totalCount"></span> products</div>
+          </div>
+        </div>
+
+        <div id="productsGrid" class="row g-3">
+          {%- comment -%}
+            Render the products in the current collection. We output data attributes for client-side filtering:
+              - data-colors (comma-separated)
+              - data-sizes (comma-separated)
+              - data-price (number)
+              - data-gender
+          {%- endcomment -%}
+
+          {% assign placeholder_img = '/mnt/data/eb9fb397-b1df-4594-a474-62162b58437c.png' %}
+
+          {% paginate collection.products by 20 %}
+            {% for product in collection.products %}
+              {% comment %}
+                For demonstration we attempt to read:
+                - product.options (for sizes we expect a size option named 'Size' or 'size')
+                - tags for color/gender if available (you can adapt your product tagging scheme)
+              {% endcomment %}
+
+              {%- assign product_colors = '' -%}
+              {%- assign product_sizes = '' -%}
+              {%- assign product_gender = 'unisex' -%}
+
+              {%- comment -%}
+                Example tagging scheme:
+                  - Tag colors as "color_red", "color_black"
+                  - Tag gender as "gender_male", "gender_female"
+                Adapt below to your store's tags/options.
+              {%- endcomment -%}
+
+              {%- for tag in product.tags -%}
+                {%- if tag contains 'color_' -%}
+                  {%- assign product_colors = product_colors | append: tag | append: ',' -%}
+                {%- endif -%}
+                {%- if tag contains 'gender_' -%}
+                  {%- assign product_gender = tag | remove: 'gender_' -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- comment -%}
+                Populate sizes from product.options if option name includes 'Size' OR use tags 'size_S', etc.
+              {%- endcomment -%}
+              {% for variant in product.variants %}
+                {% if variant.option1 and variant.option1 != product.title and variant.option1 != 'Default Title' %}
+                  {% comment %} take unique sizes from variant.option1 if options list looks like sizes {% endcomment %}
+                {% endif %}
+              {% endfor %}
+
+              {%- comment -%}
+                Produce a simple sizes string by reading product.options (best effort). Modify to match your data.
+              {%- endcomment -%}
+              {%- for option in product.options_with_values -%}
+                {%- if option.name contains 'Size' or option.name contains 'size' -%}
+                  {%- for val in option.values -%}
+                    {%- assign product_sizes = product_sizes | append: val | append: ',' -%}
+                  {%- endfor -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- comment -%}
+                Price: use min_variant_price for filtering.
+              {%- endcomment -%}
+              {% assign product_price = product.price | divided_by: 100.0 %}
+
+              <div class="col-6 col-md-4 col-lg-5th">
+                <div class="product-card h-100"
+                     data-id="{{ product.id }}"
+                     data-price="{{ product_price }}"
+                     data-colors="{{ product_colors | strip }}"
+                     data-sizes="{{ product_sizes | strip }}"
+                     data-gender="{{ product_gender }}"
+                     data-created="{{ product.created_at | date: '%s' }}"
+                     data-title="{{ product.title | escape }}">
+                  <div class="image-wrapper mb-2">
+                    <a href="{{ product.url }}" class="d-block">
+                      {% if product.featured_image %}
+                        <img data-src="{{ product.featured_image | img_url: '800x' }}" alt="{{ product.title }}" class="product-image lazy-load">
+                      {% else %}
+                        <img data-src="{{ placeholder_img }}" alt="{{ product.title }}" class="product-image lazy-load">
+                      {% endif %}
+                    </a>
+                  </div>
+
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="fs-6 fw-bold">{{ product.title }}</div>
+                      <div class="text-muted fs-6">${{ product_price | money_without_trailing_zeros }}</div>
+                    </div>
+                    <div class="text-end">
+                      <span class="heart-icon" onclick="toggleHeart(this)" data-product-id="{{ product.id }}">♥</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endpaginate %}
+        </div>
+        
+        <!-- Pagination -->
+        <div class="pagination-wrapper">
+          {% if paginate.pages > 1 %}
+            <nav class="pagination">
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}">&laquo; Previous</a>
+              {% endif %}
+              
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <a href="{{ part.url }}">{{ part.title }}</a>
+                {% else %}
+                  <span class="current">{{ part.title }}</span>
+                {% endif %}
+              {% endfor %}
+              
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}">Next &raquo;</a>
+              {% endif %}
+            </nav>
+          {% endif %}
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Offcanvas for mobile filters -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="filtersOffcanvas" aria-labelledby="filtersOffcanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Filters</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="mb-2 d-flex justify-content-between align-items-center">
+        <strong>Refine</strong>
+        <button id="clearAllBtnMobile" class="btn btn-sm btn-link">Clear All</button>
+      </div>
+
+      <!-- replicate controls for mobile (same classes so JS hooks all of them) -->
+      <div class="mb-3">
+        <span class="filter-label">Size</span>
+        <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="S" id="sizeS2"><label class="form-check-label" for="sizeS2">S</label></div>
+        <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="M" id="sizeM2"><label class="form-check-label" for="sizeM2">M</label></div>
+        <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="L" id="sizeL2"><label class="form-check-label" for="sizeL2">L</label></div>
+        <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="XL" id="sizeXL2"><label class="form-check-label" for="sizeXL2">XL</label></div>
+      </div>
+
+      <div class="mb-3">
+        <span class="filter-label">Colour</span>
+        <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="red" id="colRed2"><label class="form-check-label" for="colRed2"><span class="color-dot" style="background:red"></span>Red</label></div>
+        <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="orange" id="colOrange2"><label class="form-check-label" for="colOrange2"><span class="color-dot" style="background:orange"></span>Orange</label></div>
+        <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="blue" id="colBlue2"><label class="form-check-label" for="colBlue2"><span class="color-dot" style="background:blue"></span>Blue</label></div>
+        <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="white" id="colWhite2"><label class="form-check-label" for="colWhite2"><span class="color-dot" style="background:white;border:1px solid #ccc"></span>White</label></div>
+        <div class="form-check"><input class="form-check-input filter-input color" type="checkbox" value="black" id="colBlack2"><label class="form-check-label" for="colBlack2"><span class="color-dot" style="background:black"></span>Black</label></div>
+      </div>
+
+      <div class="mb-3">
+        <span class="filter-label">Price</span>
+        <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="0-25" id="p12"><label class="form-check-label" for="p12">$0 - $25</label></div>
+        <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="25-50" id="p22"><label class="form-check-label" for="p22">$25 - $50</label></div>
+        <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="50-100" id="p32"><label class="form-check-label" for="p32">$50 - $100</label></div>
+        <div class="form-check"><input class="form-check-input filter-input price" type="checkbox" value="100-150" id="p42"><label class="form-check-label" for="p42">$100 - $150</label></div>
+      </div>
+
+      <div class="mb-3">
+        <span class="filter-label">Gender</span>
+        <div class="form-check"><input class="form-check-input filter-input gender" type="checkbox" value="male" id="gMale2"><label class="form-check-label" for="gMale2">Male</label></div>
+        <div class="form-check"><input class="form-check-input filter-input gender" type="checkbox" value="female" id="gFemale2"><label class="form-check-label" for="gFemale2">Female</label></div>
+        <div class="form-check"><input class="form-check-input filter-input gender" type="checkbox" value="unisex" id="gUnisex2"><label class="form-check-label" for="gUnisex2">Unisex</label></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function(){
+      // Grab all product cards on page (rendered by Liquid)
+      const grid = document.getElementById('productsGrid');
+      const productCards = Array.from(grid.querySelectorAll('.product-card'));
+      const totalCount = document.getElementById('totalCount');
+      const visibleCount = document.getElementById('visibleCount');
+
+      function parseCSV(str){
+        if(!str) return [];
+        return str.split(',').map(s => s.trim()).filter(Boolean).map(s => {
+          // if tag was 'color_red' produce 'red'
+          return s.replace(/^color_/i,'').replace(/^size_/i,'');
+        });
+      }
+
+      // initial counts
+      totalCount.textContent = productCards.length;
+      visibleCount.textContent = productCards.length;
+
+      function getSelectedValues(selector){
+        return Array.from(document.querySelectorAll(selector)).filter(i=>i.checked).map(i=>i.value);
+      }
+
+      function matchesPriceRanges(price, ranges){
+        if(ranges.length===0) return true;
+        for(const r of ranges){
+          const parts = r.split('-').map(Number);
+          const min = parts[0], max = parts[1];
+          if(price >= min && price <= max) return true;
+        }
+        return false;
+      }
+
+      function applyFilters(){
+        const selSizes = getSelectedValues('.size');
+        const selColors = getSelectedValues('.color');
+        const selPrices = getSelectedValues('.price');
+        const selGenders = getSelectedValues('.gender');
+
+        let visible = 0;
+        productCards.forEach(card => {
+          const price = parseFloat(card.getAttribute('data-price')) || 0;
+          const colors = parseCSV(card.getAttribute('data-colors'));
+          const sizes = parseCSV(card.getAttribute('data-sizes'));
+          const gender = (card.getAttribute('data-gender') || '').toLowerCase();
+
+          // size check
+          if(selSizes.length > 0){
+            const matchSize = sizes.some(s => selSizes.includes(s));
+            if(!matchSize){ card.closest('.col-6').style.display = 'none'; return; }
+          }
+
+          // color check
+          if(selColors.length > 0){
+            const matchColor = colors.some(c => selColors.includes(c));
+            if(!matchColor){ card.closest('.col-6').style.display = 'none'; return; }
+          }
+
+          // price
+          if(!matchesPriceRanges(price, selPrices)){ card.closest('.col-6').style.display = 'none'; return; }
+
+          // gender
+          if(selGenders.length > 0 && !selGenders.includes(gender)){ card.closest('.col-6').style.display = 'none'; return; }
+
+          // show
+          card.closest('.col-6, .col-md-4, .col-lg-5th').style.display = '';
+          visible++;
+        });
+
+        visibleCount.textContent = visible;
+      }
+
+      // attach listeners to all filter inputs (desktop + mobile share classes)
+      document.querySelectorAll('.filter-input').forEach(el => {
+        el.addEventListener('change', function(){
+          applyFilters();
+        });
+      });
+
+      // Clear all filters
+      function clearAll(){
+        document.querySelectorAll('.filter-input').forEach(i=>i.checked = false);
+        productCards.forEach(card => {
+          card.closest('.col-6, .col-md-4, .col-lg-5th').style.display = '';
+        });
+        visibleCount.textContent = productCards.length;
+      }
+
+      document.getElementById('clearAllBtn').addEventListener('click', clearAll);
+      document.getElementById('clearAllBtnMobile').addEventListener('click', function(){
+        clearAll();
+        var offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('filtersOffcanvas'));
+        if(offcanvas) offcanvas.hide();
+      });
+
+      // Initial call (in case default checked filters required)
+      applyFilters();
+
+      // Toggle filter sections with chevron rotation
+      window.toggleFilter = function(optionsId) {
+        const options = document.getElementById(optionsId);
+        const chevronId = optionsId.replace('Options', 'Chevron');
+        const chevron = document.getElementById(chevronId);
+        
+        if (options.style.display === 'none') {
+          options.style.display = 'block';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        } else {
+          options.style.display = 'none';
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+      };
+
+      // Initially hide all filter options except Size, Color, and Price
+      document.querySelectorAll('.filter-options').forEach(el => {
+        const id = el.id;
+        if (id === 'sizeOptions' || id === 'colorOptions' || id === 'priceOptions') {
+          el.style.display = 'block';
+          // Rotate chevrons for open sections
+          const chevronId = id.replace('Options', 'Chevron');
+          const chevron = document.getElementById(chevronId);
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      // Sorting functionality
+      document.getElementById('sortSelect').addEventListener('change', function() {
+        const sortValue = this.value;
+        const container = document.getElementById('productsGrid');
+        const cards = Array.from(container.children).filter(card => card.style.display !== 'none');
+        const hiddenCards = Array.from(container.children).filter(card => card.style.display === 'none');
+        
+        cards.sort((a, b) => {
+          const cardA = a.querySelector('.product-card');
+          const cardB = b.querySelector('.product-card');
+          const priceA = parseFloat(cardA.getAttribute('data-price')) || 0;
+          const priceB = parseFloat(cardB.getAttribute('data-price')) || 0;
+          const createdA = parseInt(cardA.getAttribute('data-created')) || 0;
+          const createdB = parseInt(cardB.getAttribute('data-created')) || 0;
+          const titleA = cardA.getAttribute('data-title') || '';
+          const titleB = cardB.getAttribute('data-title') || '';
+          
+          switch(sortValue) {
+            case 'price-low-high':
+              return priceA - priceB;
+            case 'price-high-low':
+              return priceB - priceA;
+            case 'newest':
+              return createdB - createdA;
+            case 'discount':
+              return priceA - priceB;
+            case 'recommended':
+            default:
+              return titleA.localeCompare(titleB);
+          }
+        });
+        
+        container.innerHTML = '';
+        cards.forEach(card => container.appendChild(card));
+        hiddenCards.forEach(card => container.appendChild(card));
+      });
+
+      // Heart functionality
+      window.toggleHeart = function(heartElement) {
+        const isLiked = heartElement.classList.contains('liked');
+        if (isLiked) {
+          heartElement.classList.remove('liked');
+        } else {
+          heartElement.classList.add('liked');
+        }
+        
+        // Optional: Store in localStorage
+        const productId = heartElement.getAttribute('data-product-id');
+        const likedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
+        
+        if (isLiked) {
+          const index = likedProducts.indexOf(productId);
+          if (index > -1) likedProducts.splice(index, 1);
+        } else {
+          if (!likedProducts.includes(productId)) likedProducts.push(productId);
+        }
+        
+        localStorage.setItem('likedProducts', JSON.stringify(likedProducts));
+      };
+
+      // Load liked products on page load
+      const likedProducts = JSON.parse(localStorage.getItem('likedProducts') || '[]');
+      document.querySelectorAll('.heart-icon').forEach(heart => {
+        const productId = heart.getAttribute('data-product-id');
+        if (likedProducts.includes(productId)) {
+          heart.classList.add('liked');
+        }
+      });
+
+      // Lazy loading for images
+      const lazyImages = document.querySelectorAll('.lazy-load');
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '50px 0px'
+      });
+
+      lazyImages.forEach(img => {
+        imageObserver.observe(img);
+      });
+    })();
+  </script>
+</section>
