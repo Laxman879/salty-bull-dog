@@ -1,0 +1,323 @@
+/* Unified Product Image Styles - Based on Featured Products Section */
+
+/* Base product card styling */
+.unified-product-card {
+  width: 305px !important;
+  height: 420px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border: 3px solid #1f58c7 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  margin: 0 auto !important;
+}
+
+/* Product image container */
+.unified-product-image-container {
+  padding: 10px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Product image styling */
+.unified-product-image {
+  height: 230px !important;
+  object-fit: cover !important;
+  width: 100% !important;
+  border-radius: 4px !important;
+  display: block !important;
+}
+
+/* Product card body */
+.unified-product-card-body {
+  padding: 10px !important;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Deal text styling */
+.unified-deal-text {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  color: #1f58c7 !important;
+}
+
+/* Product title styling */
+.unified-product-title {
+  font-family: 'Crete Round', serif !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #06387F !important;
+  margin-bottom: 8px !important;
+  line-height: 1.2 !important;
+}
+
+.unified-product-title a {
+  text-decoration: none !important;
+  color: inherit !important;
+  font-family: inherit !important;
+}
+
+/* Product description */
+.unified-product-description {
+  font-family: 'Crete Round', serif !important;
+  font-size: 12px !important;
+  color: #666 !important;
+  margin-bottom: 8px !important;
+  flex: 1 !important;
+}
+
+/* Price styling */
+.unified-product-price {
+  font-family: 'Crete Round', serif !important;
+  font-weight: 600 !important;
+  color: #06387F !important;
+}
+
+/* Apply to existing card components - exclude product details page */
+body:not(.template-product) .card-product-new,
+body:not(.template-product) .card-product,
+body:not(.template-product) .product-card-wrapper {
+  width: 305px !important;
+  height: 420px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border: 3px solid #1f58c7 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  outline: none !important;
+  margin: 0 auto !important;
+  background-image: none !important;
+  padding: 0 !important;
+}
+
+/* Override frame backgrounds */
+.card-wrapper.product-card-wrapper {
+  background-image: none !important;
+  background-size: auto !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+
+/* Product media in cards - exclude product details page */
+body:not(.template-product) .card__media,
+body:not(.template-product) .card__media .media,
+body:not(.template-product) .card-img-top {
+  height: 230px !important;
+  object-fit: cover !important;
+  width: 100% !important;
+  border-radius: 4px !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+}
+
+/* Card content styling */
+.card__content,
+.card-body,
+.card__information {
+  padding: 10px !important;
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  font-family: 'Crete Round', serif !important;
+}
+
+/* Card headings */
+.card__heading,
+.card-title,
+.card__heading a {
+  font-family: 'Crete Round', serif !important;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  color: #06387F !important;
+  margin-bottom: 8px !important;
+  line-height: 1.2 !important;
+}
+
+/* Card text */
+.card-text,
+.card__information > *:not(.price) {
+  font-family: 'Crete Round', serif !important;
+  font-size: 12px !important;
+  color: #666 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Price components */
+.price,
+.card-information .price,
+.product__price {
+  font-family: 'Crete Round', serif !important;
+  font-weight: 600 !important;
+  color: #06387F !important;
+}
+
+/* Grid adjustments for consistent spacing */
+.grid.product-grid {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  gap: 2rem !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.grid__item {
+  flex: 0 0 305px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .grid.product-grid {
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid.product-grid {
+    gap: 1rem !important;
+  }
+  
+  .grid__item {
+    flex: 0 0 calc(50% - 0.5rem) !important;
+    max-width: 300px !important;
+  }
+  
+  .unified-product-card,
+  .card-product-new,
+  .card-product,
+  .product-card-wrapper {
+    width: 100% !important;
+    max-width: 300px !important;
+    height: 380px !important;
+  }
+  
+  .card__media,
+  .card__media .media,
+  .product__media-wrapper img,
+  .card-img-top,
+  .unified-product-image {
+    height: 200px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid__item {
+    flex: 0 0 100% !important;
+    max-width: 280px !important;
+  }
+  
+  .unified-product-card,
+  .card-product-new,
+  .card-product,
+  .product-card-wrapper {
+    width: 100% !important;
+    max-width: 280px !important;
+    height: 360px !important;
+  }
+  
+  .card__media,
+  .card__media .media,
+  .product__media-wrapper img,
+  .card-img-top,
+  .unified-product-image {
+    height: 180px !important;
+  }
+}
+
+/* Deal colors for variety */
+.deal-color-1 { border-color: #1f58c7 !important; }
+.deal-color-1 .unified-deal-text { color: #1f58c7 !important; }
+
+.deal-color-2 { border-color: #7b2be7 !important; }
+.deal-color-2 .unified-deal-text { color: #7b2be7 !important; }
+
+.deal-color-3 { border-color: #d12b8b !important; }
+.deal-color-3 .unified-deal-text { color: #d12b8b !important; }
+
+.deal-color-4 { border-color: #14a286 !important; }
+.deal-color-4 .unified-deal-text { color: #14a286 !important; }
+
+/* Override any existing card styles that might conflict - exclude product details page */
+body:not(.template-product) .card--standard,
+body:not(.template-product) .card--card,
+body:not(.template-product) .card--media,
+body:not(.template-product) .card--text {
+  width: 305px !important;
+  height: 420px !important;
+  border: 3px solid #1f58c7 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+}
+
+/* Ensure images maintain aspect ratio - exclude product details page */
+body:not(.template-product) .card__media img,
+body:not(.template-product) .media img {
+  height: 230px !important;
+  object-fit: cover !important;
+  width: 100% !important;
+}
+
+/* Remove any background patterns or frames */
+.card__inner {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Quick add buttons styling */
+.quick-add__submit,
+.product__button {
+  font-family: 'Crete Round', serif !important;
+  font-size: 12px !important;
+  margin-top: auto !important;
+}
+
+/* Badge positioning */
+.card__badge {
+  position: absolute !important;
+  top: 15px !important;
+  left: 15px !important;
+  z-index: 2 !important;
+}
+
+/* Ensure consistent text alignment */
+.card__content,
+.card-body {
+  text-align: left !important;
+}
+
+/* Product thumbnails in media gallery */
+.product__media-item,
+.product-media-modal__content img {
+  object-fit: cover !important;
+  border-radius: 4px !important;
+}
+
+/* Collection and search page products */
+.collection .grid__item,
+.search-results .grid__item {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* Related products section */
+.related-products .grid__item {
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* Complementary products */
+.complementary-products .card {
+  width: 305px !important;
+  height: 420px !important;
+  border: 3px solid #1f58c7 !important;
+}

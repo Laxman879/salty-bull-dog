@@ -206,7 +206,7 @@
         <div class="p-3" style="border:none;background:#fff;">
           <div class="d-flex justify-content-between align-items-center mb-2 " style="border-bottom:2px solid #333">
             <h6 class="mb-0" style="font-size:1.9rem;font-family:'Crete Round',serif;">Filters</h6>
-            <button id="clearAllBtn" class="btn btn-sm btn-link" style="font-size:1.4rem;font-weight:bold;text-decoration:none;font-family:'Crete Round',serif;">Clear All</button>
+            <button id="clearAllBtn" class="btn btn-sm btn-link" style="font-size:1.4rem;text-decoration:none;font-family:'Crete Round',serif;">Clear All</button>
           </div>
 
           <!-- Size -->
@@ -216,10 +216,10 @@
               <i class="bi bi-chevron-down" id="sizeChevron"></i>
             </div>
             <div id="sizeOptions" class="filter-options">
-              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="S" id="sizeS"><label class="form-check-label" for="sizeS">S</label></div>
-              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="M" id="sizeM"><label class="form-check-label" for="sizeM">M</label></div>
-              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="L" id="sizeL"><label class="form-check-label" for="sizeL">L</label></div>
-              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="XL" id="sizeXL"><label class="form-check-label" for="sizeXL">XL</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="S" id="sizeS"><label class="form-check-label" for="sizeS">S (60)</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="M" id="sizeM"><label class="form-check-label" for="sizeM">M (12)</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="L" id="sizeL"><label class="form-check-label" for="sizeL">L (10)</label></div>
+              <div class="form-check"><input class="form-check-input filter-input size" type="checkbox" value="XL" id="sizeXL"><label class="form-check-label" for="sizeXL">XL (10)</label></div>
             </div>
           </div>
 
@@ -371,11 +371,11 @@
 
                   <div class="d-flex justify-content-between align-items-start">
                     <div>
-                      <div class="fs-6 fw-bold">{{ product.title }}</div>
-                      <div class="text-muted fs-6">${{ product_price | money_without_trailing_zeros }}</div>
+                      <div style="font-family: 'Crete Round', serif; font-weight: 400; font-style: normal; font-size: 14px; line-height: 100%; letter-spacing: 0%; color:#1E2938">{{ product.title }}</div>
+                      <div style="font-family: 'Crete Round', serif; font-weight: 400; font-style: normal; font-size: 14px; line-height: 100%; letter-spacing: 0%; color:#1E2938" class=" fs-4 pt-1">{{ product_price | money_without_trailing_zeros }}</div>
                     </div>
                     <div class="text-end">
-                      <span class="heart-icon" onclick="toggleHeart(this)" data-product-id="{{ product.id }}">♥</span>
+                      <span class="heart-icon" onclick="toggleHeart(this)" data-product-id="{{ product.id }}" style="color: #1E2938; cursor: pointer; transition: all 0.3s ease; display: inline-block;"><i class="bi bi-heart" style="transition: all 0.2s ease;"></i></span>
                     </div>
                   </div>
                 </div>
@@ -627,12 +627,28 @@
 
       // Heart functionality
       window.toggleHeart = function(heartElement) {
+        const icon = heartElement.querySelector('i');
         const isLiked = heartElement.classList.contains('liked');
+        
         if (isLiked) {
+          // Unlike - change to outline heart
           heartElement.classList.remove('liked');
+          icon.classList.remove('bi-heart-fill');
+          icon.classList.add('bi-heart');
+          heartElement.style.color = '#1E2938';
         } else {
+          // Like - change to filled red heart
           heartElement.classList.add('liked');
+          icon.classList.remove('bi-heart');
+          icon.classList.add('bi-heart-fill');
+          heartElement.style.color = '#e74c3c';
         }
+        
+        // Add scale animation
+        heartElement.style.transform = 'scale(1.2)';
+        setTimeout(() => {
+          heartElement.style.transform = 'scale(1)';
+        }, 150);
         
         // Optional: Store in localStorage
         const productId = heartElement.getAttribute('data-product-id');
@@ -653,7 +669,11 @@
       document.querySelectorAll('.heart-icon').forEach(heart => {
         const productId = heart.getAttribute('data-product-id');
         if (likedProducts.includes(productId)) {
+          const icon = heart.querySelector('i');
           heart.classList.add('liked');
+          icon.classList.remove('bi-heart');
+          icon.classList.add('bi-heart-fill');
+          heart.style.color = '#e74c3c';
         }
       });
 
