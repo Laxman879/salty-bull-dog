@@ -496,6 +496,8 @@
                       const formData = new FormData();
                       formData.append('id', variantId);
                       formData.append('quantity', quantity);
+                      formData.append('properties[Color]', selectedColor);
+                      formData.append('properties[Size]', selectedSize);
                       
                       fetch('/cart/add.js', {
                         method: 'POST',

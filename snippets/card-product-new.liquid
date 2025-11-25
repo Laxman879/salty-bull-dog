@@ -69,17 +69,17 @@
     
     <div class="card-body" style="padding: 10px;">
       
-      <div style="color: {{ deal_color }}; font-size: 12px; font-weight: 600; margin-bottom: 8px;">
+      <div style="color: {{ deal_color }}; font-size: 16px; font-weight: 600; margin-bottom: 8px;">
         {{ deal_text }}
       </div>
       
-      <h5 class="card-title" style="font-family: 'Crete Round', serif;">
-        <a href="{{ card_product.url }}" class="text-decoration-none" style="font-family: 'Crete Round', serif;">
+      <h5 class="card-title" style="font-family: 'Crete Round', serif; font-size: 18px;">
+        <a href="{{ card_product.url }}" class="text-decoration-none" style="font-family: 'Crete Round', serif; font-size: 18px;">
           {{ card_product.title | escape }}
         </a>
       </h5>
       
-      <p class="card-text">{{ card_product.description | strip_html | truncate: 100 }}</p>
+
       
       <div class="mb-3" style="font-family: 'Crete Round', serif;">
         {% render 'price', product: card_product, price_class: '', show_compare_at_price: true %}
