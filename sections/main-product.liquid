@@ -520,6 +520,28 @@
                     }
 
                     function addToWishlist() {
+                      const product = {
+                        id: '{{ product.id }}',
+                        title: '{{ product.title | escape }}',
+                        url: '{{ product.url }}',
+                        image: '{{ product.featured_media | image_url: width: 300 }}',
+                        price: '{{ product.price | money }}'
+                      };
+                      
+                      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                      
+                      if (wishlist.find(item => item.id === product.id)) {
+                        showNotification('Already in wishlist!', 'error');
+                        return;
+                      }
+                      
+                      wishlist.push(product);
+                      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                      
+                      if (window.updateWishlistCount) {
+                        window.updateWishlistCount();
+                      }
+                      
                       showNotification('♥ Added to wishlist!', 'success');
                     }
 

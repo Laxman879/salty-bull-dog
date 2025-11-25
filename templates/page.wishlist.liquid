@@ -1,0 +1,68 @@
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width section-padding">
+  <h1 class="title">My Wishlist</h1>
+  
+  <div id="wishlist-container">
+    <div id="wishlist-empty" style="text-align: center; padding: 40px; display: none;">
+      <h2>Your wishlist is empty</h2>
+      <p>Add some products to your wishlist to see them here.</p>
+      <a href="/collections/all" class="button">Continue Shopping</a>
+    </div>
+    
+    <div id="wishlist-items" class="grid grid--4-col-desktop grid--2-col-tablet-down">
+      <!-- Wishlist items will be populated here -->
+    </div>
+  </div>
+</div>
+
+<script>
+  function loadWishlist() {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const container = document.getElementById('wishlist-items');
+    const emptyState = document.getElementById('wishlist-empty');
+    
+    if (wishlist.length === 0) {
+      emptyState.style.display = 'block';
+      container.style.display = 'none';
+      return;
+    }
+    
+    emptyState.style.display = 'none';
+    container.style.display = 'grid';
+    container.innerHTML = '';
+    
+    wishlist.forEach(item => {
+      const productCard = `
+        <div class="grid__item">
+          <div class="card">
+            <div class="card__media">
+              <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 200px; object-fit: cover;">
+            </div>
+            <div class="card__content">
+              <h3 class="card__heading">
+                <a href="${item.url}">${item.title}</a>
+              </h3>
+              <div class="card__price">${item.price}</div>
+              <button onclick="removeFromWishlist('${item.id}')" class="button button--secondary">
+                Remove from Wishlist
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      container.innerHTML += productCard;
+    });
+  }
+  
+  function removeFromWishlist(productId) {
+    let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    wishlist = wishlist.filter(item => item.id !== productId);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    loadWishlist();
+    updateWishlistCount();
+  }
+  
+  document.addEventListener('DOMContentLoaded', loadWishlist);
+</script>

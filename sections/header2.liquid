@@ -31,6 +31,20 @@
           </a>
         {%- endif -%}
         
+        <!-- Wishlist Icon -->
+        <a href="/pages/wishlist" 
+           class="header2__icon" 
+           id="wishlist-icon-header2"
+           aria-label="Wishlist">
+          <span class="svg-wrapper">
+            {{ 'icon-heart-outline.svg' | inline_asset_content }}
+          </span>
+          <span class="visually-hidden">Wishlist</span>
+          <div class="wishlist-count-bubble" id="header2-wishlist-count" style="display: none;">
+            <span aria-hidden="true">0</span>
+          </div>
+        </a>
+        
         <!-- Cart Icon -->
         <a href="{{ routes.cart_url }}" 
            class="header2__icon header2__cart" 
@@ -303,7 +317,8 @@
   }
 }
 
-.header2__cart .cart-count-bubble {
+.header2__cart .cart-count-bubble,
+.wishlist-count-bubble {
   position: absolute !important;
   top: 6px !important;
   right: 6px !important;
@@ -383,6 +398,19 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// Update wishlist count
+function updateWishlistCount() {
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+  const wishlistBubble = document.getElementById('header2-wishlist-count');
+  
+  if (wishlist.length > 0) {
+    wishlistBubble.querySelector('span').textContent = wishlist.length;
+    wishlistBubble.style.display = 'flex';
+  } else {
+    wishlistBubble.style.display = 'none';
+  }
+}
+
 // Update cart count
 function updateCartCount() {
   fetch('/cart.js')
@@ -410,9 +438,19 @@ function updateCartCount() {
     .catch(error => console.log('Cart fetch error:', error));
 }
 
-// Auto-update cart
+// Auto-update cart and wishlist
 setInterval(updateCartCount, 2000);
-document.addEventListener('DOMContentLoaded', updateCartCount);
+document.addEventListener('DOMContentLoaded', function() {
+  updateCartCount();
+  updateWishlistCount();
+});
+
+// Update wishlist count when storage changes
+window.addEventListener('storage', function(e) {
+  if (e.key === 'wishlist') {
+    updateWishlistCount();
+  }
+});
 
 // Manual test function
 window.testCart = function() {
