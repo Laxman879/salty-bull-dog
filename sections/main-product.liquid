@@ -103,6 +103,10 @@
     .rating-star::before {
       color: #FFD700 !important;
     }
+    
+    .variant-label {
+      font-size: 14px;
+    }
 
     /* Make buttons and interactive controls show pointer only on hover (UI-friendly) */
     #ProductInfo-{{ section.id }} button,
@@ -132,7 +136,7 @@
       cursor: default !important;
     }
 
-    /* Reverse media and info columns visually on desktop for this product section */
+    /* Ensure media is shown first (left) and info second (right) on desktop for this product section */
     @media screen and (min-width: 750px) {
       #MainProduct-{{ section.id }} .product {
         display: flex;
@@ -140,13 +144,36 @@
         align-items: flex-start;
       }
 
-      /* Show info column first, media second */
-      #MainProduct-{{ section.id }} .product__info-wrapper {
+      /* Show media column first, info second */
+      #MainProduct-{{ section.id }} .product__media-wrapper {
         order: 1;
       }
-      #MainProduct-{{ section.id }} .product__media-wrapper {
+      #MainProduct-{{ section.id }} .product__info-wrapper {
         order: 2;
       }
+    }
+
+    /* Flush media column to the left edge of the viewport on desktop */
+    @media screen and (min-width: 990px) {
+      /* Translate the media wrapper so its left edge aligns with the viewport left */
+      #MainProduct-{{ section.id }} .product__media-wrapper {
+        transform: translateX(calc(-20vw + 50%));
+        max-width: 50%;
+        padding-left: 0;
+        box-sizing: border-box;
+      }
+
+      /* Make sure info column doesn't shrink and sits to the right */
+      #MainProduct-{{ section.id }} .product__info-wrapper {
+        flex: 1 1 50%;
+      }
+    }
+
+    /* Subtle divider under the price block for visual separation */
+    #price-{{ section.id }} {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
     }
   {%- endstyle -%}
 
@@ -271,7 +298,7 @@
                   {%- endif -%}
                 </div>
               {%- when 'price' -%}
-                <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }} style="border-bottom: 1px solid #e0e0e0; padding-bottom: 1rem; margin-bottom: 1.5rem;">
                   {%- render 'price',
                     product: product,
                     use_variant: true,

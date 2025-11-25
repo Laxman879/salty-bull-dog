@@ -6,11 +6,7 @@
   position: relative;
 }
 
-@media screen and (min-width: 750px) {
-  .image-with-text__grid--reverse {
-    flex-direction: row-reverse;
-  }
-}
+
 
 .image-with-text__media {
   min-height: 100%;

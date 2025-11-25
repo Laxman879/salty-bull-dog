@@ -1777,7 +1777,8 @@ a.product__text {
   cursor: pointer;
   display: flex;
   align-items: center;
-  margin-left: auto;
+  /* increase gap between size options and the size-guide SVG */
+  margin-left: 20px;
 }
 
 .size-guide svg {

@@ -38,11 +38,7 @@
   }
 }
 
-@media screen and (min-width: 750px) {
-  .collapsible-content__grid--reverse {
-    flex-direction: row-reverse;
-  }
-}
+
 
 .collapsible-content-wrapper-narrow {
   margin: 0 auto;
@@ -94,6 +90,7 @@
 .collapsible-row-layout .accordion summary,
 .collapsible-row-layout .accordion .accordion__content {
   padding: 1.5rem;
+  cursor: pointer !important;
 }
 
 .collapsible-row-layout .accordion .accordion__content {
