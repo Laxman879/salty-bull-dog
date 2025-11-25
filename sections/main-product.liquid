@@ -303,12 +303,22 @@
                 </div>
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }} style="border-bottom: 1px solid #e0e0e0; padding-bottom: 1rem; margin-bottom: 1.5rem;">
-                  {%- render 'price',
-                    product: product,
-                    use_variant: true,
-                    show_badges: true,
-                    price_class: 'price--large'
-                  -%}
+                  {%- assign current_price = product.selected_or_first_available_variant.price -%}
+                  {%- assign fake_compare_price = current_price | times: 2 -%}
+                  <div class="price price--large">
+                    <div class="price__container">
+                      <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.regular_price' | t }}</span>
+                      <span>
+                        <s class="price-item price-item--regular variant-item__old-price" style="font-family: 'Crete Round', serif; font-size: 24px;">
+                          {{ fake_compare_price | money }}
+                        </s>
+                      </span>
+                      <span class="price-item price-item--sale" style="font-family: 'Crete Round', serif; font-size: 24px;">
+                        {{ current_price | money }}
+                      </span>
+                      <span class="price-discount" style="color: red; font-weight: bold; margin-left: 8px; font-family: 'Crete Round', serif; font-size: 24px;">50% off</span>
+                    </div>
+                  </div>
                 </div>
                 {%- if product.quantity_price_breaks_configured? -%}
                   <div class="volume-pricing-note" id="Volume-Note-{{ section.id }}">
