@@ -269,7 +269,15 @@
         style="background-color: white; color: #2F4074; border-top: 2px solid #E0E0E0; padding: 20px 0;"
       >
         <div class="footer__copyright caption" style="color: #2F4074; font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; line-height: 1.5; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <a href="/pages/terms-conditions" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;">Terms &amp; Conditions</a>
+          {%- if section.settings.show_policy -%}
+            <div class="footer__policies" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              {%- for policy in shop.policies -%}
+                {%- if policy != blank -%}
+                  <a href="{{ policy.url }}" class="link link--text" style="font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;">{{ policy.title }}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
           <small class="copyright__content" style="font-family: 'Crete Round', serif; font-size: clamp(12px, 2vw, 14px); font-weight: 400; color: #2F4074; text-decoration: none; transition: color 0.3s ease;"
             >&copy; {{ 'now' | date: '%Y' }} Salty Bull Dog Boutique. All rights reserved.
           </small>
