@@ -1894,5 +1894,62 @@ select,
 .product-popup-modal__button,
 .accordion summary,
 details summary {
+  cursor: default !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+}
+
+/* Show pointer only on hover for better UX */
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+select:hover,
+.button:hover,
+.btn:hover,
+[role="button"]:hover,
+.clickable:hover,
+.product-form__submit:hover,
+.shopify-payment-button__button:hover,
+.product__button:hover,
+.quantity-option:hover,
+.color-option:hover,
+.size-option:hover,
+.size-guide:hover,
+.thumbnail:hover,
+.product__modal-opener:hover,
+.product-popup-modal__button:hover,
+.accordion summary:hover,
+details summary:hover {
   cursor: pointer !important;
+}
+
+/* QA list and shipping details styling (improved readability) */
+.shipping-details {
+  font-size: 0.95rem;
+  color: var(--color-foreground, #0f1720);
+  line-height: 1.45;
+}
+.shipping-details p {
+  margin: 0 0 0.75rem;
+}
+.qa-list {
+  margin: 0;
+  padding: 0;
+}
+.qa-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.qa-item:last-child {
+  border-bottom: none;
+}
+.qa-item .question {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.qa-item .answer {
+  margin-left: 0.5rem;
+  color: rgba(0,0,0,0.8);
 }

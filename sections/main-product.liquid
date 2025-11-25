@@ -107,6 +107,10 @@
     .variant-label {
       font-size: 14px;
     }
+    
+    .qa-list {
+      list-style-position: outside;
+    }
 
     /* Make buttons and interactive controls show pointer only on hover (UI-friendly) */
     #ProductInfo-{{ section.id }} button,
@@ -620,8 +624,38 @@
                       {{- 'icon-caret.svg' | inline_asset_content -}}
                     </summary>
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                      {{ block.settings.content }}
-                      {{ block.settings.page.content }}
+                      {%- assign heading_text_lower = heading_text | downcase -%}
+
+                      {%- if heading_text_lower contains 'details' -%}
+                        {{ block.settings.description | default: block.settings.content | default: product.description }}
+
+                      {%- elsif heading_text_lower contains 'shipping' -%}
+                        <div class="shipping-details">
+                          <p><strong>Processing time:</strong> 1–2 business days.</p>
+                          <p><strong>Shipping:</strong> Free domestic shipping on orders over $50. International shipping rates apply and delivery times vary by destination.</p>
+                          <p>Customs and import duties may apply for international orders; customers are responsible for these charges.</p>
+                        </div>
+
+                      {%- elsif heading_text_lower contains 'questions' -%}
+                        {%- if product.metafields.qa.questions != blank -%}
+                          <div class="qa-list" aria-live="polite">
+                            {%- for qa in product.metafields.qa.questions -%}
+                              <div class="qa-item">
+                                <div class="question"><strong>Q:</strong>
+                                  <span class="qa-text">{{ qa.question }}</span>
+                                </div>
+                                <div class="answer"><strong>A:</strong>
+                                  <span class="qa-text">{{ qa.answer }}</span>
+                                </div>
+                              </div>
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+
+                      {%- else -%}
+                        {{ block.settings.content }}
+                        {{ block.settings.page.content }}
+                      {%- endif -%}
 
                       {%- if heading_text contains 'Reviews' -%}
                         {%- if product.metafields.reviews.reviews != blank -%}
