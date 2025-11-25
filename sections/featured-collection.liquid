@@ -76,8 +76,8 @@
   .grid.product-grid {
     display: flex !important;
     flex-wrap: nowrap !important;
-    justify-content: space-between !important;
-    gap: 1rem !important;
+    justify-content: center !important;
+    gap: 2rem !important;
     width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -85,11 +85,20 @@
   }
   
   .grid__item {
-    flex: 1 !important;
+    flex: 0 0 305px !important;
     min-width: 0 !important;
     margin: 0 !important;
     box-sizing: border-box !important;
   }
+  
+  .card {
+    width: 305px !important;
+    height: 420px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  
   
   @media (max-width: 1200px) {
     .grid.product-grid {
@@ -113,6 +122,31 @@
     .grid__item {
       flex: 0 0 100% !important;
       max-width: 300px !important;
+    }
+  }
+  
+  .card__media {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card__media .media {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    .card__media .media {
+      height: 180px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card__media .media {
+      height: 160px;
     }
   }
 {%- endstyle -%}
@@ -147,11 +181,12 @@
   class="color-{{ section.settings.color_scheme }} isolate gradient featured-products-ui container-fluid"
   style="background: #ffffff;"
 >
-    <div
-      class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
-      id="collection-{{ section.id }}"
-      data-id="{{ section.id }}"
-    >
+    <div class="container-fluid">
+      <div
+        class="collection{% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %} section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
+        id="collection-{{ section.id }}"
+        data-id="{{ section.id }}"
+      >
     <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %}" style="text-align:center;">
       {%- if section.settings.title != blank -%}
         <h2 class="title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}" style="font-family: 'Delius Swash Caps', cursive; color: #22336c; font-size:38px; margin-bottom:2rem;">
@@ -286,20 +321,11 @@
       </a>
     </div>
 
-    {%- if section.settings.show_view_all and more_in_collection -%}
-      <div class="center collection__view-all{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        <a
-          href="{{ section.settings.collection.url }}"
-          class="explore-more-btn"
-          aria-label="{{ 'sections.featured_collection.view_all_label' | t: collection_name: section.settings.collection.title | escape }}"
-        >
-          EXPLORE MORE
-        </a>
-      </div>
-    {%- endif -%}
+
     {% if section.settings.image_shape == 'arch' %}
       {{ 'mask-arch.svg' | inline_asset_content }}
     {%- endif -%}
+      </div>
     </div>
   </div>
 </div>
