@@ -14,14 +14,133 @@
   }
 {%- endstyle -%}
 
-<div class="page-width page-width--narrow section-{{ section.id }}-padding">
-  <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-    {{ page.title | escape }}
-  </h1>
-  <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-    {{ page.content }}
+{% if page.handle == 'wishlist' %}
+  {{ 'component-card.css' | asset_url | stylesheet_tag }}
+  <style>
+    .wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .wishlist-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      background: white;
+    }
+    .wishlist-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .wishlist-card-content {
+      padding: 15px;
+    }
+    .wishlist-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+    }
+    .wishlist-card .price {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .remove-btn {
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+  
+  <div class="page-width section-{{ section.id }}-padding">
+    <h1 class="main-page-title page-title h0">My Wishlist</h1>
+    
+    <div id="wishlist-empty" style="text-align: center; padding: 40px; display: none;">
+      <h2>Your wishlist is empty</h2>
+      <p>Add some products to your wishlist to see them here.</p>
+      <a href="/collections/all" class="button">Continue Shopping</a>
+    </div>
+    
+    <div id="wishlist-items" class="wishlist-grid">
+      <!-- Wishlist items will be populated here -->
+    </div>
   </div>
-</div>
+  
+  <script>
+    function loadWishlist() {
+      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      const container = document.getElementById('wishlist-items');
+      const emptyState = document.getElementById('wishlist-empty');
+      
+      if (wishlist.length === 0) {
+        emptyState.style.display = 'block';
+        container.style.display = 'none';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      container.style.display = 'grid';
+      container.innerHTML = '';
+      
+      wishlist.forEach((item, index) => {
+        const dealColors = ['#1f58c7', '#7b2be7', '#d12b8b', '#14a286'];
+        const dealTexts = ['Best Deal 10% Off', 'Best Deal 5% Off', 'Best Deal 10% Off', 'Best Deal 10% Off'];
+        const dealIndex = index % 4;
+        const dealColor = dealColors[dealIndex];
+        const dealText = dealTexts[dealIndex];
+        
+        const productCard = `
+          <div class="card" style="border: 3px solid ${dealColor};">
+            <div style="padding: 10px;">
+              <img src="${item.image}" alt="${item.title}" class="card-img-top" style="height: 230px; object-fit: cover; width: 100%;">
+            </div>
+            <div class="card-body" style="padding: 10px;">
+              <div style="color: ${dealColor}; font-size: 16px; font-weight: 600; margin-bottom: 8px;">
+                ${dealText}
+              </div>
+              <h5 class="card-title" style="font-family: 'Crete Round', serif; font-size: 18px;">
+                <a href="${item.url}" class="text-decoration-none" style="font-family: 'Crete Round', serif; font-size: 18px;">
+                  ${item.title}
+                </a>
+              </h5>
+              <div class="mb-3" style="font-family: 'Crete Round', serif;">
+                ${item.price}
+              </div>
+              <button onclick="removeFromWishlist('${item.id}')" class="remove-btn">
+                Remove from Wishlist
+              </button>
+            </div>
+          </div>
+        `;
+        container.innerHTML += productCard;
+      });
+    }
+    
+    function removeFromWishlist(productId) {
+      let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      wishlist = wishlist.filter(item => item.id !== productId);
+      localStorage.setItem('wishlist', JSON.stringify(wishlist));
+      loadWishlist();
+      if (window.updateWishlistCount) {
+        window.updateWishlistCount();
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadWishlist);
+  </script>
+{% else %}
+  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
+    <h1 class="main-page-title page-title h0{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+      {{ page.title | escape }}
+    </h1>
+    <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {{ page.content }}
+    </div>
+  </div>
+{% endif %}
 
 {% schema %}
 {
